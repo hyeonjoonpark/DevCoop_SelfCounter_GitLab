@@ -5,3 +5,7 @@
 # Xcode-related
 **/dgph
 **/xcuserdata/
+
+
+# DB Security ENV
+/lib/secure/db.dart
