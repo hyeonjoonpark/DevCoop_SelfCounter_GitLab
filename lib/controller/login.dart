@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:counter/controller/save_user_info.dart';
+import 'package:counter/secure/db.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class LoginController {
+  final dbSecure = DbSecure();
   Future<void> login(
       BuildContext context, String codeNumber, String pin) async {
     print(codeNumber);
@@ -14,7 +16,7 @@ class LoginController {
     String jsonData = json.encode(requestBody);
     print(jsonData);
 
-    String apiUrl = 'http://10.129.57.5:8080/kiosk/auth/signIn';
+    String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/signIn';
     print(apiUrl);
 
     try {

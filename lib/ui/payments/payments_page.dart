@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:counter/secure/db.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   String? savedCodeNumber;
   List<ItemResponseDto> itemResponses = [];
   final player = AudioPlayer();
+  final dbSecure = DbSecure();
 
   TextEditingController barcodeController = TextEditingController();
   FocusNode barcodeFocusNode = FocusNode();
@@ -62,7 +64,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   // fetchItemData 함수에서 ItemResponseDto 생성자 호출 시 itemId 추가
   Future<void> fetchItemData(String barcode, int quantity) async {
     try {
-      const apiUrl = 'http://10.129.57.5:8080/kiosk';
+      String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
       final response =
           await http.get(Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'));
 
@@ -141,7 +143,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
       try {
         print("savedUserId : $savedCodeNumber");
         if (savedCodeNumber != null) {
-          const apiUrl = 'http://10.129.57.5:8080/kiosk/executePayments';
+          String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
 
           print(apiUrl);
           print(
@@ -221,7 +223,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    // TODO : 학생이름이 한글 인코딩이 깨지는 문제 해결
                     '$savedStudentName 학생  |  $savedPoint 원',
                     style: const TextStyle(
                       fontSize: 30,
