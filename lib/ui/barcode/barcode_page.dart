@@ -120,6 +120,14 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: TextFormField(
+                                onFieldSubmitted: ((value) => {
+                                      if (_formKey.currentState!.validate())
+                                        {
+                                          Get.toNamed("/pin",
+                                              arguments:
+                                                  _codeNumberController.text)
+                                        }
+                                    }),
                                 // TextField 대신 TextFormField을 사용합니다.
                                 controller: _codeNumberController,
                                 focusNode: _barcodeFocus,
