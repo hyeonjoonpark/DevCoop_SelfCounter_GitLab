@@ -28,6 +28,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   List<ItemResponseDto> itemResponses = [];
   final player = AudioPlayer();
   final dbSecure = DbSecure();
+  String token = '';
 
   TextEditingController barcodeController = TextEditingController();
   FocusNode barcodeFocusNode = FocusNode();
@@ -38,6 +39,13 @@ class _PaymentsPageState extends State<PaymentsPage> {
     loadUserData();
   }
 
+  // SharedPreferences에서 accessToken 값을 가져와서 변수에 담기
+  Future<void> getAccessToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token =
+        prefs.getString('accessToken') ?? ''; // 만약 값이 없을 경우 빈 문자열로 초기화
+  }
+
   Future<void> loadUserData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,6 +54,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         savedPoint = prefs.getInt('point') ?? 0;
         savedStudentName = prefs.getString('studentName') ?? '';
         savedCodeNumber = prefs.getString('codeNumber'); // 수정
+        token = prefs.getString('accessToken') ?? ''; // 수정
       });
 
       if (savedPoint != 0 && savedStudentName.isNotEmpty) {
@@ -64,9 +73,17 @@ class _PaymentsPageState extends State<PaymentsPage> {
   // fetchItemData 함수에서 ItemResponseDto 생성자 호출 시 itemId 추가
   Future<void> fetchItemData(String barcode, int quantity) async {
     try {
+      print(token);
       String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
-      final response =
-          await http.get(Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'));
+      final response = await http.get(
+        Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token', // 수정: 토큰을 헤더에 추가하여 인증된 요청을 보냅니다.
+        },
+      );
+      print('token : $token');
+      print('headers : ${response.headers.toString()}');
 
       print(response.body);
 
@@ -148,11 +165,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
           print(apiUrl);
           print(
               "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
-
           final response = await http.post(
             Uri.parse(apiUrl),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $token'
             },
             body: jsonEncode(<String, dynamic>{
               "userPointRequest": {
@@ -172,6 +189,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
               }
             }),
           );
+
+          print('token : $token');
 
           // utf8.decode를 사용하여 디코드한 결과를 변수에 저장합니다.
           String decodedResponse = utf8.decode(response.bodyBytes);

@@ -1,3 +1,4 @@
+import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
@@ -22,6 +23,7 @@ class PinPage extends StatefulWidget {
 class _PinPageState extends State<PinPage> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _pinFocus = FocusNode();
+  final dbSecure = DbSecure();
 
   void _setActiveController(TextEditingController controller) {
     setState(() {});
