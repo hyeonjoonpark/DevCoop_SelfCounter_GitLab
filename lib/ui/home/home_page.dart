@@ -13,15 +13,36 @@ class MyHome extends StatelessWidget {
         onTap: () {
           Get.offAllNamed('/barcode');
         },
-        child: Container(
-          margin: const EdgeInsets.only(top: 500), // 사용자 지정 단위로 마진 설정
-          child: Center(
-            child: Text(
-              'touch to start',
-              style: DevCoopTextStyle.bold_50.copyWith(
-                color: DevCoopColors.black,
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
               ),
-            ),
+              Image.asset(
+                "assets/images/Ocount.png",
+                width: 500,
+                height: 200,
+              ),
+              SizedBox(
+                height: 100,
+              ),
+              Text(
+                '부산소마고 매점 셀프계산대',
+                style: DevCoopTextStyle.bold_50.copyWith(
+                  color: DevCoopColors.black,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                '지금 바로 시작해보세요!',
+                style: DevCoopTextStyle.bold_50.copyWith(
+                  color: DevCoopColors.black,
+                ),
+              ),
+            ],
           ),
         ),
       ),
