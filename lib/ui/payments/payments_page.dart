@@ -490,6 +490,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   onPressed: () {
                     print("plus");
                     setState(() {
+                      // TODO : 상품 추가 버튼 클릭 시 상품 갯수 증가
                       // 상품 추가 버튼 클릭 시 상품 갯수 증가
                       totalPrice += itemResponses
                           .firstWhere((element) => element.itemName == left)
@@ -530,6 +531,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   onPressed: () {
                     print("minus");
                     setState(() {
+                      // TODO : 상품 삭제 버튼 클릭 시 상품 총 갯수 감소
                       // 상품 삭제 버튼 클릭 시 상품 총 가격 감소
                       totalPrice > 0
                           ? totalPrice -= itemResponses
