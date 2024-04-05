@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:counter/secure/db.dart';
+import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
+import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
+import 'package:counter/ui/_constant/util/number_format_util.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Dto/item_response_dto.dart';
 import '../_constant/component/button.dart';
-import 'widgets/payments_item.dart';
 import 'widgets/payments_popup.dart';
 
 class PaymentsPage extends StatefulWidget {
@@ -37,13 +38,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
   void initState() {
     super.initState();
     loadUserData();
-  }
-
-  // SharedPreferences에서 accessToken 값을 가져와서 변수에 담기
-  Future<void> getAccessToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token =
-        prefs.getString('accessToken') ?? ''; // 만약 값이 없을 경우 빈 문자열로 초기화
   }
 
   Future<void> loadUserData() async {
@@ -256,14 +250,14 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         height: 60.0, // 원하는 높이로 조정
                         width: 300.0, // 원하는 너비로 조정
                         child: TextFormField(
+                          onFieldSubmitted: (_) {
+                            handleBarcodeSubmit();
+                          },
                           controller: barcodeController,
                           focusNode: barcodeFocusNode,
                           decoration: const InputDecoration(
                             hintText: '상품 바코드를 입력해주세요',
                           ),
-                          onFieldSubmitted: (_) {
-                            handleBarcodeSubmit();
-                          },
                         ),
                       ),
                       const SizedBox(
@@ -297,6 +291,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       paymentsItem(
                         left: '상품 이름',
                         center: '수량',
+                        plus: "",
+                        minus: "-",
                         rightText: '상품 가격',
                         contentsTitle: true,
                       ),
@@ -312,7 +308,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                   i++) ...[
                                 paymentsItem(
                                   left: itemResponses[i].itemName,
-                                  center: '${itemResponses[i].quantity}',
+                                  center: itemResponses[i].quantity,
+                                  plus: "+",
+                                  minus: "-",
                                   rightText:
                                       itemResponses[i].itemPrice.toString(),
                                   totalText: false,
@@ -352,8 +350,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                   .fold<int>(
                                       0,
                                       (previousValue, element) =>
-                                          previousValue + element)
-                                  .toString(),
+                                          previousValue + element),
+                              plus: "",
+                              minus: "",
                               rightText:
                                   totalPrice.toString(), // 수정: 값을 String으로 변환
                             )
@@ -416,6 +415,152 @@ class _PaymentsPageState extends State<PaymentsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Row paymentsItem({
+    required String left,
+    required dynamic center,
+    required String plus,
+    required String minus,
+    int? right,
+    String? rightText,
+    bool contentsTitle = false,
+    bool totalText = true,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            left,
+            style: contentsTitle
+                ? DevCoopTextStyle.medium_30.copyWith(
+                    color: DevCoopColors.black,
+                  )
+                : !totalText
+                    ? DevCoopTextStyle.light_30.copyWith(
+                        color: DevCoopColors.black,
+                      )
+                    : DevCoopTextStyle.bold_30.copyWith(
+                        color: DevCoopColors.black,
+                      ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Container(
+          width: 155,
+          alignment: Alignment.centerRight,
+          child: Text(
+            "$center",
+            style: contentsTitle
+                ? DevCoopTextStyle.medium_30.copyWith(
+                    color: DevCoopColors.black,
+                  )
+                : !totalText
+                    ? DevCoopTextStyle.light_30.copyWith(
+                        color: DevCoopColors.black,
+                      )
+                    : DevCoopTextStyle.bold_30.copyWith(
+                        color: DevCoopColors.black,
+                      ),
+          ),
+        ),
+        Container(
+          width: 155,
+          alignment: Alignment.centerRight,
+          child: Text(rightText ?? NumberFormatUtil.convert1000Number(right!),
+              style: contentsTitle
+                  ? DevCoopTextStyle.medium_30.copyWith(
+                      color: DevCoopColors.black,
+                    )
+                  : !totalText
+                      ? DevCoopTextStyle.light_30.copyWith(
+                          color: DevCoopColors.black,
+                        )
+                      : DevCoopTextStyle.bold_30.copyWith(
+                          color: DevCoopColors.black,
+                        )),
+        ),
+        SizedBox(width: 10),
+        plus != ""
+            ? Container(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    print("plus");
+                    setState(() {
+                      // 상품 추가 버튼 클릭 시 상품 갯수 증가
+                      totalPrice += itemResponses
+                          .firstWhere((element) => element.itemName == left)
+                          .itemPrice;
+
+                      // center += itemResponses
+                      //     .firstWhere((element) => element.itemName == left)
+                      //     .quantity;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DevCoopColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      side: const BorderSide(
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    "$plus",
+                    textAlign: TextAlign.center,
+                    style: DevCoopTextStyle.bold_30.copyWith(
+                      color: DevCoopColors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              )
+            : const SizedBox(
+                width: 54,
+              ),
+        const SizedBox(width: 10),
+        plus != ""
+            ? Container(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    print("minus");
+                    setState(() {
+                      // 상품 삭제 버튼 클릭 시 상품 총 가격 감소
+                      totalPrice > 0
+                          ? totalPrice -= itemResponses
+                              .firstWhere((element) => element.itemName == left)
+                              .itemPrice
+                          : totalPrice = 0;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DevCoopColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      side: const BorderSide(
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    "$minus",
+                    textAlign: TextAlign.center,
+                    style: DevCoopTextStyle.bold_30.copyWith(
+                      color: DevCoopColors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              )
+            : const SizedBox(
+                width: 54,
+              ),
+      ],
     );
   }
 }

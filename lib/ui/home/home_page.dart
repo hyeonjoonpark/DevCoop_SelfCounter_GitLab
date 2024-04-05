@@ -42,18 +42,6 @@ class MyHome extends StatelessWidget {
                   color: DevCoopColors.black,
                 ),
               ),
-              Text(
-                "오늘 4/5일은 김규봉 선생님의 생신이십니다",
-                style: DevCoopTextStyle.bold_50.copyWith(
-                  color: DevCoopColors.black,
-                ),
-              ),
-              Text(
-                "모두 축하해주세요!",
-                style: DevCoopTextStyle.bold_50.copyWith(
-                  color: DevCoopColors.black,
-                ),
-              ),
             ],
           ),
         ),
