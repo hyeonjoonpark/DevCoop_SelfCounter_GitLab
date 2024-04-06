@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:counter/controller/payments_api.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -159,30 +160,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
           print(apiUrl);
           print(
               "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
-          final response = await http.post(
-            Uri.parse(apiUrl),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer $token'
-            },
-            body: jsonEncode(<String, dynamic>{
-              "userPointRequest": {
-                "codeNumber": savedCodeNumber,
-                "totalPrice": totalPrice
-              },
-              "payLogRequest": {
-                "codeNumber": savedCodeNumber,
-                "innerPoint": totalPrice,
-                "studentName": savedStudentName,
-              },
-              "kioskRequest": {
-                "dcmSaleAmt": item.itemPrice,
-                "userId": savedCodeNumber,
-                "itemName": item.itemName,
-                "saleQty": item.quantity
-              }
-            }),
-          );
+
+          // API 요청 함수 호출
+          final response = await executePaymentRequest(apiUrl, token,
+              savedCodeNumber!, savedStudentName, totalPrice, item);
 
           print('token : $token');
 
