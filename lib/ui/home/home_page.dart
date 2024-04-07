@@ -16,8 +16,12 @@ class MyHome extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
-                height: 200,
+              const SizedBox(
+                height: 100,
+              ),
+              const Text("원하시는 서비스를 선택해주세요", style: DevCoopTextStyle.bold_30),
+              const SizedBox(
+                height: 100,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
