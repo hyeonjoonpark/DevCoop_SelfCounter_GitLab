@@ -17,30 +17,71 @@ class MyHome extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 100,
-              ),
-              Image.asset(
-                "assets/images/Ocount.png",
-                width: 500,
                 height: 200,
               ),
-              SizedBox(
-                height: 100,
-              ),
-              Text(
-                '부산소마고 매점 셀프계산대',
-                style: DevCoopTextStyle.bold_50.copyWith(
-                  color: DevCoopColors.black,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                '지금 바로 시작해보세요!',
-                style: DevCoopTextStyle.bold_50.copyWith(
-                  color: DevCoopColors.black,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.offAllNamed('/barcode');
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 500,
+                      color: DevCoopColors.primary,
+                      child: const Center(
+                          child: Column(
+                        children: [
+                          SizedBox(
+                            height: 70,
+                          ),
+                          Icon(
+                            Icons.qr_code_scanner_rounded,
+                            size: 250,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            '셀프계산대 계산하기',
+                            style: DevCoopTextStyle.bold_30,
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 400,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 350,
+                      height: 500,
+                      color: DevCoopColors.primary,
+                      child: const Center(
+                          child: Column(
+                        children: [
+                          SizedBox(
+                            height: 70,
+                          ),
+                          Icon(
+                            Icons.password,
+                            size: 250,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            '비밀번호 변경하기',
+                            style: DevCoopTextStyle.bold_30,
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
