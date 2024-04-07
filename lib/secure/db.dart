@@ -1,3 +1,3 @@
 class DbSecure {
-  final String DB_HOST = "10.10.0.11:8080";
+  final String DB_HOST = "10.129.57.5:8080";
 }
