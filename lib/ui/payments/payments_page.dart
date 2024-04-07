@@ -496,7 +496,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     textAlign: TextAlign.center,
                     style: DevCoopTextStyle.bold_30.copyWith(
                       color: DevCoopColors.black,
-                      fontSize: 15,
+                      fontSize: 30,
                     ),
                   ),
                 ),
@@ -520,7 +520,13 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             itemResponses[i].quantity -= 1;
                             break;
                           } else {
+                            // 상품을 삭제하기 전에 가격을 임시 변수에 저장
+                            var itemPrice = itemResponses[i].itemPrice;
                             itemResponses.removeAt(i);
+                            // 삭제된 상품의 가격만큼 총 가격에서 빼기
+                            totalPrice = (totalPrice - itemPrice) > 0
+                                ? (totalPrice - itemPrice)
+                                : 0;
                             break;
                           }
                         }
@@ -548,7 +554,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     textAlign: TextAlign.center,
                     style: DevCoopTextStyle.bold_30.copyWith(
                       color: DevCoopColors.black,
-                      fontSize: 15,
+                      fontSize: 30,
                     ),
                   ),
                 ),
