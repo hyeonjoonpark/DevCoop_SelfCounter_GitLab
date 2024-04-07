@@ -59,7 +59,9 @@ class MyHome extends StatelessWidget {
                     width: 400,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.offAllNamed('/pin/change');
+                    },
                     child: Container(
                       width: 350,
                       height: 500,

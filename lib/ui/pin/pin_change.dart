@@ -1,10 +1,10 @@
+import 'package:counter/controller/change_pw_api.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../controller/login.dart';
 import 'package:get/get.dart';
 
 /**
@@ -12,17 +12,20 @@ import 'package:get/get.dart';
  * TODO : 자동 포커스 제대로 수정 (완료)
  */
 
-class PinPage extends StatefulWidget {
-  final String codeNumber;
-  const PinPage({Key? key, required this.codeNumber}) : super(key: key);
+class PinChange extends StatefulWidget {
+  const PinChange({Key? key}) : super(key: key);
 
   @override
-  State<PinPage> createState() => _PinPageState();
+  State<PinChange> createState() => _PinChangeState();
 }
 
-class _PinPageState extends State<PinPage> {
+class _PinChangeState extends State<PinChange> {
+  final TextEditingController _idController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
+
+  final FocusNode _idFocus = FocusNode();
   final FocusNode _pinFocus = FocusNode();
+
   final dbSecure = DbSecure();
 
   void _setActiveController(TextEditingController controller) {
@@ -34,12 +37,14 @@ class _PinPageState extends State<PinPage> {
     super.initState();
     // 화면이 나타난 후에 포커스를 지정
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(_pinFocus);
+      FocusScope.of(context).requestFocus(_idFocus);
     });
   }
 
   void onNumberButtonPressed(
-      int number, TextEditingController _activeController) {
+    int number,
+    TextEditingController _activeController,
+  ) {
     String currentText = _activeController.text;
 
     if (number == 10) {
@@ -137,6 +142,72 @@ class _PinPageState extends State<PinPage> {
                           SizedBox(
                             width: 160,
                             child: Text(
+                              '학생증 번호',
+                              style: DevCoopTextStyle.medium_30.copyWith(
+                                color: DevCoopColors.black,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                _setActiveController(_idController);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 34,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFECECEC),
+                                  borderRadius: BorderRadius.circular(
+                                    20,
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  // 엔터 입력되면 focus를 다음으로 넘기기
+                                  onFieldSubmitted: ((value) => {
+                                        // 현재 포커스는 지우고
+                                        // 다음 포커스로 이동
+                                        FocusScope.of(context)
+                                            .requestFocus(_pinFocus)
+                                      }),
+                                  // TextField 대신 TextFormField을 사용합니다.
+                                  controller: _idController,
+                                  focusNode: _idFocus,
+                                  validator: (value) {
+                                    // 여기에 validator 추가
+                                    if (value == null || value.isEmpty) {
+                                      return '학생증번호를 입력해주세요';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    isDense: true,
+                                    hintText: '학생증번호를 입력해주세요',
+                                    hintStyle: DevCoopTextStyle.medium_30
+                                        .copyWith(fontSize: 15),
+                                    border: InputBorder.none,
+                                  ),
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 160,
+                            child: Text(
                               '핀 번호',
                               style: DevCoopTextStyle.medium_30.copyWith(
                                 color: DevCoopColors.black,
@@ -204,14 +275,7 @@ class _PinPageState extends State<PinPage> {
                           mainTextButton(
                             text: '확인',
                             onTap: () {
-                              LoginController loginController =
-                                  LoginController();
-
-                              loginController.login(
-                                context,
-                                widget.codeNumber,
-                                _pinController.text,
-                              );
+                              changePw(_idController, _pinController, context);
                             },
                           ),
                         ],
