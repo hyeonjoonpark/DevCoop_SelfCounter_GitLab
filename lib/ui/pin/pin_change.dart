@@ -22,9 +22,11 @@ class PinChange extends StatefulWidget {
 class _PinChangeState extends State<PinChange> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
+  final TextEditingController _newPinController = TextEditingController();
 
   final FocusNode _idFocus = FocusNode();
   final FocusNode _pinFocus = FocusNode();
+  final FocusNode _newPinFocus = FocusNode();
 
   final dbSecure = DbSecure();
 
@@ -208,7 +210,7 @@ class _PinChangeState extends State<PinChange> {
                           SizedBox(
                             width: 160,
                             child: Text(
-                              '핀 번호',
+                              '현재 핀번호',
                               style: DevCoopTextStyle.medium_30.copyWith(
                                 color: DevCoopColors.black,
                               ),
@@ -261,6 +263,66 @@ class _PinChangeState extends State<PinChange> {
                         ],
                       ),
                       const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 160,
+                            child: Text(
+                              '바꿀 핀번호',
+                              style: DevCoopTextStyle.medium_30.copyWith(
+                                color: DevCoopColors.black,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                _setActiveController(_pinController);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 34,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFECECEC),
+                                  borderRadius: BorderRadius.circular(
+                                    20,
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  obscureText: true,
+                                  // TextField 대신 TextFormField을 사용합니다.
+                                  controller: _newPinController,
+                                  focusNode: _newPinFocus,
+                                  validator: (value) {
+                                    // 여기에 validator 추가
+                                    if (value == null || value.isEmpty) {
+                                      return '핀 번호를 입력해주세요';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    isDense: true,
+                                    hintText: '자신의 핀번호를 입력해주세요',
+                                    hintStyle: DevCoopTextStyle.medium_30
+                                        .copyWith(fontSize: 15),
+                                    border: InputBorder.none,
+                                  ),
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
                         height: 60,
                       ),
                       Row(
@@ -275,9 +337,16 @@ class _PinChangeState extends State<PinChange> {
                           mainTextButton(
                             text: '확인',
                             onTap: () {
-                              changePw(_idController, _pinController, context);
+                              // API 호출
+                              changePw(
+                                _idController,
+                                _pinController,
+                                _newPinController,
+                                context,
+                              );
                             },
                           ),
+                          // 서버에서 response 받은 에러메세지 출력
                         ],
                       )
                     ],

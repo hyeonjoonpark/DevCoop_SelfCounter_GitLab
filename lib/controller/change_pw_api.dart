@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:counter/secure/db.dart';
+import 'package:counter/ui/_constant/component/button.dart';
+import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +10,7 @@ import 'package:http/http.dart' as http;
 Future<void> changePw(
   TextEditingController _idController,
   TextEditingController _pinController,
+  TextEditingController _newPinController,
   BuildContext context,
 ) async {
   DbSecure dbSecure = DbSecure();
@@ -17,6 +20,7 @@ Future<void> changePw(
     Map<String, String> requestBody = {
       'codeNumber': _idController.text,
       'pin': _pinController.text,
+      'newPin': _newPinController.text,
     };
 
     String jsonData = json.encode(requestBody);
@@ -35,7 +39,30 @@ Future<void> changePw(
 
     if (response.statusCode == 200) {
       print('비밀번호 변경 성공');
-      Get.offAndToNamed("/home");
+      // 성공 팝업창 띄우기
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              '비밀번호 변경 성공',
+              style: DevCoopTextStyle.bold_30,
+            ),
+            content: const Text(
+              '비밀번호가 변경되었습니다.',
+              style: DevCoopTextStyle.bold_30,
+            ),
+            actions: <Widget>[
+              mainTextButton(
+                text: "확인",
+                onTap: () {
+                  Get.offAndToNamed("/");
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   } catch (e) {
     print(e);
