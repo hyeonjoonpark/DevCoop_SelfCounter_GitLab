@@ -331,7 +331,7 @@ class _PinChangeState extends State<PinChange> {
                             print("비밀번호를 잃어버리셨다니... 유감");
                           }),
                           child: const Text(
-                            "비밀번호를 잃어버리셨다면 문의하기 〉",
+                            "핀번호를 잃어버리셨다면 문의하기 〉",
                             style: TextStyle(
                               fontSize: 20,
                               color: DevCoopColors.error,
