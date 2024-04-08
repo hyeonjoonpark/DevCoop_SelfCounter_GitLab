@@ -322,8 +322,23 @@ class _PinChangeState extends State<PinChange> {
                           ),
                         ],
                       ),
+                      GestureDetector(
+                        onTap: (() {
+                          // 비밀번호를 잃어버리셨다면 문의하기
+                          // Get.toNamed('/inquiry');
+                          print("비밀번호를 잃어버리셨다니... 유감");
+                        }),
+                        child: const Text(
+                          "비밀번호를 잃어버리셨다면 문의하기 〉",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: DevCoopColors.error,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
                       const SizedBox(
-                        height: 60,
+                        height: 50,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -335,7 +350,7 @@ class _PinChangeState extends State<PinChange> {
                             },
                           ),
                           mainTextButton(
-                            text: '확인',
+                            text: '다음으로',
                             onTap: () {
                               // API 호출
                               changePw(
