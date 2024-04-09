@@ -13,9 +13,15 @@ class MyHome extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text("더 많은 기능을 준비중입니다", style: DevCoopTextStyle.bold_50)
+              // 추천상품
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  "오늘의 추천상품",
+                  style: DevCoopTextStyle.bold_30,
+                ),
+              ),
             ],
           ),
         ],
