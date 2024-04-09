@@ -21,7 +21,7 @@ class MyHome extends StatelessWidget {
                 text: "결제하러 가기",
                 icon: Icons.payment,
                 onPressed: () {
-                  Get.offAndToNamed("/payments");
+                  Get.offAndToNamed("/barcode");
                 },
               ),
               const SizedBox(height: 20),
