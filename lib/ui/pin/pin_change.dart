@@ -327,7 +327,7 @@ class _PinChangeState extends State<PinChange> {
                         child: GestureDetector(
                           onTap: (() {
                             // 비밀번호를 잃어버리셨다면 문의하기
-                            // Get.toNamed('/inquiry');
+                            // 이메일 보내기
                             print("비밀번호를 잃어버리셨다니... 유감");
                           }),
                           child: const Text(
