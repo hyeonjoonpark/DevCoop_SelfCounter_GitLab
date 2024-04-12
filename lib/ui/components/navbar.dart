@@ -34,7 +34,6 @@ List<Widget> navBarData = [
       Get.offAndToNamed("/barcode");
     },
   ),
-  const SizedBox(height: 20),
   _buildCustomButton(
     text: "비밀번호 변경",
     icon: Icons.lock_open,
@@ -42,7 +41,6 @@ List<Widget> navBarData = [
       Get.offAndToNamed("/pin/change");
     },
   ),
-  const SizedBox(height: 20),
   _buildCustomButton(
     text: "문의하러 가기",
     icon: Icons.question_answer,
