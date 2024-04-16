@@ -7,8 +7,6 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-// TODO : 핀 입력창에 아무 숫자나 입력해도 로그인 되는 현상 수정
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
