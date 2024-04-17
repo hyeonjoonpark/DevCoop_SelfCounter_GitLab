@@ -32,8 +32,10 @@ class LoginController {
       print("Response body: ${response.body}");
 
       if (response.statusCode != 200) {
-        Get.snackbar("Error", "Invalid code number or pin",
-            backgroundColor: Colors.red, duration: const Duration(seconds: 2));
+        Get.snackbar("Error", "학생증 번호 또는 핀 번호가 잘못되었습니다",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2));
         return;
       }
 
