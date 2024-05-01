@@ -41,22 +41,20 @@ List<Widget> navBarData = [
       Get.offAndToNamed("/pin/change");
     },
   ),
-  _buildCustomButton(
-    text: "문의하러 가기",
-    icon: Icons.question_answer,
-    onPressed: () {},
-  ),
 ];
 
-void _showPopupMenu(BuildContext context) {
-  showModalBottomSheet(
+Future<dynamic> _showPopupMenu(BuildContext context) {
+  return showModalBottomSheet(
     context: context,
+    isScrollControlled: false,
     builder: (BuildContext bc) {
       return ListView.builder(
-        itemCount: 10, // 리스트 아이템의 개수
+        itemCount: 2, // 리스트 아이템의 개수
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: navBarData[index],
+            title: Column(
+              children: [navBarData[index]],
+            ),
             onTap: () => Navigator.pop(context), // 아이템 선택 시 모달 닫기
           );
         },
