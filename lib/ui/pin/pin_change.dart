@@ -322,24 +322,6 @@ class _PinChangeState extends State<PinChange> {
                           ),
                         ],
                       ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: (() {
-                            // 비밀번호를 잃어버리셨다면 문의하기
-                            // 이메일 보내기
-                            print("비밀번호를 잃어버리셨다니... 유감");
-                          }),
-                          child: const Text(
-                            "핀번호를 잃어버리셨다면 문의하기 〉",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: DevCoopColors.error,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 50,
                       ),
