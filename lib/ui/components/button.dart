@@ -2,7 +2,7 @@ import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:flutter/material.dart';
 
-Widget _buildCustomButton({
+Widget buildCustomButton({
   required String text,
   required IconData icon,
   required VoidCallback onPressed,
