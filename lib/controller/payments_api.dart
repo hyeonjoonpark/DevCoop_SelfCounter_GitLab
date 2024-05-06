@@ -3,12 +3,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<http.Response> executePaymentRequest(
-    String apiUrl,
-    String token,
-    String savedCodeNumber,
-    String savedStudentName,
-    int totalPrice,
-    ItemResponseDto item) async {
+  String apiUrl,
+  String token,
+  String savedCodeNumber,
+  String savedStudentName,
+  int totalPrice,
+  List<ItemResponseDto> items,
+) async {
   return await http.post(
     Uri.parse(apiUrl),
     headers: <String, String>{
@@ -26,10 +27,8 @@ Future<http.Response> executePaymentRequest(
         "studentName": savedStudentName,
       },
       "kioskRequest": {
-        "dcmSaleAmt": item.itemPrice,
+        "items": items,
         "userId": savedCodeNumber,
-        "itemName": item.itemName,
-        "saleQty": item.quantity
       }
     }),
   );
