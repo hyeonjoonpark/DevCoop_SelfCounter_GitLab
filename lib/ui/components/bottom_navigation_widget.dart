@@ -24,7 +24,7 @@ Widget bottomNavigationBarWidget(BottomNavigationProvider provider) {
           Icons.menu,
           size: 100,
         ),
-        label: '기타',
+        label: '인기상품',
       ),
     ],
     onTap: (index) {

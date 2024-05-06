@@ -1,10 +1,11 @@
-import 'dart:convert';
-
+import 'package:counter/controller/item_suggest.dart';
 import 'package:counter/secure/db.dart';
-import 'package:counter/ui/components/button.dart';
+import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
+import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SelfCounterWidget extends StatefulWidget {
   const SelfCounterWidget({Key? key}) : super(key: key);
@@ -16,64 +17,88 @@ class SelfCounterWidget extends StatefulWidget {
 class _SelfCounterWidgetState extends State<SelfCounterWidget> {
   final dbSecure = DbSecure();
   String suggestData = "";
-  Future<void> suggest() async {
-    try {
-      final response = await http.get(
-        Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/ai/suggest'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      print('headers : ${response.headers.toString()}');
+  List<String> topList = [];
 
-      print(utf8.encode(response.body).toString());
-
-      if (response.statusCode == 200) {
-        setState(() {
-          suggestData = response.body;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
+  @override
+  void initState() {
+    super.initState();
+    getTopList((List<String> newList) {
+      setState(() {
+        topList = newList;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 350,
-      child: Row(
-        children: [
-          Drawer(
-            backgroundColor: Colors.white10,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Container(
-                  width: 300,
-                  height: 60,
-                  child: buildCustomButton(
-                    text: '인기상품',
-                    icon: Icons.menu_book,
-                    onPressed: () {},
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: 300,
-                  height: 60,
-                  child: buildCustomButton(
-                    text: '상품추천',
-                    icon: Icons.settings_suggest,
-                    onPressed: () {
-                      suggest();
-                    },
-                  ),
-                ),
-              ],
+    return ScreenUtilInit(
+      builder: (context, child) => Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-        ],
+            Container(
+              width: 1.sw,
+              margin: const EdgeInsets.only(left: 50),
+              child: const Text(
+                "인기상품 ♥︎",
+                style: DevCoopTextStyle.bold_50,
+              ),
+            ),
+            Expanded(
+              // 이제 Column 내부에 있으므로 정상적으로 작동합니다.
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: List.generate(topList.length, (index) {
+                        return Container(
+                          margin: const EdgeInsets.only(
+                            left: 50,
+                            top: 10,
+                            right: 50,
+                          ),
+                          color: index % 2 == 0
+                              ? DevCoopColors.primary
+                              : Colors.white12,
+                          child: ListTile(
+                            shape: Border.all(
+                              color: const Color(0xFFECECEC),
+                              width: 2,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 5.0,
+                              horizontal: 10.0,
+                            ),
+                            title: Container(
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                color: Colors.white10,
+                              ),
+                              child: Text(
+                                '${index + 1}등 ${topList[index]}',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w900,
+                                  color: DevCoopColors.black,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -15,7 +15,7 @@ Widget buildCustomButton({
       foregroundColor: Colors.white,
       backgroundColor: DevCoopColors.primary, // 버튼 텍스트 색상
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: 5.0,
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
