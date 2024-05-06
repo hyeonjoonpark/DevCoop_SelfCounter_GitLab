@@ -47,6 +47,17 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                 style: DevCoopTextStyle.bold_50,
               ),
             ),
+            SizedBox(
+              height: 0.05.sh,
+            ),
+            Container(
+              width: 1.sw,
+              margin: const EdgeInsets.only(left: 50),
+              child: const Text(
+                "학생들이 가장 많이 구매한 상품을 알 수 있어요",
+                style: DevCoopTextStyle.bold_30,
+              ),
+            ),
             Expanded(
               // 이제 Column 내부에 있으므로 정상적으로 작동합니다.
               child: SingleChildScrollView(
@@ -75,20 +86,33 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                               horizontal: 10.0,
                             ),
                             title: Container(
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                color: Colors.white10,
-                              ),
-                              child: Text(
-                                '${index + 1}등 ${topList[index]}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w900,
-                                  color: DevCoopColors.black,
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white10,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${index + 1}등 ${topList[index].split(",")[0]}',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900,
+                                        color: DevCoopColors.black,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Text(
+                                      topList[index].split(",")[1],
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900,
+                                        color: DevCoopColors.black,
+                                      ),
+                                    ),
+                                  ],
+                                )),
                           ),
                         );
                       }),
