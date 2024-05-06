@@ -16,27 +16,27 @@ class SelfCounterWidget extends StatefulWidget {
 class _SelfCounterWidgetState extends State<SelfCounterWidget> {
   final dbSecure = DbSecure();
   String suggestData = "";
-  // Future<void> suggest() async {
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/ai/suggest'),
-  //       headers: <String, String>{
-  //         'Content-Type': 'application/json; charset=UTF-8',
-  //       },
-  //     );
-  //     print('headers : ${response.headers.toString()}');
+  Future<void> suggest() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/ai/suggest'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      print('headers : ${response.headers.toString()}');
 
-  //     print(utf8.encode(response.body).toString());
+      print(utf8.encode(response.body).toString());
 
-  //     if (response.statusCode == 200) {
-  //       setState(() {
-  //         suggestData = response.body;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        setState(() {
+          suggestData = response.body;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                     text: '상품추천',
                     icon: Icons.settings_suggest,
                     onPressed: () {
-                      // suggest();
+                      suggest();
                     },
                   ),
                 ),
