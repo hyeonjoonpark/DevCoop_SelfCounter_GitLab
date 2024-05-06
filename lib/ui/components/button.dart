@@ -9,7 +9,7 @@ Widget buildCustomButton({
 }) {
   return ElevatedButton.icon(
     onPressed: onPressed,
-    icon: Icon(icon, size: 100),
+    icon: Icon(icon, size: 50),
     label: Text(text, style: DevCoopTextStyle.bold_30),
     style: ElevatedButton.styleFrom(
       foregroundColor: Colors.white,

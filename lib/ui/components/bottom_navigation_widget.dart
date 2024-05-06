@@ -21,10 +21,10 @@ Widget bottomNavigationBarWidget(BottomNavigationProvider provider) {
       ),
       BottomNavigationBarItem(
         icon: Icon(
-          Icons.question_answer,
+          Icons.menu,
           size: 100,
         ),
-        label: '문의하기',
+        label: '기타',
       ),
     ],
     onTap: (index) {

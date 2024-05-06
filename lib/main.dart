@@ -1,7 +1,7 @@
 import 'package:counter/provider/bottom_navigation_provider.dart';
 import 'package:counter/provider/count_provider.dart';
 import 'package:counter/ui/_constant/util/app_router.dart';
-import 'package:counter/ui/components/home.dart';
+import 'package:counter/ui/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
