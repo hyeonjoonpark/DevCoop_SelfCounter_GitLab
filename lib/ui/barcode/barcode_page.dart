@@ -156,12 +156,6 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          mainTextButton(
-                            text: '처음으로',
-                            onTap: () {
-                              Get.toNamed('/home');
-                            },
-                          ),
                           const SizedBox(width: 40),
                           mainTextButton(
                             text: '다음으로',

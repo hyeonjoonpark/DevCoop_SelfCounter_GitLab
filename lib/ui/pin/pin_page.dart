@@ -198,7 +198,7 @@ class _PinPageState extends State<PinPage> {
                           mainTextButton(
                             text: '처음으로',
                             onTap: () {
-                              Get.offAllNamed('/home');
+                              Get.offAllNamed('/');
                             },
                           ),
                           mainTextButton(

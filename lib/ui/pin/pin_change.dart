@@ -331,7 +331,7 @@ class _PinChangeState extends State<PinChange> {
                           mainTextButton(
                             text: '처음으로',
                             onTap: () {
-                              Get.offAllNamed('/home');
+                              Get.offAllNamed('/');
                             },
                           ),
                           mainTextButton(
