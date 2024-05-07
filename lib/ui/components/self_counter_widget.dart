@@ -125,6 +125,13 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
               height: 0.05.sh,
             ),
             Container(
+              margin: const EdgeInsets.only(left: 50, right: 50),
+              child: const Divider(),
+            ),
+            SizedBox(
+              height: 0.05.sh,
+            ),
+            Container(
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(left: 50),
               child: const Text(
