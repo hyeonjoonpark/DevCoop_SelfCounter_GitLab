@@ -47,7 +47,7 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
               width: 1.sw,
               margin: const EdgeInsets.only(left: 50),
               child: const Text(
-                "인기상품 ♥︎",
+                "많은 학생들이 좋아하는 상품을 알아보아요",
                 style: DevCoopTextStyle.bold_50,
               ),
             ),
@@ -130,7 +130,7 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(left: 50),
               child: const Text(
-                "랜덤추천 👍🏻",
+                "무엇을 먹을지 고민일 때는 랜덤으로 돌려보세요",
                 style: DevCoopTextStyle.bold_50,
               ),
             ),
