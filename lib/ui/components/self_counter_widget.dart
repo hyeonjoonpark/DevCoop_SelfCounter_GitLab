@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:counter/controller/item_suggest.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
