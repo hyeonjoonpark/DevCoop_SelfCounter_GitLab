@@ -19,9 +19,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'BSM SelfCounter',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       getPages: AppRouter,
       initialRoute: '/',
       home: MultiProvider(

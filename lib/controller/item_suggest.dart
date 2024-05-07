@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:counter/secure/db.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> suggest(Function(String) onUpdate) async {
+Future<void> suggest(Function(String) onUpdate, String randomData) async {
   final dbSecure = DbSecure();
   try {
     final response = await http.get(
@@ -18,9 +18,8 @@ Future<void> suggest(Function(String) onUpdate) async {
     if (response.statusCode == 200) {
       // 응답 본문을 UTF-8로 디코드
       final decodedBody = utf8.decode(response.bodyBytes);
-      String data = json.decode(decodedBody);
-      // 여기서 콜백을 호출
-      onUpdate(data);
+      // JSON 디코드 대신 단순히 디코드된 문자열을 사용
+      onUpdate(decodedBody);
     }
   } catch (e) {
     print(e);
