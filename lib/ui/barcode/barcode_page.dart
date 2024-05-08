@@ -26,7 +26,6 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
   late TextEditingController _codeNumberController;
   final FocusNode _barcodeFocus = FocusNode();
   final _formKey = GlobalKey<FormState>();
-  late Timer _timer;
 
   // 바코드페이지에 접속할 때마다 포커스를 재지정합니다.
   @override
