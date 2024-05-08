@@ -21,10 +21,10 @@ Widget bottomNavigationBarWidget(BottomNavigationProvider provider) {
       ),
       BottomNavigationBarItem(
         icon: Icon(
-          Icons.menu,
+          Icons.menu_book_rounded,
           size: 100,
         ),
-        label: '인기상품',
+        label: '상품정보',
       ),
     ],
     onTap: (index) {

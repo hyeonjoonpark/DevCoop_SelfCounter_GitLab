@@ -38,17 +38,6 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
       builder: (context, child) => Scaffold(
         body: ListView(
           children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: 1.sw,
-              margin: const EdgeInsets.only(left: 50),
-              child: const Text(
-                "많은 학생들이 좋아하는 상품을 알아보아요",
-                style: DevCoopTextStyle.bold_50,
-              ),
-            ),
             SizedBox(
               height: 0.05.sh,
             ),
@@ -56,120 +45,130 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
               width: 1.sw,
               margin: const EdgeInsets.only(left: 50),
               child: const Text(
-                "학생들이 가장 많이 구매한 상품을 알 수 있어요",
+                "인기상품 알아보기",
                 style: DevCoopTextStyle.bold_30,
               ),
             ),
-            Expanded(
-              // 이제 Column 내부에 있으므로 정상적으로 작동합니다.
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: List.generate(topList.length, (index) {
-                      return Container(
-                        margin: const EdgeInsets.only(
-                          left: 50,
-                          top: 10,
-                          right: 50,
-                        ),
-                        color: index % 2 == 0
-                            ? DevCoopColors.primary
-                            : Colors.white12,
-                        child: ListTile(
-                          shape: Border.all(
-                            color: const Color(0xFFECECEC),
-                            width: 2,
+            SizedBox(
+              height: 0.05.sh,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  height: 0.05.sh,
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 50),
+                  child: Expanded(
+                    // 이제 Column 내부에 있으므로 정상적으로 작동합니다.
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 600,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(0xFFECECEC),
+                              width: 2,
+                            ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 5.0,
-                            horizontal: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: List.generate(topList.length, (index) {
+                              return Container(
+                                margin: const EdgeInsets.only(
+                                    left: 50, top: 10, right: 50),
+                                color: index % 2 == 0
+                                    ? DevCoopColors.primary
+                                    : Colors.white12,
+                                child: ListTile(
+                                  shape: Border.all(
+                                    color: const Color(0xFFECECEC),
+                                    width: 2,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0,
+                                    horizontal: 10.0,
+                                  ),
+                                  title: Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white10,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${index + 1}등 ${topList[index].split(",")[0]}',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w900,
+                                            color: DevCoopColors.black,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        Text(
+                                          topList[index].split(",")[1],
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w900,
+                                            color: DevCoopColors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
-                          title: Container(
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                color: Colors.white10,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '${index + 1}등 ${topList[index].split(",")[0]}',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900,
-                                      color: DevCoopColors.black,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  Text(
-                                    topList[index].split(",")[1],
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900,
-                                      color: DevCoopColors.black,
-                                    ),
-                                  ),
-                                ],
-                              )),
                         ),
-                      );
-                    }),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 0.05.sh,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 50, right: 50),
-              child: const Divider(),
-            ),
-            SizedBox(
-              height: 0.05.sh,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 50),
-              child: const Text(
-                "무엇을 먹을지 고민일 때는 랜덤으로 돌려보세요",
-                style: DevCoopTextStyle.bold_50,
-              ),
-            ),
-            SizedBox(
-              height: 0.05.sh,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 50),
-              child: Text(
-                isClick ? "랜덤상품은 바로 ~~~ $randomData" : "랜덤으로 추천하는 상품을 확인해보세요",
-                style: DevCoopTextStyle.bold_30,
-              ),
-            ),
-            SizedBox(
-              height: 0.05.sh,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 50, right: 50),
-              child: buildCustomButton(
-                text: "랜덤뽑기",
-                icon: Icons.food_bank,
-                onPressed: () {
-                  suggest(
-                      (p0) => setState(() {
-                            randomData = p0;
-                            isClick = true;
-                          }),
-                      randomData!);
-                },
-              ),
-            ),
-            SizedBox(
-              height: 0.05.sh,
+                ),
+                SizedBox(
+                  width: 0.05.sw,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        isClick
+                            ? "랜덤상품은 바로 ~~~ $randomData"
+                            : "랜덤으로 추천하는 상품을 확인해보세요",
+                        style: DevCoopTextStyle.bold_30,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 0.05.sh,
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(left: 50, right: 50),
+                      child: buildCustomButton(
+                        text: "랜덤뽑기",
+                        icon: Icons.food_bank,
+                        onPressed: () {
+                          suggest(
+                              (p0) => setState(() {
+                                    randomData = p0;
+                                    isClick = true;
+                                  }),
+                              randomData!);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 0.05.sh,
+                ),
+              ],
             ),
           ],
         ),
