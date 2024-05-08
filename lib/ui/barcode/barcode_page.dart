@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,11 +26,13 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
   late TextEditingController _codeNumberController;
   final FocusNode _barcodeFocus = FocusNode();
   final _formKey = GlobalKey<FormState>();
+  late Timer _timer;
 
   // 바코드페이지에 접속할 때마다 포커스를 재지정합니다.
   @override
   void initState() {
     super.initState();
+
     _codeNumberController =
         TextEditingController(text: ''); // 새로운 TextEditingController 인스턴스 생성
     WidgetsBinding.instance.addObserver(this);

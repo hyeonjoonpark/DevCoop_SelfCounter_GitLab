@@ -157,7 +157,7 @@ class _PinPageState extends State<PinPage> {
                                   horizontal: 12,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFECECEC),
+                                  color: const Color(0xFFECECEC),
                                   borderRadius: BorderRadius.circular(
                                     20,
                                   ),

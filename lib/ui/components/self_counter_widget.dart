@@ -2,7 +2,6 @@ import 'package:counter/controller/item_suggest.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
-import 'package:counter/ui/components/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -128,45 +127,6 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                       ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 0.05.sw,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(left: 50),
-                      child: Text(
-                        isClick
-                            ? "랜덤상품은 바로 ~~~ $randomData"
-                            : "랜덤으로 추천하는 상품을 확인해보세요",
-                        style: DevCoopTextStyle.bold_30,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 0.05.sh,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(left: 50, right: 50),
-                      child: buildCustomButton(
-                        text: "랜덤뽑기",
-                        icon: Icons.food_bank,
-                        onPressed: () {
-                          suggest(
-                              (p0) => setState(() {
-                                    randomData = p0;
-                                    isClick = true;
-                                  }),
-                              randomData!);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 0.05.sh,
                 ),
               ],
             ),
