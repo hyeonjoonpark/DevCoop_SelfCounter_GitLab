@@ -2,7 +2,8 @@ param (
     [string]$stage
 )
 
-cd C:\Users\KB\Devcoop
+cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
+
 $flutterPath = "C:\flutter_windows_3.19.3-stable\flutter\bin\flutter"
 $env:PATH = "$flutterPath;$env:PATH"
 
