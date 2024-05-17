@@ -2,6 +2,10 @@ stages:
   - build
   - test
 
+variables:
+  FLUTTER_HOME: "$FLUTTER_HOME"
+  PROJECT_PATH: "$PROJECT_PATH"
+
 before_script:
   - export PATH="$FLUTTER_HOME/bin:$PATH"
   - cd "$PROJECT_PATH"
@@ -9,6 +13,8 @@ before_script:
 
 build:
   stage: build
+  tags:
+    - kiosk-windows
   script:
     - flutter clean
     - flutter pub get
@@ -16,5 +22,7 @@ build:
 
 test:
   stage: test
+  tags:
+    - kiosk-windows
   script:
     - flutter test
