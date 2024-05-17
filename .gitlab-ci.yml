@@ -2,12 +2,14 @@ stages:
   - build
   - test
 
-variables:
-  FLUTTER_HOME: "$env:FLUTTER_HOME"
-  PROJECT_PATH: "$env:PROJECT_PATH"
-
 before_script:
+  - Write-Host "Setting up environment variables..."
+  - $env:FLUTTER_HOME="${env:FLUTTER_HOME}"
+  - $env:PROJECT_PATH="${env:PROJECT_PATH}"
   - $env:PATH="$env:FLUTTER_HOME\bin;$env:PATH"
+  - Write-Host "FLUTTER_HOME: $env:FLUTTER_HOME"
+  - Write-Host "PROJECT_PATH: $env:PROJECT_PATH"
+  - Write-Host "PATH: $env:PATH"
   - cd $env:PROJECT_PATH
   - flutter --version
 
