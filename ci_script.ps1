@@ -10,7 +10,7 @@ Write-Host "Current PATH : $env:PATH"
 switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
-        C:\flutter_windows_3.19.3-stable\flutter\bin\flutter --version
+        flutter --version
         git pull
     }
     "build" {
