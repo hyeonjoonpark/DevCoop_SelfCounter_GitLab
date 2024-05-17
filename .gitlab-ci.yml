@@ -11,6 +11,8 @@ build:
   script:
     - 'powershell.exe -Command "flutter pub get"'
     - 'powershell.exe -Command "flutter build apk --release"'
+  tags:
+    - kiosk-windows
   artifacts:
     paths:
       - build/app/outputs/flutter-apk/app-release.apk
@@ -20,5 +22,7 @@ deploy:
   script:
     - 'powershell.exe -Command "echo Deploying the application..."'
     # 배포 스크립트 추가 (예: 앱 스토어 배포, 서버에 업로드 등)
+  tags:
+    - kiosk-windows
   only:
     - main
