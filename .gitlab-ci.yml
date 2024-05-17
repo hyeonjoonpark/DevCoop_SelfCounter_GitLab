@@ -6,24 +6,21 @@ stages:
 setup:
   stage: setup
   script:
-    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1" -stage setup'
+    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\ci_script.ps1" -stage setup'
   tags:
     - kiosk-windows
 
 build:
   stage: build
   script:
-    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1" -stage build'
+    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\ci_script.ps1" -stage build'
   tags:
     - kiosk-windows
-  artifacts:
-    paths:
-      - build/app/outputs/flutter-apk/app-release.apk
 
 deploy:
   stage: deploy
   script:
-    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1"  -stage deploy'
+    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\ci_script.ps1" -stage deploy'
   tags:
     - kiosk-windows
   only:
