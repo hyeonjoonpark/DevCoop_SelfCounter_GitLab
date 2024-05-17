@@ -2,17 +2,8 @@ stages:
   - build
   - test
 
-variables:
-  FLUTTER_CHANNEL: 'stable'
-  FLUTTER_VERSION: '3.19.3'
-  PROJECT_PATH: 'C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1'
-  FLUTTER_PATH: 'C:\\flutter_windows_3.19.3-stable\\flutter\\bin'
-  GIT_PATH: 'C:\\Program Files\\Git\\cmd' # Git 설치 경로를 여기에 설정하세요.
-
 before_script:
   - echo "Setting up Flutter environment"
-  - $env:PATH = "$env:PATH;$env:FLUTTER_PATH;$env:GIT_PATH"
-  - cd $env:PROJECT_PATH
   - flutter --version
 
 build_app:
