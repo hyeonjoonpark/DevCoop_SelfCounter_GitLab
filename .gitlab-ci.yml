@@ -5,17 +5,19 @@ stages:
 variables:
   FLUTTER_CHANNEL: 'stable'
   FLUTTER_VERSION: '3.19.3'
-  PROJECT_PATH: 'C:\Users\KB\Devcoop\devcoop_self_counter_v1'
-  FLUTTER_PATH: 'C:\flutter_windows_3.19.3-stable\flutter\bin\flutter'
+  PROJECT_PATH: 'C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1'
+  FLUTTER_PATH: 'C:\\flutter_windows_3.19.3-stable\\flutter\\bin\\flutter'
 
 before_script:
   - echo "Setting up Flutter environment"
-  - export PATH="$PATH:$FLUTTER_PATH"
+  - export PATH="$PATH;$FLUTTER_PATH"
   - cd $PROJECT_PATH
   - flutter --version
 
 build_app:
   stage: build
+  tags:
+    - kiosk-windows
   script:
     - echo "Building Flutter App"
     - flutter pub get
@@ -23,6 +25,8 @@ build_app:
 
 test_app:
   stage: test
+  tags:
+    - kiosk-windows
   script:
     - echo "Running Flutter Tests"
     - flutter test
