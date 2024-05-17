@@ -32,7 +32,7 @@ switch ($stage) {
         }
         
         # 새로운 프로세스 시작
-        $exePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release"
+        $exePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
         if (Test-Path $exePath) {
             echo "Starting new counter.exe process..."
             Start-Process -FilePath $exePath
