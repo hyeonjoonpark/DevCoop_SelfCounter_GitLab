@@ -2,12 +2,15 @@ param (
     [string]$stage
 )
 
-cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
+cd C:\Users\KB\Devcoop
+$flutterPath = "C:\flutter_windows_3.19.3-stable\flutter\bin\flutter"
+$env:PATH = "$flutterPath;$env:PATH"
 
+Write-Host "Current PATH : $env:PATH"
 switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
-        flutter --version
+        C:\flutter_windows_3.19.3-stable\flutter\bin\flutter --version
         git pull
     }
     "build" {
