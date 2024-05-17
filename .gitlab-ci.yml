@@ -1,16 +1,19 @@
 stages:
+  - setup
   - build
   - deploy
 
-before_script:
-  - 'powershell.exe -Command "echo Setting up Flutter environment..."'
-  - 'powershell.exe -Command "flutter --version"'
+setup:
+  stage: setup
+  script:
+    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\ci_script.ps1" -stage setup'
+  tags:
+    - kiosk-windows
 
 build:
   stage: build
   script:
-    - 'powershell.exe -Command "flutter pub get"'
-    - 'powershell.exe -Command "flutter build apk --release"'
+    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\ci_script.ps1" -stage build'
   tags:
     - kiosk-windows
   artifacts:
@@ -20,8 +23,7 @@ build:
 deploy:
   stage: deploy
   script:
-    - 'powershell.exe -Command "echo Deploying the application..."'
-    # 배포 스크립트 추가 (예: 앱 스토어 배포, 서버에 업로드 등)
+    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\ci_script.ps1" -stage deploy'
   tags:
     - kiosk-windows
   only:
