@@ -1,27 +1,20 @@
 stages:
-  - setup
   - build
-  - deploy
+  - test
 
-setup:
-  stage: setup
-  script:
-    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1" -stage setup'
-  tags:
-    - kiosk-windows
+before_script:
+  - export PATH="$FLUTTER_HOME/bin:$PATH"
+  - cd "$PROJECT_PATH"
+  - flutter --version
 
 build:
   stage: build
   script:
-    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1" -stage build'
-  tags:
-    - kiosk-windows
+    - flutter clean
+    - flutter pub get
+    - flutter build apk
 
-deploy:
-  stage: deploy
+test:
+  stage: test
   script:
-    - 'powershell.exe -File "C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1" -stage deploy'
-  tags:
-    - kiosk-windows
-  only:
-    - main
+    - flutter test
