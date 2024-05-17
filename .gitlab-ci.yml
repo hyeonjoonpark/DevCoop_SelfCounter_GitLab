@@ -21,7 +21,7 @@ build_app:
   script:
     - echo "Building Flutter App"
     - flutter pub get
-    - flutter build apk --release
+    - flutter build windows --release
 
 test_app:
   stage: test
