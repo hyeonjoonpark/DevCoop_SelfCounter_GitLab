@@ -1,27 +1,32 @@
 stages:
+  - setup
   - build
-  - test
+  - deploy
 
 before_script:
-  - echo "Setting up Flutter environment"
-  - flutter --version
+  - git config --global http.sslVerify false
+  - git submodule sync --recursive
+  - git submodule update --init --recursive
 
-build_app:
+setup:
+  stage: setup
+  script:
+    - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage setup
+  tags:
+    - kiosk-windows
+
+build:
   stage: build
+  script:
+    - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage build
   tags:
     - kiosk-windows
-  script:
-    - echo "Building Flutter App"
-    - flutter pub get
-    - flutter build apk --release
 
-test_app:
-  stage: test
+deploy:
+  stage: deploy
+  script:
+    - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage deploy
   tags:
     - kiosk-windows
-  script:
-    - echo "Running Flutter Tests"
-    - flutter test
-
-after_script:
-  - echo "Cleaning up"
+  only:
+    - main
