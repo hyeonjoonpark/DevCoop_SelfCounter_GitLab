@@ -8,6 +8,7 @@ switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
         flutter --version
+        git pull
     }
     "build" {
         echo "Running pub get..."
