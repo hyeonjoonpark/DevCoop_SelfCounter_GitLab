@@ -2,29 +2,30 @@ stages:
   - build
   - test
 
+variables:
+  FLUTTER_CHANNEL: 'stable'
+  FLUTTER_VERSION: '3.19.3'
+  PROJECT_PATH: 'C:\Users\KB\Devcoop\devcoop_self_counter_v1'
+  FLUTTER_PATH: 'C:\flutter_windows_3.19.3-stable\flutter\bin\flutter'
+
 before_script:
-  - Write-Host "Setting up environment variables..."
-  - $env:FLUTTER_HOME="${env:FLUTTER_HOME}"
-  - $env:PROJECT_PATH="${env:PROJECT_PATH}"
-  - $env:PATH="$env:FLUTTER_HOME\bin;$env:PATH"
-  - Write-Host "FLUTTER_HOME: $env:FLUTTER_HOME"
-  - Write-Host "PROJECT_PATH: $env:PROJECT_PATH"
-  - Write-Host "PATH: $env:PATH"
-  - cd $env:PROJECT_PATH
+  - echo "Setting up Flutter environment"
+  - export PATH="$PATH:$FLUTTER_PATH"
+  - cd $PROJECT_PATH
   - flutter --version
 
-build:
+build_app:
   stage: build
-  tags:
-    - kiosk-windows
   script:
-    - flutter clean
+    - echo "Building Flutter App"
     - flutter pub get
-    - flutter build apk
+    - flutter build apk --release
 
-test:
+test_app:
   stage: test
-  tags:
-    - kiosk-windows
   script:
+    - echo "Running Flutter Tests"
     - flutter test
+
+after_script:
+  - echo "Cleaning up"
