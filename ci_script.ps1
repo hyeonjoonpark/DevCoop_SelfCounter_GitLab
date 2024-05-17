@@ -8,6 +8,7 @@ switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
         flutter --version
+	git pull
     }
     "build" {
         echo "Running pub get..."
@@ -17,7 +18,7 @@ switch ($stage) {
     }
     "deploy" {
         echo "Deploying the application..."
-        # 배포 스크립트 추가 (예: 앱 스토어 배포, 서버에 업로드 등)
+        build\windows\x64\runner\Release\counter.exe
     }
     default {
         echo "Invalid stage specified"
