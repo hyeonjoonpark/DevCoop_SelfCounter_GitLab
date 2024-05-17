@@ -6,12 +6,12 @@ variables:
   FLUTTER_CHANNEL: 'stable'
   FLUTTER_VERSION: '3.19.3'
   PROJECT_PATH: 'C:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1'
-  FLUTTER_PATH: 'C:\\flutter_windows_3.19.3-stable\\flutter\\bin\\flutter'
+  FLUTTER_PATH: 'C:\\flutter_windows_3.19.3-stable\\flutter\\bin'
 
 before_script:
   - echo "Setting up Flutter environment"
-  - export PATH="$PATH;$FLUTTER_PATH"
-  - cd $PROJECT_PATH
+  - $env:PATH = "$env:PATH;$env:FLUTTER_PATH"
+  - cd $env:PROJECT_PATH
   - flutter --version
 
 build_app:
@@ -21,7 +21,7 @@ build_app:
   script:
     - echo "Building Flutter App"
     - flutter pub get
-    - flutter build windows --release
+    - flutter build apk --release
 
 test_app:
   stage: test
