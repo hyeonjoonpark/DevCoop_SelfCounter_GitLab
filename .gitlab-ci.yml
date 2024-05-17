@@ -1,0 +1,29 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  FLUTTER_HOME: "C:\\flutter"
+
+before_script:
+  - echo "Setting up Flutter environment..."
+  - 'set PATH=%FLUTTER_HOME%\bin;%PATH%'
+  - flutter --version
+
+build:
+  stage: build
+  script:
+    - echo "Building the Flutter application..."
+    - flutter pub get
+    - flutter build apk --release
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/app-release.apk
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying the application..."
+    # 배포 스크립트 추가 (예: 앱 스토어 배포, 서버에 업로드 등)
+  only:
+    - main
