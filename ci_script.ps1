@@ -2,7 +2,7 @@ param (
     [string]$stage
 )
 
-cd C:\Users\KB\Devcoop
+cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
 
 switch ($stage) {
     "setup" {
