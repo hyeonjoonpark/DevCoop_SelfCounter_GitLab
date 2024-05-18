@@ -7,7 +7,7 @@ class DbSecure {
 
   static Future<DbSecure> load() async {
     // 환경 변수 읽기, 없으면 기본 값으로 설정
-    String dbHost = Platform.environment['DB_HOST'] ?? 'localhost';
+    String dbHost = Platform.environment['DB_HOST'] ?? 'localhost:8080';
     return DbSecure._(dbHost);
   }
 
