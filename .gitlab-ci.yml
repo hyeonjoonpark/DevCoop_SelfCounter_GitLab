@@ -14,21 +14,21 @@ stages:
 setup:
   stage: setup
   script:
-    - $CI_SCRIPTS_PATH -stage setup
+    - ${CI_SCRIPTS_PATH} -stage setup
   tags:
     - kiosk-windows
 
 build:
   stage: build
   script:
-    - $CI_SCRIPTS_PATH -stage build
+    - ${CI_SCRIPTS_PATH} -stage build
   tags:
     - kiosk-windows
 
 deploy:
   stage: deploy
   script:
-    - $CI_SCRIPTS_PATH -stage deploy
+    - ${CI_SCRIPTS_PATH} -stage deploy
   tags:
     - kiosk-windows
   only:
