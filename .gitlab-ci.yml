@@ -18,7 +18,6 @@ setup:
 build:
   stage: build
   script:
-    - echo "DB_HOST is set to $DB_HOST"
     - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage build
   tags:
     - kiosk-windows
