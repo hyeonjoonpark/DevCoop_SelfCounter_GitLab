@@ -4,10 +4,6 @@ param (
 
 cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
 
-$flutterPath = "C:\flutter_windows_3.19.3-stable\flutter\bin\flutter"
-$env:PATH = "$flutterPath;$env:PATH"
-
-Write-Host "Current PATH : $env:PATH"
 switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
@@ -32,10 +28,12 @@ switch ($stage) {
         }
         
         # 새로운 프로세스 시작
-        $exePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
+        $exePath = "C:\Users\KB\Devcoop\build\windows\x64\runner\Release\counter.exe"
         if (Test-Path $exePath) {
             echo "Starting new counter.exe process..."
-            Start-Process -FilePath $exePath
+            Start-Process -FilePath $exePath -WindowStyle Normal
+            # 또는:
+            # Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $exePath
         } else {
             echo "counter.exe not found at $exePath"
             exit 1
