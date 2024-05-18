@@ -4,6 +4,9 @@ param (
 
 cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
 
+# 환경 변수 읽기
+$env:DB_HOST = $env:DB_HOST
+echo "$DB_HOST"
 switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
@@ -24,7 +27,7 @@ switch ($stage) {
 
         flutter pub get
         echo "Building the Flutter application..."
-        flutter build windows --release
+        flutter build windows --release --dart-define=DB_HOST=$env:DB_HOST
     }
     "deploy" {
         echo "Deploying the application..."
