@@ -1,31 +1,34 @@
-stages:
-  - setup
-  - build
-  - deploy
+variables:
+  CI_SCRIPTS_PATH: "c:\\Users\\KB\\Devcoop\\devcoop_self_counter_v1\\ci_script.ps1"
 
 before_script:
   - git config --global http.sslVerify false
   - git submodule sync --recursive
   - git submodule update --init --recursive
 
+stages:
+  - setup
+  - build
+  - deploy
+
 setup:
   stage: setup
   script:
-    - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage setup
+    - $CI_SCRIPTS_PATH -stage setup
   tags:
     - kiosk-windows
 
 build:
   stage: build
   script:
-    - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage build
+    - $CI_SCRIPTS_PATH -stage build
   tags:
     - kiosk-windows
 
 deploy:
   stage: deploy
   script:
-    - c:\Users\KB\Devcoop\devcoop_self_counter_v1\ci_script.ps1 -stage deploy
+    - $CI_SCRIPTS_PATH -stage deploy
   tags:
     - kiosk-windows
   only:
