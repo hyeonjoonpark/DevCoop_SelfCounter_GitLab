@@ -12,13 +12,24 @@ switch ($stage) {
     }
     "build" {
         echo "Running pub get..."
+
+        # 기존 프로세스 종료 (counter.exe)
+        $process = Get-Process -Name "counter" -ErrorAction SilentlyContinue
+        if ($process) {
+            echo "Stopping existing counter.exe process..."
+            Stop-Process -Name "counter" -Force
+        } else {
+            echo "No existing counter.exe process found."
+        }
+
         flutter pub get
         echo "Building the Flutter application..."
         flutter build windows --release
     }
     "deploy" {
         echo "Deploying the application..."
-        # 기존 프로세스 종료
+        
+        # 기존 프로세스 종료 (counter.exe)
         $process = Get-Process -Name "counter" -ErrorAction SilentlyContinue
         if ($process) {
             echo "Stopping existing counter.exe process..."
