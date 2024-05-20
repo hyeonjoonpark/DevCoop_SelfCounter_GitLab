@@ -17,8 +17,13 @@ class DbSecure {
   String get DB_HOST => dbHost;
 }
 
-void main() {
-  // 테스트를 위해 DB_HOST 값을 출력
-  final dbSecure = DbSecure();
+void main() async {
+  final dbSecure = await DbSecure.load();
+
+  // 환경 변수 값 로그 파일에 기록
+  final logFile = File('db_host_log.txt');
+  await logFile.writeAsString('DB_HOST: ${dbSecure.DB_HOST}\n', mode: FileMode.writeOnlyAppend);
+
+  // 콘솔 출력
   print('DB_HOST: ${dbSecure.DB_HOST}');
 }
