@@ -41,8 +41,8 @@ switch ($stage) {
         $taskName = "StartCounterExeTask"
         $taskAction = New-ScheduledTaskAction -Execute "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
         $taskTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(30)
-        $taskPrincipal = New-ScheduledTaskPrincipal -UserId "YourUserName" -LogonType Interactive -RunLevel Highest
-        $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Hidden -AllowHardTerminate -StartWhenAvailable -RunOnlyIfIdle
+        $taskPrincipal = New-ScheduledTaskPrincipal -UserId "devcoop" -LogonType Interactive -RunLevel Highest
+        $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Hidden -StartWhenAvailable -RunOnlyIfIdle
 
         Register-ScheduledTask -Action $taskAction -Trigger $taskTrigger -Principal $taskPrincipal -Settings $taskSettings -TaskName $taskName
 
