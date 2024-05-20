@@ -41,9 +41,7 @@ switch ($stage) {
         $exePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
         if (Test-Path $exePath) {
             echo "Starting new counter.exe process..."
-            Start-Process -FilePath $exePath -WindowStyle Maximized
-            # 또는:
-            # Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $exePath
+            Start-Process -FilePath "psexec.exe" -ArgumentList "-accepteula -i 1 $exePath"
         } else {
             echo "counter.exe not found at $exePath"
             exit 1
