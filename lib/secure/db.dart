@@ -16,3 +16,9 @@ class DbSecure {
 
   String get DB_HOST => dbHost;
 }
+
+void main() {
+  // 테스트를 위해 DB_HOST 값을 출력
+  final dbSecure = DbSecure();
+  print('DB_HOST: ${dbSecure.DB_HOST}');
+}
