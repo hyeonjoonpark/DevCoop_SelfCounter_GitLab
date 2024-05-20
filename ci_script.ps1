@@ -2,9 +2,11 @@ param (
     [string]$stage
 )
 cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
+
 # 환경 변수 읽기
 $env:DB_HOST = $env:DB_HOST
-echo "$DB_HOST"
+echo "DB_HOST: $env:DB_HOST"
+
 switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
@@ -37,16 +39,9 @@ switch ($stage) {
             echo "No existing counter.exe process found."
         }
 
-        # 새로운 작업 스케줄러 작업 생성 및 실행
+        # 수동으로 생성한 작업 스케줄러 작업 실행
         $taskName = "StartCounterExeTask"
-        $taskAction = New-ScheduledTaskAction -Execute "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
-        $taskTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(30)
-        $taskPrincipal = New-ScheduledTaskPrincipal -UserId "devcoop" -LogonType Interactive -RunLevel Highest
-        $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Hidden -StartWhenAvailable -RunOnlyIfIdle
-
-        Register-ScheduledTask -Action $taskAction -Trigger $taskTrigger -Principal $taskPrincipal -Settings $taskSettings -TaskName $taskName
-
-        Start-ScheduledTask -TaskName $taskName
+        schtasks /run /tn $taskName
     }
     default {
         echo "Invalid stage specified"
