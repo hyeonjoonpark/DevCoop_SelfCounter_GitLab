@@ -1,9 +1,7 @@
 param (
     [string]$stage
 )
-
 cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
-
 # 환경 변수 읽기
 $env:DB_HOST = $env:DB_HOST
 echo "$DB_HOST"
@@ -15,7 +13,6 @@ switch ($stage) {
     }
     "build" {
         echo "Running pub get..."
-
         # 기존 프로세스 종료 (counter.exe)
         $process = Get-Process -Name "counter" -ErrorAction SilentlyContinue
         if ($process) {
@@ -24,7 +21,6 @@ switch ($stage) {
         } else {
             echo "No existing counter.exe process found."
         }
-
         flutter pub get
         echo "Building the Flutter application..."
         flutter build windows --release --dart-define=DB_HOST=$env:DB_HOST
@@ -45,7 +41,7 @@ switch ($stage) {
         $exePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
         if (Test-Path $exePath) {
             echo "Starting new counter.exe process..."
-            Start-Process -FilePath $exePath -WindowStyle Normal
+            Start-Process -FilePath $exePath -WindowStyle Maximized
             # 또는:
             # Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $exePath
         } else {
