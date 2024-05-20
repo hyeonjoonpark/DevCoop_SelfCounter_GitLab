@@ -27,7 +27,7 @@ switch ($stage) {
     }
     "deploy" {
         echo "Deploying the application..."
-        
+
         # 기존 프로세스 종료 (counter.exe)
         $process = Get-Process -Name "counter" -ErrorAction SilentlyContinue
         if ($process) {
@@ -36,16 +36,17 @@ switch ($stage) {
         } else {
             echo "No existing counter.exe process found."
         }
-        
-        # 새로운 프로세스 시작
-        $exePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
-        if (Test-Path $exePath) {
-            echo "Starting new counter.exe process..."
-            Start-Process -FilePath "psexec.exe" -ArgumentList "-accepteula -i 1 $exePath"
-        } else {
-            echo "counter.exe not found at $exePath"
-            exit 1
-        }
+
+        # 새로운 작업 스케줄러 작업 생성 및 실행
+        $taskName = "StartCounterExeTask"
+        $taskAction = New-ScheduledTaskAction -Execute "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build\windows\x64\runner\Release\counter.exe"
+        $taskTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(30)
+        $taskPrincipal = New-ScheduledTaskPrincipal -UserId "YourUserName" -LogonType Interactive -RunLevel Highest
+        $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Hidden -AllowHardTerminate -StartWhenAvailable -RunOnlyIfIdle
+
+        Register-ScheduledTask -Action $taskAction -Trigger $taskTrigger -Principal $taskPrincipal -Settings $taskSettings -TaskName $taskName
+
+        Start-ScheduledTask -TaskName $taskName
     }
     default {
         echo "Invalid stage specified"
