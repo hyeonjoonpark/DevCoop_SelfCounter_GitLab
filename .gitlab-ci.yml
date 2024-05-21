@@ -1,38 +1,24 @@
-before_script:
-  - git config --global http.sslVerify false
-  - git submodule sync --recursive
-  - git submodule update --init --recursive
-
 stages:
-  - setup
   - build
-  - deploy
 
-setup:
-  stage: setup
-  script:
-    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage setup"
-  tags:
-    - kiosk-windows
+variables:
+  FLUTTER_CHANNEL: "stable"
+  FLUTTER_VERSION: "2.10.5"
 
-build:
+before_script:
+  - apt-get update
+  - apt-get install -y wget unzip
+  - wget https://storage.googleapis.com/flutter_infra_release/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz
+  - tar xf flutter_linux_$FLUTTER_VERSION-stable.tar.xz
+  - export PATH="$PATH:`pwd`/flutter/bin"
+  - flutter --version
+  - flutter doctor
+
+build_app:
   stage: build
   script:
-    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage build"
-  tags:
-    - kiosk-windows
+    - flutter pub get
+    - flutter build windows --release --dart-define=DB_HOST=$DB_HOST
   artifacts:
     paths:
-      - C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt
-
-deploy:
-  stage: deploy
-  script:
-    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage deploy"
-  tags:
-    - kiosk-windows
-  only:
-    - main
-  artifacts:
-    paths:
-      - C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt
+      - build/windows/runner/Release/
