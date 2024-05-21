@@ -1,21 +1,30 @@
-image: cirrusci/flutter:2.10.5
-
 stages:
+  - setup
   - build
-
-variables:
-  FLUTTER_CHANNEL: "stable"
-  FLUTTER_VERSION: "3.22.0"
-
-before_script:
-  - flutter --version
-  - flutter doctor
-
-build_app:
+  - deploy
+setup:
+  stage: setup
+  script:
+    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage setup"
+  tags:
+    - kiosk-windows
+build:
   stage: build
   script:
-    - flutter pub get
-    - flutter build windows --release --dart-define=DB_HOST=$DB_HOST
+    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage build"
+  tags:
+    - kiosk-windows
   artifacts:
     paths:
-      - build/windows/runner/Release/
+      - C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt
+deploy:
+  stage: deploy
+  script:
+    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage deploy"
+  tags:
+    - kiosk-windows
+  only:
+    - main
+  artifacts:
+    paths:
+      - C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt
