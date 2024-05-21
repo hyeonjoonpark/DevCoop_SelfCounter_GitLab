@@ -1,3 +1,5 @@
+image: cirrusci/flutter:2.10.5
+
 stages:
   - build
 
@@ -6,11 +8,6 @@ variables:
   FLUTTER_VERSION: "2.10.5"
 
 before_script:
-  - apt-get update
-  - apt-get install -y wget unzip
-  - wget https://storage.googleapis.com/flutter_infra_release/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz
-  - tar xf flutter_linux_$FLUTTER_VERSION-stable.tar.xz
-  - export PATH="$PATH:`pwd`/flutter/bin"
   - flutter --version
   - flutter doctor
 
