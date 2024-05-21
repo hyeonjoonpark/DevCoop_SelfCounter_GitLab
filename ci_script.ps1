@@ -5,9 +5,6 @@ param (
 # 작업 디렉토리 설정
 $workingDirectory = "C:\Users\KB\Devcoop\devcoop_self_counter_v1"
 
-# 현재 작업 디렉토리 변경
-Set-Location $workingDirectory
-
 # 환경 변수 설정
 $env:DB_HOST = $env:DB_HOST
 echo "DB_HOST: $env:DB_HOST"
@@ -15,11 +12,6 @@ echo "DB_HOST: $env:DB_HOST"
 switch ($stage) {
     "setup" {
         echo "Setting up Flutter environment..."
-        flutter --version
-        git pull
-    }
-    "build" {
-        echo "Running pub get..."
         # 기존 프로세스 종료 (counter.exe)
         $process = Get-Process -Name "counter" -ErrorAction SilentlyContinue
         if ($process) {
@@ -28,6 +20,26 @@ switch ($stage) {
         } else {
             echo "No existing counter.exe process found."
         }
+
+        # 기존 폴더 삭제
+        if (Test-Path $workingDirectory) {
+            echo "Removing existing directory..."
+            Remove-Item -Recurse -Force $workingDirectory
+        }
+        
+        # 새로운 클론 진행
+        echo "Cloning repository..."
+        git clone https://your-repo-url.git $workingDirectory
+        
+        Set-Location $workingDirectory
+        
+        # Flutter 버전 확인 및 설정
+        flutter --version
+    }
+    "build" {
+        Set-Location $workingDirectory
+
+        echo "Running pub get..."
         flutter pub get
         echo "Building the Flutter application..."
         flutter build windows --release --dart-define=DB_HOST=$env:DB_HOST
@@ -36,16 +48,9 @@ switch ($stage) {
         echo "Flutter application built successfully."
     }
     "deploy" {
-        echo "Deploying the application..."
+        Set-Location $workingDirectory
 
-        # 기존 프로세스 종료 (counter.exe)
-        $process = Get-Process -Name "counter" -ErrorAction SilentlyContinue
-        if ($process) {
-            echo "Stopping existing counter.exe process..."
-            Stop-Process -Name "counter" -Force
-        } else {
-            echo "No existing counter.exe process found."
-        }
+        echo "Deploying the application..."
 
         # 수동으로 생성한 작업 스케줄러 작업 실행
         $taskName = "StartCounterExeTask"
