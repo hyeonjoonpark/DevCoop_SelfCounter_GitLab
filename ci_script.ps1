@@ -26,6 +26,8 @@ switch ($stage) {
             echo "Removing existing directory..."
             Remove-Item -Recurse -Force "$buildDirectory"
         }
+        Set-Location $workingDirectory
+        git pull
     }
     "build" {
         Set-Location $workingDirectory
