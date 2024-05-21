@@ -1,11 +1,10 @@
 import 'dart:convert';
+
 import 'package:counter/secure/db.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-Future<void> suggest(BuildContext context, Function(String) onUpdate, String randomData) async {
-  final dbSecure = Provider.of<DbSecure>(context, listen: false);
+Future<void> suggest(Function(String) onUpdate, String randomData) async {
+  final dbSecure = DbSecure();
   try {
     final response = await http.get(
       Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/ai/suggest'),
@@ -27,9 +26,8 @@ Future<void> suggest(BuildContext context, Function(String) onUpdate, String ran
   }
 }
 
-
-Future<void> getTopList(BuildContext context, Function(List<String>) onUpdate) async {
-  final dbSecure = Provider.of<DbSecure>(context, listen: false);
+Future<void> getTopList(Function(List<String>) onUpdate) async {
+  final dbSecure = DbSecure();
   try {
     final response = await http.get(
       Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/top/list'),

@@ -5,22 +5,14 @@ import 'package:counter/ui/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:counter/lib/secure/db_secure.dart'; // DbSecure 클래스 임포트
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // DbSecure 초기화
-  final dbSecure = await DbSecure.load();
-  print('DB_HOST: ${dbSecure.DB_HOST}');
-
-  runApp(MyApp(dbSecure: dbSecure));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final DbSecure dbSecure;
-
-  const MyApp({Key? key, required this.dbSecure}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +28,6 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (BuildContext context) => BottomNavigationProvider(),
-          ),
-          Provider<DbSecure>.value(
-            value: dbSecure,
           ),
         ],
         child: Home(),

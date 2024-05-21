@@ -4,12 +4,11 @@ import 'package:counter/secure/db.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 class LoginController {
-  Future<void> login(BuildContext context, String codeNumber, String pin) async {
-    final dbSecure = Provider.of<DbSecure>(context, listen: false);
-
+  final dbSecure = DbSecure();
+  Future<void> login(
+      BuildContext context, String codeNumber, String pin) async {
     print(codeNumber);
     print(pin);
     Map<String, String> requestBody = {'codeNumber': codeNumber, 'pin': pin};
