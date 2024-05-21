@@ -4,7 +4,7 @@ param (
 
 # 작업 디렉토리 설정
 $workingDirectory = "C:\Users\KB\Devcoop\devcoop_self_counter_v1"
-
+$buildDirectory = "C:\Users\KB\Devcoop\build"
 # 환경 변수 설정
 $env:DB_HOST = $env:DB_HOST
 echo "DB_HOST: $env:DB_HOST"
@@ -22,22 +22,22 @@ switch ($stage) {
         }
 
         # 기존 폴더 삭제
-        if (Test-Path $workingDirectory) {
+        if (Test-Path $buildDirectory) {
             echo "Removing existing directory..."
-            Remove-Item -Recurse -Force $workingDirectory
+            Remove-Item -Recurse -Force "$buildDirectory"
         }
         
         # 새로운 클론 진행
         echo "Cloning repository..."
-        git clone https://your-repo-url.git $workingDirectory
+        git clone http://gitlab.bsm-aripay.kr/DevCoop/devcoop_self_counter_v1.git $buildDirectory
         
-        Set-Location $workingDirectory
+        Set-Location $buildDirectory
         
         # Flutter 버전 확인 및 설정
         flutter --version
     }
     "build" {
-        Set-Location $workingDirectory
+        Set-Location $buildDirectory
 
         echo "Running pub get..."
         flutter pub get
@@ -48,7 +48,7 @@ switch ($stage) {
         echo "Flutter application built successfully."
     }
     "deploy" {
-        Set-Location $workingDirectory
+        Set-Location $buildDirectory
 
         echo "Deploying the application..."
 
@@ -59,13 +59,6 @@ switch ($stage) {
         # 배포 완료 후 메시지 출력
         echo "Flutter application deployed successfully."
         
-        # 로그 파일 읽기 및 출력
-        $logFilePath = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt"
-        if (Test-Path $logFilePath) {
-            Get-Content $logFilePath
-        } else {
-            echo "Log file not found."
-        }
     }
     default {
         echo "Invalid stage specified"
