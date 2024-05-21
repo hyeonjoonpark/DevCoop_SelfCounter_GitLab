@@ -2,7 +2,11 @@ param (
     [string]$stage
 )
 
-cd C:\Users\KB\Devcoop\devcoop_self_counter_v1
+# 작업 디렉토리 설정
+$workingDirectory = "C:\Users\KB\Devcoop\devcoop_self_counter_v1"
+
+# 현재 작업 디렉토리 변경
+Set-Location $workingDirectory
 
 # 환경 변수 설정
 $env:DB_HOST = $env:DB_HOST
