@@ -26,18 +26,9 @@ switch ($stage) {
             echo "Removing existing directory..."
             Remove-Item -Recurse -Force "$buildDirectory"
         }
-        
-        # 새로운 클론 진행
-        echo "Cloning repository..."
-        git clone http://gitlab.bsm-aripay.kr/DevCoop/devcoop_self_counter_v1.git $buildDirectory
-        
-        Set-Location $buildDirectory
-        
-        # Flutter 버전 확인 및 설정
-        flutter --version
     }
     "build" {
-        Set-Location $buildDirectory
+        Set-Location $workingDirectory
 
         echo "Running pub get..."
         flutter pub get
@@ -48,7 +39,7 @@ switch ($stage) {
         echo "Flutter application built successfully."
     }
     "deploy" {
-        Set-Location $buildDirectory
+        Set-Location $workingDirectory
 
         echo "Deploying the application..."
 
