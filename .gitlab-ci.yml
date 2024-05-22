@@ -15,9 +15,6 @@ build:
     - powershell -Command "& $env:CI_SCRIPTS_PATH -stage build"
   tags:
     - kiosk-windows
-  artifacts:
-    paths:
-      - C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt
 deploy:
   stage: deploy
   script:
@@ -26,6 +23,3 @@ deploy:
     - kiosk-windows
   only:
     - main
-  artifacts:
-    paths:
-      - C:\Users\KB\Devcoop\devcoop_self_counter_v1\db_host_log.txt
