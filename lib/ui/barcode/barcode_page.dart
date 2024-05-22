@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -50,10 +49,9 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
 
   void _setActiveController() {
     setState(() {
-      // TextEditingController의 텍스트를 초기화합니다.
-      _codeNumberController.text = '';
-      // 포커스를 재지정할 필요가 있으면 아래 주석을 해제하세요.
-      FocusScope.of(context).requestFocus(_barcodeFocus);
+      _codeNumberController.text = ''; // TextEditingController의 텍스트를 초기화합니다.
+      FocusScope.of(context)
+          .requestFocus(_barcodeFocus); // 포커스를 재지정할 필요가 있으면 아래 주석을 해제하세요.
     });
   }
 
