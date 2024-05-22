@@ -367,7 +367,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           text: '처음으로',
                           onTap: () {
                             removeUserData();
-                            Get.toNamed("/");
+                            Get.offAllNamed("/");
                           },
                         ),
                         const SizedBox(
