@@ -57,6 +57,15 @@ class _PinPageState extends State<PinPage> {
     }
   }
 
+  void _handleSubmit() {
+    LoginController loginController = LoginController();
+    loginController.login(
+      context,
+      widget.codeNumber,
+      _pinController.text,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,6 +183,9 @@ class _PinPageState extends State<PinPage> {
                                     }
                                     return null;
                                   },
+                                  onFieldSubmitted: (value) {
+                                    _handleSubmit(); // 엔터를 눌렀을 때 호출되는 함수
+                                  },
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.zero,
                                     isDense: true,
@@ -204,14 +216,7 @@ class _PinPageState extends State<PinPage> {
                           mainTextButton(
                             text: '확인',
                             onTap: () {
-                              LoginController loginController =
-                                  LoginController();
-
-                              loginController.login(
-                                context,
-                                widget.codeNumber,
-                                _pinController.text,
-                              );
+                              _handleSubmit(); // 확인 버튼 클릭 시 호출되는 함수
                             },
                           ),
                         ],
