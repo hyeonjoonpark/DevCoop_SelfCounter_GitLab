@@ -127,7 +127,7 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                                   onFieldSubmitted: ((value) => {
                                         if (_formKey.currentState!.validate())
                                           {
-                                            Get.toNamed("/pin",
+                                            Get.offAllNamed("/pin",
                                                 arguments:
                                                     _codeNumberController.text)
                                           }
