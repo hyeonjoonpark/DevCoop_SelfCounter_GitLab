@@ -20,8 +20,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'BSM SelfCounter',
       debugShowCheckedModeBanner: false,
-      getPages: AppRouter,
       initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => BarcodePage()),
+        GetPage(name: '/payments', page: () => PaymentsPage()),
+      ],
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -74,105 +73,111 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 90),
-          child: Form(
-            // Form 위젯을 추가합니다.
-            key: _formKey, // GlobalKey<FormState>를 할당합니다.
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "학생증의 바코드를\n리더기로 스캔해주세요.",
-                  style: DevCoopTextStyle.bold_40.copyWith(
-                    color: DevCoopColors.black,
+      body: WillPopScope(
+        onWillPop: () async {
+          FocusScope.of(context).requestFocus(_barcodeFocus);
+          return true;
+        },
+        child: Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 90),
+            child: Form(
+              // Form 위젯을 추가합니다.
+              key: _formKey, // GlobalKey<FormState>를 할당합니다.
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "학생증의 바코드를\n리더기로 스캔해주세요.",
+                    style: DevCoopTextStyle.bold_40.copyWith(
+                      color: DevCoopColors.black,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 160),
-                const SizedBox(height: 40),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '학생증 번호',
-                            style: DevCoopTextStyle.medium_30.copyWith(
-                              color: DevCoopColors.black,
-                            ),
-                          ),
-                          const SizedBox(width: 40),
-                          GestureDetector(
-                            onTap: () {
-                              _setActiveController();
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 500,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 34, horizontal: 12),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFECECEC),
-                                borderRadius: BorderRadius.circular(20),
+                  const SizedBox(height: 160),
+                  const SizedBox(height: 40),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '학생증 번호',
+                              style: DevCoopTextStyle.medium_30.copyWith(
+                                color: DevCoopColors.black,
                               ),
-                              child: TextFormField(
-                                onFieldSubmitted: ((value) => {
-                                      if (_formKey.currentState!.validate())
-                                        {
-                                          Get.toNamed("/pin",
-                                              arguments:
-                                                  _codeNumberController.text)
-                                        }
-                                    }),
-                                // TextField 대신 TextFormField을 사용합니다.
-                                controller: _codeNumberController,
-                                focusNode: _barcodeFocus,
-                                validator: (value) {
-                                  // 여기에 validator 추가
-                                  if (value == null || value.isEmpty) {
-                                    return '학생증 번호를 입력해주세요.';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.zero,
-                                  isDense: true,
-                                  hintText: '학생증을 리더기에 스캔해주세요',
-                                  hintStyle: DevCoopTextStyle.medium_30
-                                      .copyWith(fontSize: 15),
-                                  border: InputBorder.none,
+                            ),
+                            const SizedBox(width: 40),
+                            GestureDetector(
+                              onTap: () {
+                                _setActiveController();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 500,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 34, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFECECEC),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                maxLines: 1,
+                                child: TextFormField(
+                                  onFieldSubmitted: ((value) => {
+                                        if (_formKey.currentState!.validate())
+                                          {
+                                            Get.toNamed("/pin",
+                                                arguments:
+                                                    _codeNumberController.text)
+                                          }
+                                      }),
+                                  // TextField 대신 TextFormField을 사용합니다.
+                                  controller: _codeNumberController,
+                                  focusNode: _barcodeFocus,
+                                  validator: (value) {
+                                    // 여기에 validator 추가
+                                    if (value == null || value.isEmpty) {
+                                      return '학생증 번호를 입력해주세요.';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    isDense: true,
+                                    hintText: '학생증을 리더기에 스캔해주세요',
+                                    hintStyle: DevCoopTextStyle.medium_30
+                                        .copyWith(fontSize: 15),
+                                    border: InputBorder.none,
+                                  ),
+                                  maxLines: 1,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 60),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 40),
-                          mainTextButton(
-                            text: '다음으로',
-                            onTap: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Form이 유효할 경우에만 네비게이션을 실행합니다.
-                                Get.toNamed("/pin",
-                                    arguments: _codeNumberController.text);
-                              }
-                            },
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        ),
+                        const SizedBox(height: 60),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(width: 40),
+                            mainTextButton(
+                              text: '다음으로',
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  // Form이 유효할 경우에만 네비게이션을 실행합니다.
+                                  Get.toNamed("/pin",
+                                      arguments: _codeNumberController.text);
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
