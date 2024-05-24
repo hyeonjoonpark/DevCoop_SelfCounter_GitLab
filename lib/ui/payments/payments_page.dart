@@ -165,13 +165,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
         // API 요청 함수 호출
         final response = await executePaymentRequest(apiUrl, token,
             savedCodeNumber!, savedStudentName, totalPrice, items);
-        print(response);
 
         print('token : $token');
 
         // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
         String decodedResponse = utf8.decode(response.bodyBytes);
-        print(decodedResponse);
+        print(response.bodyBytes);
 
         // 디코드된 응답을 출력합니다.
         print("-----------------");
