@@ -168,9 +168,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
         print('token : $token');
 
-        // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
-        String responseBody = utf8.decode(response.bodyBytes);
-        print('Response Body Bytes: ${response.bodyBytes}');
+        // 응답을 바로 변수에 저장합니다.
+        String responseBody = response.body;
+        print('Response Body: $responseBody');
 
         // JSON 파싱
         var decodedResponse = json.decode(responseBody);
