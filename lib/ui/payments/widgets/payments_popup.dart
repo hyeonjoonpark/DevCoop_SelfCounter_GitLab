@@ -31,17 +31,24 @@ AlertDialog paymentsPopUp(BuildContext context, String message) {
   return AlertDialog(
     content: Container(
       width: 520,
-      height: 320,
+      constraints: BoxConstraints(
+        maxHeight:
+            MediaQuery.of(context).size.height * 0.7, // 최대 높이를 화면의 70%로 설정
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            message,
-            style: DevCoopTextStyle.light_40.copyWith(
-              color: DevCoopColors.black,
-              fontSize: 24,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Text(
+                message,
+                style: DevCoopTextStyle.light_40.copyWith(
+                  color: DevCoopColors.black,
+                  fontSize: 24,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 20,

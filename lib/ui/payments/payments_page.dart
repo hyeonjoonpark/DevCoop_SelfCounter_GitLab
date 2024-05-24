@@ -193,12 +193,13 @@ class _PaymentsPageState extends State<PaymentsPage> {
           }
         } else {
           print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(context, 'Error: $responseBody');
+          showPaymentsPopup(context, 'Error: ${decodedResponse['message']}');
         }
       }
     } catch (e) {
-      print('결제 처리 중 오류가 발생했습니다: $e');
-      showPaymentsPopup(context, 'An unexpected error occurred: $e');
+      print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
+      showPaymentsPopup(
+          context, 'An unexpected error occurred: ${e.toString()}');
     }
   }
 
