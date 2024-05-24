@@ -151,56 +151,53 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Future<void> payments(List<ItemResponseDto> items) async {
-    print('payments 함수가 호출되었습니다.');
-    print("items = ${items[0].itemName}");
-    try {
-      print("savedUserId : $savedCodeNumber");
-      if (savedCodeNumber != null) {
-        String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
+  print('payments 함수가 호출되었습니다.');
+  print("items = ${items[0].itemName}");
+  try {
+    print("savedUserId : $savedCodeNumber");
+    if (savedCodeNumber != null) {
+      String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
 
-        print(apiUrl);
-        print(
-            "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
+      print(apiUrl);
+      print("request user : $savedCodeNumber - $savedStudentName - $totalPrice");
 
-        // API 요청 함수 호출
-        final response = await executePaymentRequest(apiUrl, token,
-            savedCodeNumber!, savedStudentName, totalPrice, items);
+      // API 요청 함수 호출
+      final response = await executePaymentRequest(apiUrl, token, savedCodeNumber!, savedStudentName, totalPrice, items);
 
-        print('token : $token');
+      print('token : $token');
 
-        // 응답을 바로 변수에 저장합니다.
-        String responseBody = response.body;
-        print('Response Body: $responseBody');
+      // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
+      String responseBody = utf8.decode(response.bodyBytes);
+      print('Response Body Bytes: ${response.bodyBytes}');
 
-        // JSON 파싱
-        var decodedResponse = json.decode(responseBody);
-        print('Decoded Response: $decodedResponse');
+      // JSON 파싱
+      var decodedResponse = json.decode(responseBody);
+      print('Decoded Response: $decodedResponse');
 
-        // 디코드된 응답을 출력합니다.
-        print("-----------------");
-        print(responseBody);
+      // 디코드된 응답을 출력합니다.
+      print("-----------------");
+      print(responseBody);
 
-        if (response.statusCode == 200) {
-          print("응답상태 : ${response.statusCode}");
-          if (decodedResponse['status'] == 'success') {
-            int remainingPoints = decodedResponse['remainingPoints'];
-            String message =
-                decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
-            showPaymentsPopup(context, message);
-          } else {
-            print("Error Code: ${decodedResponse['code']}");
-            showPaymentsPopup(context, decodedResponse['message']);
-          }
+      if (response.statusCode == 200) {
+        print("응답상태 : ${response.statusCode}");
+        if (decodedResponse['status'] == 'success') {
+          int remainingPoints = decodedResponse['remainingPoints'];
+          String message = decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
+          showPaymentsPopup(context, message);
         } else {
-          print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(context, 'Error: $responseBody');
+          print("Error Code: ${decodedResponse['code']}");
+          showPaymentsPopup(context, decodedResponse['message']);
         }
+      } else {
+        print("응답상태 : ${response.statusCode}");
+        showPaymentsPopup(context, 'Error: $responseBody');
       }
-    } catch (e) {
-      print('결제 처리 중 오류가 발생했습니다: $e');
-      showPaymentsPopup(context, 'An unexpected error occurred: $e');
     }
+  } catch (e) {
+    print('결제 처리 중 오류가 발생했습니다: $e');
+    showPaymentsPopup(context, 'An unexpected error occurred: $e');
   }
+
 
   @override
   void dispose() {
