@@ -45,3 +45,8 @@ app.*.map.json
 
 # DB
 /lib/secure/db.dart
+
+# about Build
+pubspec.lock
+Generated*.*
+generated_plugin_*.*
