@@ -125,11 +125,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
 // 결제 후 남은 포인트를 팝업창에 띄우는 로직 추가
-  void showPaymentsPopup(BuildContext context, String message) {
+  void showPaymentsPopup(BuildContext context, String message, bool isError) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return paymentsPopUp(context, message);
+        return paymentsPopUp(context, message, isError);
       },
     );
   }
@@ -186,20 +186,31 @@ class _PaymentsPageState extends State<PaymentsPage> {
             int remainingPoints = decodedResponse['remainingPoints'];
             String message =
                 decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
-            showPaymentsPopup(context, message);
+            showPaymentsPopup(context, message, false);
           } else {
             print("Error Code: ${decodedResponse['code']}");
-            showPaymentsPopup(context, decodedResponse['message']);
+            showPaymentsPopup(context, decodedResponse['message'], true);
           }
         } else {
           print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(context, 'Error: ${decodedResponse['message']}');
+          showPaymentsPopup(
+              context, 'Error: ${decodedResponse['message']}', true);
         }
       }
     } catch (e) {
       print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
-      showPaymentsPopup(
-          context, 'An unexpected error occurred: ${e.toString()}');
+      // 예외가 발생한 경우에도 서버 응답을 확인하고 메시지를 파싱하도록 합니다.
+      if (e is http.Response) {
+        String responseBody = utf8.decode(e.bodyBytes);
+        var decodedResponse = json.decode(responseBody);
+        showPaymentsPopup(
+            context,
+            'An unexpected error occurred: ${decodedResponse['message']}',
+            true);
+      } else {
+        showPaymentsPopup(
+            context, 'An unexpected error occurred: ${e.toString()}', true);
+      }
     }
   }
 

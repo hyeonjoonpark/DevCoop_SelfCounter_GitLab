@@ -21,7 +21,7 @@ void navigateToNextPage() {
   Get.offAllNamed('/');
 }
 
-AlertDialog paymentsPopUp(BuildContext context, String message) {
+AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
   // Delayed navigation after 3 seconds
   Future.delayed(const Duration(seconds: 3), () {
     removeUserData();
@@ -32,8 +32,9 @@ AlertDialog paymentsPopUp(BuildContext context, String message) {
     content: Container(
       width: 520,
       constraints: BoxConstraints(
-        maxHeight:
-            MediaQuery.of(context).size.height * 0.7, // 최대 높이를 화면의 70%로 설정
+        maxHeight: isError
+            ? MediaQuery.of(context).size.height * 0.7
+            : 320, // 에러 발생 시 높이를 화면의 70%로 설정
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
