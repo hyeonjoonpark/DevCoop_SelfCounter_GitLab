@@ -45,7 +45,7 @@ AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
                 message,
                 style: DevCoopTextStyle.light_40.copyWith(
                   color: DevCoopColors.black,
-                  fontSize: 24,
+                  fontSize: 30,
                 ),
                 textAlign: TextAlign.center,
               ),

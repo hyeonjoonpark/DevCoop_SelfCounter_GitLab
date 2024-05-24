@@ -193,23 +193,18 @@ class _PaymentsPageState extends State<PaymentsPage> {
           }
         } else {
           print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(
-              context, 'Error: ${decodedResponse['message']}', true);
+          showPaymentsPopup(context, '에러: ${decodedResponse['message']}', true);
         }
       }
     } catch (e) {
       print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
-      // 예외가 발생한 경우에도 서버 응답을 확인하고 메시지를 파싱하도록 합니다.
       if (e is http.Response) {
         String responseBody = utf8.decode(e.bodyBytes);
         var decodedResponse = json.decode(responseBody);
         showPaymentsPopup(
-            context,
-            'An unexpected error occurred: ${decodedResponse['message']}',
-            true);
+            context, '예상치 못한 에러: ${decodedResponse['message']}', true);
       } else {
-        showPaymentsPopup(
-            context, 'An unexpected error occurred: ${e.toString()}', true);
+        showPaymentsPopup(context, '예상치 못한 에러: ${e.toString()}', true);
       }
     }
   }
