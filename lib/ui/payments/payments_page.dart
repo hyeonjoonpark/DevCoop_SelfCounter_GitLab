@@ -169,19 +169,28 @@ class _PaymentsPageState extends State<PaymentsPage> {
         print('token : $token');
 
         // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
-        String decodedResponse = utf8.decode(response.bodyBytes);
-        print(response.bodyBytes);
+        String responseBody = utf8.decode(response.bodyBytes);
+        print('Response Body Bytes: ${response.bodyBytes}');
+
+        // JSON 파싱
+        var decodedResponse = json.decode(responseBody);
+        print('Decoded Response: $decodedResponse');
 
         // 디코드된 응답을 출력합니다.
         print("-----------------");
-        print(decodedResponse);
+        print(responseBody);
 
         if (response.statusCode == 200) {
           print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(context, decodedResponse);
+          if (decodedResponse['status'] == 'success') {
+            showPaymentsPopup(context, decodedResponse['message']);
+          } else {
+            print("Error Code: ${decodedResponse['code']}");
+            showPaymentsPopup(context, decodedResponse['message']);
+          }
         } else {
           print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(context, 'Error: $decodedResponse');
+          showPaymentsPopup(context, 'Error: $responseBody');
         }
       }
     } catch (e) {
