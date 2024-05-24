@@ -31,14 +31,21 @@ AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
   return AlertDialog(
     content: Container(
       width: 520,
-      constraints: BoxConstraints(
-        maxHeight: isError
-            ? MediaQuery.of(context).size.height * 0.7
-            : 320, // 에러 발생 시 높이를 화면의 70%로 설정
-      ),
+      constraints: BoxConstraints(maxHeight: 320),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(
+            isError ? "결재 실패" : "결재 성공",
+            style: DevCoopTextStyle.bold_40.copyWith(
+              color: isError ? Colors.red : Colors.green,
+              fontSize: 30,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Text(
