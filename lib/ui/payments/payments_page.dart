@@ -183,7 +183,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
         if (response.statusCode == 200) {
           print("응답상태 : ${response.statusCode}");
           if (decodedResponse['status'] == 'success') {
-            showPaymentsPopup(context, decodedResponse['message']);
+            int remainingPoints = decodedResponse['remainingPoints'];
+            String message =
+                decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
+            showPaymentsPopup(context, message);
           } else {
             print("Error Code: ${decodedResponse['code']}");
             showPaymentsPopup(context, decodedResponse['message']);
