@@ -406,7 +406,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             if (savedPoint - totalPrice >= 0) {
                               await payments(itemResponses);
                             } else {
-                              showPaymentsPopup(context, "잔액이 부족합니다");
+                              showPaymentsPopup(context, "잔액이 부족합니다", true);
                             }
                           },
                         ),
