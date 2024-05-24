@@ -169,7 +169,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
         print('token : $token');
 
-        // utf8.decode를 사용하여 디코드한 결과를 변수에 저장합니다.
+        // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
         String decodedResponse = utf8.decode(response.bodyBytes);
         print(decodedResponse);
 
