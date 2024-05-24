@@ -199,6 +199,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
 
+
   @override
   void dispose() {
     barcodeController.dispose();
