@@ -125,11 +125,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
 // 결제 후 남은 포인트를 팝업창에 띄우는 로직 추가
-  void showPaymentsPopup(BuildContext context, int totalPrice, int savedPoint) {
+  void showPaymentsPopup(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return paymentsPopUp(context, totalPrice, savedPoint);
+        return paymentsPopUp(context, message);
       },
     );
   }
@@ -179,14 +179,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
         if (response.statusCode == 200) {
           print("응답상태 : ${response.statusCode}");
-          print("items = $items");
+          showPaymentsPopup(context, decodedResponse);
         } else {
           print("응답상태 : ${response.statusCode}");
-          print("에러");
+          showPaymentsPopup(context, 'Error: $decodedResponse');
         }
       }
     } catch (e) {
-      print('영수증을 저장하는 동안 오류가 발생했습니다: $e');
+      print('결제 처리 중 오류가 발생했습니다: $e');
+      showPaymentsPopup(context, 'An unexpected error occurred: $e');
     }
   }
 
@@ -379,14 +380,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             print("계산하기 버튼 클릭");
                             print("itemResponses : $itemResponses[0]");
                             // onTap 콜백을 async로 선언하여 비동기 처리 가능
-                            savedPoint - totalPrice >= 0
-                                ? await payments(itemResponses).then((_) =>
-                                    showPaymentsPopup(context, totalPrice,
-                                        savedPoint - totalPrice))
-                                : // payments 함수가 완료될 때까지 기다림
-
-                                // 잔액이 부족합니다 알람창 띄우기
-                                print("잔액이 부족합니다");
+                            if (savedPoint - totalPrice >= 0) {
+                              await payments(itemResponses);
+                            } else {
+                              showPaymentsPopup(context, "잔액이 부족합니다");
+                            }
                           },
                         ),
                       ],

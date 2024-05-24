@@ -21,7 +21,7 @@ void navigateToNextPage() {
   Get.offAllNamed('/');
 }
 
-AlertDialog paymentsPopUp(BuildContext context, int totalPrice, int leftPoint) {
+AlertDialog paymentsPopUp(BuildContext context, String message) {
   // Delayed navigation after 3 seconds
   Future.delayed(const Duration(seconds: 3), () {
     removeUserData();
@@ -36,19 +36,12 @@ AlertDialog paymentsPopUp(BuildContext context, int totalPrice, int leftPoint) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '$totalPrice원 결제되었습니다',
+            message,
             style: DevCoopTextStyle.light_40.copyWith(
               color: DevCoopColors.black,
               fontSize: 24,
             ),
-          ),
-          Text(
-            '남은 포인트는 $leftPoint 입니다',
-            style: DevCoopTextStyle.light_40.copyWith(
-              color: DevCoopColors.black,
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-            ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 20,
