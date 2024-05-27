@@ -27,7 +27,7 @@ AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
     removeUserData();
     navigateToNextPage();
   });
-
+  // 결재 성공, 실패 여부 바로 확인할 수 있게 하기
   return AlertDialog(
     content: Container(
       width: 520,
