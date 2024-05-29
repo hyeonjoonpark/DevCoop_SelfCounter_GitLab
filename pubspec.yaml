@@ -23,6 +23,8 @@ dependencies:
   provider: ^6.1.2
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.10+1
+  audioplayers: ^6.0.0
+  assets_audio_player: ^3.1.1
 
 dev_dependencies:
   flutter:
@@ -33,7 +35,7 @@ dev_dependencies:
   freezed: ^2.4.5
   json_serializable: ^6.7.1
   flutter_svg: ^2.0.10+1
-  audioplayers: 0.18.3
+  audioplayers: ^6.0.0
   flutter_dotenv: ^5.1.0
 
 flutter:

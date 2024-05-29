@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:counter/controller/payments_api.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
@@ -28,7 +27,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
   int totalPrice = 0;
   String? savedCodeNumber;
   List<ItemResponseDto> itemResponses = [];
-  final player = AudioPlayer();
   final dbSecure = DbSecure();
   String token = '';
 
@@ -186,14 +184,26 @@ class _PaymentsPageState extends State<PaymentsPage> {
             int remainingPoints = decodedResponse['remainingPoints'];
             String message =
                 decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
-            showPaymentsPopup(context, message, false);
+            showPaymentsPopup(
+              context,
+              message,
+              false,
+            );
           } else {
             print("Error Code: ${decodedResponse['code']}");
-            showPaymentsPopup(context, decodedResponse['message'], true);
+            showPaymentsPopup(
+              context,
+              decodedResponse['message'],
+              true,
+            );
           }
         } else {
           print("응답상태 : ${response.statusCode}");
-          showPaymentsPopup(context, '에러: ${decodedResponse['message']}', true);
+          showPaymentsPopup(
+            context,
+            '에러: ${decodedResponse['message']}',
+            true,
+          );
         }
       }
     } catch (e) {
@@ -202,9 +212,16 @@ class _PaymentsPageState extends State<PaymentsPage> {
         String responseBody = utf8.decode(e.bodyBytes);
         var decodedResponse = json.decode(responseBody);
         showPaymentsPopup(
-            context, '예상치 못한 에러: ${decodedResponse['message']}', true);
+          context,
+          '예상치 못한 에러: ${decodedResponse['message']}',
+          true,
+        );
       } else {
-        showPaymentsPopup(context, '예상치 못한 에러: ${e.toString()}', true);
+        showPaymentsPopup(
+          context,
+          '예상치 못한 에러: ${e.toString()}',
+          true,
+        );
       }
     }
   }
@@ -401,7 +418,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             if (savedPoint - totalPrice >= 0) {
                               await payments(itemResponses);
                             } else {
-                              showPaymentsPopup(context, "잔액이 부족합니다", true);
+                              showPaymentsPopup(
+                                context,
+                                "잔액이 부족합니다",
+                                true,
+                              );
                             }
                           },
                         ),

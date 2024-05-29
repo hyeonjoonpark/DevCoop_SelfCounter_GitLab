@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ Future<void> removeUserData() async {
 }
 
 void navigateToNextPage() {
-  // Use Navigator to push a new page
   Get.offAllNamed('/');
 }
 
@@ -25,13 +25,21 @@ AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
   // Delayed navigation after 3 seconds
   Future.delayed(const Duration(seconds: 3), () {
     removeUserData();
+
+    // Start the player as soon as the app is displayed.
+
     navigateToNextPage();
+    AssetsAudioPlayer.newPlayer().open(
+      Audio('assets/audio/finish.wav'),
+      showNotification: true,
+      autoStart: true,
+    );
   });
   // 결재 성공, 실패 여부 바로 확인할 수 있게 하기
   return AlertDialog(
     content: Container(
       width: 520,
-      constraints: BoxConstraints(maxHeight: 320),
+      constraints: const BoxConstraints(maxHeight: 320),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
