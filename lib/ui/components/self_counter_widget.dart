@@ -37,98 +37,88 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
       builder: (context, child) => Scaffold(
         body: ListView(
           children: [
-            SizedBox(
-              height: 0.05.sh,
-            ),
             Container(
               width: 1.sw,
-              margin: const EdgeInsets.only(left: 50),
+              padding: EdgeInsets.only(left: 12.w, top: 30.h),
               child: const Text(
                 "인기상품 알아보기",
                 style: DevCoopTextStyle.bold_30,
               ),
             ),
-            SizedBox(
-              height: 0.05.sh,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  height: 0.05.sh,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 50),
-                  child: Expanded(
-                    // 이제 Column 내부에 있으므로 정상적으로 작동합니다.
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          width: 600,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color(0xFFECECEC),
-                              width: 2,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: List.generate(topList.length, (index) {
-                              return Container(
-                                margin: const EdgeInsets.only(
-                                    left: 50, top: 10, right: 50),
-                                color: index % 2 == 0
-                                    ? DevCoopColors.primary
-                                    : Colors.white12,
-                                child: ListTile(
-                                  shape: Border.all(
-                                    color: const Color(0xFFECECEC),
-                                    width: 2,
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0,
-                                    horizontal: 10.0,
-                                  ),
-                                  title: Container(
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white10,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${index + 1}등 ${topList[index].split(",")[0]}',
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                            color: DevCoopColors.black,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        Text(
-                                          topList[index].split(",")[1],
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                            color: DevCoopColors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                      ],
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 50, right: 50),
+              child: Expanded(
+                // 이제 Column 내부에 있으므로 정상적으로 작동합니다.
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20.h,
                     ),
-                  ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 1.sw,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xFFECECEC),
+                          width: 2,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(topList.length, (index) {
+                          return Container(
+                            margin: const EdgeInsets.only(
+                                left: 50, top: 10, right: 50),
+                            color: index % 2 == 0
+                                ? DevCoopColors.primary
+                                : Colors.white12,
+                            child: ListTile(
+                              shape: Border.all(
+                                color: const Color(0xFFECECEC),
+                                width: 2,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 5.0,
+                                horizontal: 10.0,
+                              ),
+                              title: Container(
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white10,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${index + 1}등 ${topList[index].split(",")[0]}',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900,
+                                        color: DevCoopColors.black,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Text(
+                                      topList[index].split(",")[1],
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900,
+                                        color: DevCoopColors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
         ),
