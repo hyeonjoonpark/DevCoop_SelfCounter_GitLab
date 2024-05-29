@@ -69,7 +69,7 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                         children: List.generate(topList.length, (index) {
                           return Container(
                             margin: const EdgeInsets.only(
-                                left: 50, top: 10, right: 50),
+                                left: 10, top: 10, right: 10, bottom: 10),
                             color: index % 2 == 0
                                 ? DevCoopColors.primary
                                 : Colors.white12,
