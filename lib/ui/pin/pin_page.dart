@@ -1,4 +1,4 @@
-// import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -44,30 +44,17 @@ class _PinPageState extends State<PinPage> {
     String currentText = _activeController.text;
 
     if (number == 10) {
-      _activeController.clear(); // Clear focus and text
-      // AssetsAudioPlayer.newPlayer().open(
-      //   Audio('assets/audio/click.mp3'),
-      //   showNotification: true,
-      // );
+      _activeController.clear();
     } else if (number == 12) {
       // Del button
       if (currentText.isNotEmpty) {
         String newText = currentText.substring(0, currentText.length - 1);
         _activeController.text = newText;
-
-        // AssetsAudioPlayer.newPlayer().open(
-        //   Audio('assets/audio/click.mp3'),
-        //   showNotification: true,
-        // );
       }
     } else {
       // 숫자 버튼 (0 포함)
       String newText = currentText + (number == 11 ? '0' : number.toString());
       _activeController.text = newText;
-      // AssetsAudioPlayer.newPlayer().open(
-      //   Audio('assets/audio/click.mp3'),
-      //   showNotification: true,
-      // );
     }
   }
 
@@ -114,10 +101,16 @@ class _PinPageState extends State<PinPage> {
                             for (int j = 0; j < 3; j++) ...[
                               GestureDetector(
                                 onTap: () {
+                                  // 숫자버튼 클릭하면 소리나도록
                                   int _number = j + 1 + i * 3;
                                   onNumberButtonPressed(
-                                      _number == 11 ? 0 : _number,
-                                      _pinController);
+                                    _number == 11 ? 0 : _number,
+                                    _pinController,
+                                  );
+                                  // AssetsAudioPlayer.newPlayer().open(
+                                  //   Audio('assets/audio/click.wav'),
+                                  //   showNotification: true,
+                                  // );
                                 },
                                 child: Container(
                                   width: 95,
