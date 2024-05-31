@@ -7,11 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-/**
- * TODO : 숫자패드로 입력안되는 현상 수정 (진행중)
- * TODO : 자동 포커스 제대로 수정 (완료)
- */
-
 class PinChange extends StatefulWidget {
   const PinChange({Key? key}) : super(key: key);
 
@@ -90,7 +85,6 @@ class _PinChangeState extends State<PinChange> {
                 Expanded(
                   child: Column(
                     children: [
-                      // TODO : 숫자패드 입력하면 텍스트필드에 입력이 안됨
                       for (int i = 0; i < 4; i++) ...[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

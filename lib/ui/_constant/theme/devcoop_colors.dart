@@ -6,4 +6,5 @@ class DevCoopColors {
   static const Color black = Color(0xFF000000);
   static const Color transparent = Color(0x00000000);
   static const Color error = Color(0xFFFF0000);
+  static const Color success = Color(0xFF00FF00);
 }

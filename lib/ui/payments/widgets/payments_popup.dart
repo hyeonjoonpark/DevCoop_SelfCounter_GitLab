@@ -46,7 +46,7 @@ AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
           Text(
             isError ? "결재 실패" : "결재 성공",
             style: DevCoopTextStyle.bold_40.copyWith(
-              color: isError ? Colors.red : Colors.green,
+              color: isError ? DevCoopColors.error : DevCoopColors.success,
               fontSize: 30,
             ),
             textAlign: TextAlign.center,
@@ -61,6 +61,7 @@ AlertDialog paymentsPopUp(BuildContext context, String message, bool isError) {
                 style: DevCoopTextStyle.light_40.copyWith(
                   color: DevCoopColors.black,
                   fontSize: 30,
+                  fontWeight: FontWeight.w900,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -45,6 +45,9 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                 style: DevCoopTextStyle.bold_30,
               ),
             ),
+            SizedBox(
+              height: 20.h,
+            ),
             Container(
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 50, right: 50),
