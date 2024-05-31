@@ -41,7 +41,7 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
               width: 1.sw,
               padding: EdgeInsets.only(left: 12.w, top: 30.h),
               child: const Text(
-                "인기상품 알아보기",
+                "학생들이 가장 많이 구매한 상품은 무엇일까?",
                 style: DevCoopTextStyle.bold_30,
               ),
             ),
