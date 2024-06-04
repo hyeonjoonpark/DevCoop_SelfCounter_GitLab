@@ -455,15 +455,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                             const NeverScrollableScrollPhysics(),
                                                         gridDelegate:
                                                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                                          crossAxisCount:
-                                                              5, // 열당 항목 수
-                                                          crossAxisSpacing:
-                                                              10, // 항목 간 가로 간격
-                                                          mainAxisSpacing:
-                                                              10, // 항목 간 세로 간격
-                                                          childAspectRatio:
-                                                              2, // 각 항목의 종횡비
-                                                        ),
+                                                                crossAxisCount:
+                                                                    5, // 열당 항목 수
+                                                                crossAxisSpacing:
+                                                                    10, // 항목 간 가로 간격
+                                                                mainAxisSpacing:
+                                                                    10, // 항목 간 세로 간격
+                                                                childAspectRatio:
+                                                                    2 // 각 항목의 종횡비
+                                                                ),
                                                         itemCount: eventItemList
                                                             .length, // 항목의 총 수
                                                         itemBuilder:
@@ -528,7 +528,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                 child:
                                                                     ElevatedButton(
                                                                   onPressed:
-                                                                      () {},
+                                                                      () {
+                                                                    print(
+                                                                        "행사상품 추가");
+                                                                    setState(
+                                                                        () {
+                                                                      // TODO : 행사상품 추가 버튼 클릭 시 itemResponses에 이름, 가격, 총 갯수 추가
+                                                                      // 아 모르겠다 나중에 하자
+                                                                    });
+                                                                  },
                                                                   style:
                                                                       ButtonStyle(
                                                                     backgroundColor:
