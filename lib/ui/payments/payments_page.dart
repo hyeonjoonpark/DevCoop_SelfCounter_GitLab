@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:counter/controller/item_suggest.dart';
 import 'package:counter/controller/payments_api.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
@@ -7,6 +8,7 @@ import 'package:counter/ui/_constant/util/number_format_util.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -392,6 +394,184 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          mainTextButton(
+                            text: '행사상품',
+                            onTap: () async {
+                              await getEventList((List<String> newList) {
+                                setState(() {
+                                  eventItemList = newList;
+                                });
+                              });
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // Here, you define the structure of the popup.
+                                  return AlertDialog(
+                                    title: const Text(
+                                      '행사상품',
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding: const EdgeInsets.only(
+                                            left: 50, right: 50),
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 400, // 명확한 높이 지정
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                alignment: Alignment.centerLeft,
+                                                child: GridView.builder(
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  gridDelegate:
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount:
+                                                        5, // 열당 항목 수
+                                                    crossAxisSpacing:
+                                                        10, // 항목 간 가로 간격
+                                                    mainAxisSpacing:
+                                                        10, // 항목 간 세로 간격
+                                                    childAspectRatio:
+                                                        2, // 각 항목의 종횡비
+                                                  ),
+                                                  itemCount: eventItemList
+                                                      .length, // 항목의 총 수
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Column(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Container(
+                                                            color: index % 2 ==
+                                                                    0
+                                                                ? DevCoopColors
+                                                                    .primary
+                                                                : DevCoopColors
+                                                                    .transparent,
+                                                            child: ListTile(
+                                                              shape: Border.all(
+                                                                color: const Color(
+                                                                    0xFFECECEC),
+                                                                width: 2,
+                                                              ),
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                vertical: 5.0,
+                                                                horizontal:
+                                                                    10.0,
+                                                              ),
+                                                              title: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                child: Text(
+                                                                  eventItemList[
+                                                                      index],
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .left,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          width: 250,
+                                                          child: ElevatedButton(
+                                                            onPressed: () {},
+                                                            style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .all<
+                                                                          Color>(
+                                                                Colors.black38,
+                                                              ),
+                                                              shape: MaterialStateProperty
+                                                                  .all<
+                                                                      RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    10,
+                                                                  ),
+                                                                  side:
+                                                                      const BorderSide(
+                                                                    width: 1,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            child: const Text(
+                                                              "+",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                color:
+                                                                    DevCoopColors
+                                                                        .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                fontSize: 30,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      mainTextButton(
+                                        text: "닫기",
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
                           const SizedBox(
                             width: 20,
                           ),

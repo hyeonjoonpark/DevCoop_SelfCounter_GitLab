@@ -27,12 +27,6 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
         topList = newList;
       });
     });
-
-    getEventList((List<String> newList) {
-      setState(() {
-        eventItemList = newList;
-      });
-    });
   }
 
   @override
@@ -115,79 +109,6 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                           ),
                         );
                       }),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 1.sw,
-              padding: EdgeInsets.only(left: 12.w, top: 30.h),
-              child: const Text(
-                "이벤트 상품을 확인해보세요",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-
-            /*
-            * TODO : 이벤트 상품 리스트 결제 페이지로 이동
-            * 상품 리스트 클릭 시 장바구니에 추가되도록 구현
-            */
-
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 1.sw,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 5, // 한 행에 배치될 아이템 개수
-                        crossAxisSpacing: 10, // 아이템 간의 가로 간격
-                        mainAxisSpacing: 10, // 아이템 간의 세로 간격
-                        childAspectRatio: 2, // 아이템의 가로 대 세로 비율
-                      ),
-                      itemCount: eventItemList.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          color: index % 2 == 0
-                              ? DevCoopColors.primary
-                              : DevCoopColors.transparent,
-                          child: ListTile(
-                            shape: Border.all(
-                              color: const Color(0xFFECECEC),
-                              width: 2,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5.0,
-                              horizontal: 10.0,
-                            ),
-                            title: Container(
-                              width: double.infinity,
-                              child: Text(
-                                eventItemList[index],
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.black,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
                     ),
                   ),
                 ],
