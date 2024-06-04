@@ -120,9 +120,6 @@ class _SelfCounterWidgetState extends State<SelfCounterWidget> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
             Container(
               width: 1.sw,
               padding: EdgeInsets.only(left: 12.w, top: 30.h),
