@@ -415,7 +415,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                         color: Colors.black,
                                       ),
                                     ),
-                                    content: eventItemList.length == 0
+                                    content: eventItemList.isEmpty
                                         ? const Text(
                                             '행사상품이 없습니다.',
                                             style: TextStyle(
