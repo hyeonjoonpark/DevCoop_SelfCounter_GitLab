@@ -4,8 +4,10 @@ import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/util/number_format_util.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +29,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   int totalPrice = 0;
   String? savedCodeNumber;
   List<ItemResponseDto> itemResponses = [];
+  List<String> eventItemList = [];
   final dbSecure = DbSecure();
   String token = '';
 
@@ -36,6 +39,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   @override
   void initState() {
     super.initState();
+
     loadUserData();
   }
 
@@ -236,202 +240,207 @@ class _PaymentsPageState extends State<PaymentsPage> {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(barcodeFocusNode);
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          // 다른 곳을 탭하면 포커스 해제
-          barcodeFocusNode.unfocus();
-        },
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            vertical: 50,
-            horizontal: 90,
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '$savedStudentName 학생  |  $savedPoint 원',
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 30),
-                  Row(
-                    children: [
-                      Container(
-                        height: 60.0, // 원하는 높이로 조정
-                        width: 300.0, // 원하는 너비로 조정
-                        child: TextFormField(
-                          onFieldSubmitted: (_) {
-                            handleBarcodeSubmit();
-                          },
-                          controller: barcodeController,
-                          focusNode: barcodeFocusNode,
-                          decoration: const InputDecoration(
-                            hintText: '상품 바코드를 입력해주세요',
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      mainTextButton(
-                        text: '상품선택',
-                        onTap: () {
-                          handleBarcodeSubmit();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              const Divider(
-                color: Colors.black,
-                thickness: 4,
-                height: 4,
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 30,
-                  ),
-                  child: Column(
-                    children: [
-                      paymentsItem(
-                        left: '상품 이름',
-                        center: '수량',
-                        plus: "",
-                        minus: "-",
-                        rightText: '상품 가격',
-                        contentsTitle: true,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              for (int i = 0;
-                                  i < itemResponses.length;
-                                  i++) ...[
-                                paymentsItem(
-                                  left: itemResponses[i].itemName,
-                                  center: itemResponses[i].quantity,
-                                  plus: "+",
-                                  minus: "-",
-                                  rightText:
-                                      itemResponses[i].itemPrice.toString(),
-                                  totalText: false,
-                                ),
-                                if (i < itemResponses.length - 1) ...[
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Divider(
-                color: Colors.black,
-                thickness: 4,
-                height: 4,
-              ),
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+    return ScreenUtilInit(
+      builder: (context, child) => Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            // 다른 곳을 탭하면 포커스 해제
+            barcodeFocusNode.unfocus();
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              vertical: 50,
+              horizontal: 90,
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 40,
+                    Text(
+                      '$savedStudentName 학생  |  $savedPoint 원',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                      child: savedPoint - totalPrice >= 0
-                          ? paymentsItem(
-                              left: '총 상품 개수 및 합계',
-                              center: itemResponses
-                                  .map<int>((item) => item.quantity)
-                                  .fold<int>(
-                                      0,
-                                      (previousValue, element) =>
-                                          previousValue + element),
-                              plus: "",
-                              minus: "",
-                              rightText:
-                                  totalPrice.toString(), // 수정: 값을 String으로 변환
-                            )
-                          : const Text(
-                              "잔액이 부족합니다",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 30,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
                     ),
+                    const SizedBox(width: 30),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        mainTextButton(
-                          text: '전체삭제',
-                          onTap: () {
-                            setState(() {
-                              itemResponses.clear();
-                              totalPrice = 0;
-                            });
-                          },
+                        Container(
+                          height: 60.0, // 원하는 높이로 조정
+                          width: 300.0, // 원하는 너비로 조정
+                          child: TextFormField(
+                            onFieldSubmitted: (_) {
+                              handleBarcodeSubmit();
+                            },
+                            controller: barcodeController,
+                            focusNode: barcodeFocusNode,
+                            decoration: const InputDecoration(
+                              hintText: '상품 바코드를 입력해주세요',
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           width: 20,
                         ),
                         mainTextButton(
-                          text: '처음으로',
+                          text: '상품선택',
                           onTap: () {
-                            removeUserData();
-                            Get.offAllNamed("/");
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        mainTextButton(
-                          text: '계산하기',
-                          onTap: () async {
-                            print("계산하기 버튼 클릭");
-                            print("itemResponses : $itemResponses[0]");
-                            // onTap 콜백을 async로 선언하여 비동기 처리 가능
-                            if (savedPoint - totalPrice >= 0) {
-                              await payments(itemResponses);
-                            } else {
-                              showPaymentsPopup(
-                                context,
-                                "잔액이 부족합니다",
-                                true,
-                              );
-                            }
+                            handleBarcodeSubmit();
                           },
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 40,
+                ),
+                const Divider(
+                  color: DevCoopColors.black,
+                  thickness: 4,
+                  height: 4,
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                    ),
+                    child: Column(
+                      children: [
+                        paymentsItem(
+                          left: '상품 이름',
+                          center: '수량',
+                          plus: "",
+                          minus: "-",
+                          rightText: '상품 가격',
+                          contentsTitle: true,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                for (int i = 0;
+                                    i < itemResponses.length;
+                                    i++) ...[
+                                  paymentsItem(
+                                    left: itemResponses[i].itemName,
+                                    center: itemResponses[i].quantity,
+                                    plus: "+",
+                                    minus: "-",
+                                    rightText:
+                                        itemResponses[i].itemPrice.toString(),
+                                    totalText: false,
+                                  ),
+                                  if (i < itemResponses.length - 1) ...[
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                  ],
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black,
+                  thickness: 4,
+                  height: 4,
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 40,
+                        ),
+                        child: savedPoint - totalPrice >= 0
+                            ? paymentsItem(
+                                left: '총 상품 개수 및 합계',
+                                center: itemResponses
+                                    .map<int>((item) => item.quantity)
+                                    .fold<int>(
+                                        0,
+                                        (previousValue, element) =>
+                                            previousValue + element),
+                                plus: "",
+                                minus: "",
+                                rightText:
+                                    totalPrice.toString(), // 수정: 값을 String으로 변환
+                              )
+                            : const Text(
+                                "잔액이 부족합니다",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          mainTextButton(
+                            text: '전체삭제',
+                            onTap: () {
+                              setState(() {
+                                itemResponses.clear();
+                                totalPrice = 0;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          mainTextButton(
+                            text: '처음으로',
+                            onTap: () {
+                              removeUserData();
+                              Get.offAllNamed("/");
+                            },
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          mainTextButton(
+                            text: '계산하기',
+                            onTap: () async {
+                              print("계산하기 버튼 클릭");
+                              print("itemResponses : $itemResponses[0]");
+                              // onTap 콜백을 async로 선언하여 비동기 처리 가능
+                              if (savedPoint - totalPrice >= 0) {
+                                await payments(itemResponses);
+                              } else {
+                                showPaymentsPopup(
+                                  context,
+                                  "잔액이 부족합니다",
+                                  true,
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
