@@ -25,6 +25,6 @@ deploy:
   script:
     - powershell -Command "& $env:CI_SCRIPTS_PATH -stage deploy"
   tags:
-    - kiosk-windows
+    - kiosk
   only:
     - main
