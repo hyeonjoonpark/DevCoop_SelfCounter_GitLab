@@ -4,7 +4,7 @@ BSM SelfCounter Flutter Project
 
 
 ## Getting Started
-현준중 최강 박현준의 역작
+부산소프트웨어마이스터고등학교 매점 아리페이 사용을 위한 키오스크
 
 
 ### PATCH
