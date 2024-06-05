@@ -70,21 +70,74 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   // fetchItemData 함수에서 ItemResponseDto 생성자 호출 시 itemId 추가
+  // Future<void> fetchItemData(String barcode, int quantity) async {
+  //   try {
+  //     print(token);
+  //     String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
+  //     final response = await http.get(
+  //       Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         'Authorization': 'Bearer $token', // 수정: 토큰을 헤더에 추가하여 인증된 요청을 보냅니다.
+  //       },
+  //     );
+  //     print('token : $token');
+  //     print('headers : ${response.headers.toString()}');
+
+  //     print(response.body);
+
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> itemJsonList =
+  //           jsonDecode(utf8.decode(response.bodyBytes));
+  //       final Map<String, dynamic> responseBody = itemJsonList.first;
+  //       final String itemName = responseBody['name'];
+  //       final dynamic rawItemPrice = responseBody['price'];
+  //       final String itemPrice =
+  //           rawItemPrice?.toString() ?? '0'; // 수정: null 체크 및 기본값 설정
+
+  //       setState(() {
+  //         final existingItemIndex = itemResponses.indexWhere(
+  //           (existingItem) => existingItem.itemId == barcode,
+  //         );
+
+  //         print(existingItemIndex);
+
+  //         if (existingItemIndex != -1) {
+  //           // 이미 추가된 아이템이 있다면 갯수를 증가시키고 총 가격 업데이트
+  //           final existingItem = itemResponses[existingItemIndex];
+  //           existingItem.quantity += 1;
+  //           totalPrice += existingItem.itemPrice;
+  //           itemResponses[existingItemIndex] = existingItem; // 업데이트된 아이템 다시 저장
+  //         } else {
+  //           // 새로운 아이템 추가
+  //           final item = ItemResponseDto(
+  //             itemName: itemName,
+  //             itemPrice: int.parse(itemPrice),
+  //             itemId: barcode,
+  //             quantity: 1, // 새로운 아이템의 기본 갯수는 1로 설정
+  //           );
+  //           itemResponses.add(item);
+  //           utf8.encode(itemResponses.toString());
+  //           print(itemResponses);
+  //           totalPrice += int.parse(itemPrice);
+  //         }
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
   Future<void> fetchItemData(String barcode, int quantity) async {
     try {
-      print(token);
       String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
       final response = await http.get(
         Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token', // 수정: 토큰을 헤더에 추가하여 인증된 요청을 보냅니다.
+          'Authorization': 'Bearer $token',
         },
       );
-      print('token : $token');
-      print('headers : ${response.headers.toString()}');
-
-      print(response.body);
 
       if (response.statusCode == 200) {
         final List<dynamic> itemJsonList =
@@ -92,39 +145,32 @@ class _PaymentsPageState extends State<PaymentsPage> {
         final Map<String, dynamic> responseBody = itemJsonList.first;
         final String itemName = responseBody['name'];
         final dynamic rawItemPrice = responseBody['price'];
-        final String itemPrice =
-            rawItemPrice?.toString() ?? '0'; // 수정: null 체크 및 기본값 설정
+        final String itemPrice = rawItemPrice?.toString() ?? '0';
 
         setState(() {
           final existingItemIndex = itemResponses.indexWhere(
             (existingItem) => existingItem.itemId == barcode,
           );
 
-          print(existingItemIndex);
-
           if (existingItemIndex != -1) {
-            // 이미 추가된 아이템이 있다면 갯수를 증가시키고 총 가격 업데이트
             final existingItem = itemResponses[existingItemIndex];
-            existingItem.quantity += 1;
-            totalPrice += existingItem.itemPrice;
-            itemResponses[existingItemIndex] = existingItem; // 업데이트된 아이템 다시 저장
+            existingItem.quantity += quantity;
+            totalPrice += existingItem.itemPrice * quantity;
+            itemResponses[existingItemIndex] = existingItem;
           } else {
-            // 새로운 아이템 추가
             final item = ItemResponseDto(
               itemName: itemName,
               itemPrice: int.parse(itemPrice),
               itemId: barcode,
-              quantity: 1, // 새로운 아이템의 기본 갯수는 1로 설정
+              quantity: quantity,
             );
             itemResponses.add(item);
-            utf8.encode(itemResponses.toString());
-            print(itemResponses);
-            totalPrice += int.parse(itemPrice);
+            totalPrice += int.parse(itemPrice) * quantity;
           }
         });
       }
     } catch (e) {
-      print(e);
+      print('Failed to fetch item data: $e');
     }
   }
 
@@ -136,6 +182,14 @@ class _PaymentsPageState extends State<PaymentsPage> {
         return paymentsPopUp(context, message, isError);
       },
     );
+  }
+
+  void addItem() {
+    getEventList((itemNameList) {
+      for (String itemName in itemNameList) {
+        fetchItemData(itemName, 1);
+      }
+    });
   }
 
   void handleBarcodeSubmit() {
@@ -528,14 +582,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                 child:
                                                                     ElevatedButton(
                                                                   onPressed:
-                                                                      () {
-                                                                    print(
-                                                                        "행사상품 추가");
-                                                                    setState(
-                                                                        () {
-                                                                      // TODO : 행사상품 추가 버튼 클릭 시 itemResponses에 이름, 가격, 총 갯수 추가
-                                                                      // 아 모르겠다 나중에 하자
-                                                                    });
+                                                                      () async {
+                                                                    addItem();
                                                                   },
                                                                   style:
                                                                       ButtonStyle(
@@ -824,4 +872,18 @@ class _PaymentsPageState extends State<PaymentsPage> {
       ],
     );
   }
+}
+
+class EventItemResponseDto {
+  final String itemName;
+  final int itemPrice;
+  final String itemId;
+  int quantity;
+
+  EventItemResponseDto({
+    required this.itemName,
+    required this.itemPrice,
+    required this.itemId,
+    required this.quantity,
+  });
 }
