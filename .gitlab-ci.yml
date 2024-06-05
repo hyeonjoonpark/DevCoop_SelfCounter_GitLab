@@ -7,13 +7,19 @@ setup:
   script:
     - powershell -Command "& $env:CI_SCRIPTS_PATH -stage setup"
   tags:
-    - kiosk-windows
+    - kiosk
+  only:
+    - main
+    
 build:
   stage: build
   script:
     - powershell -Command "& $env:CI_SCRIPTS_PATH -stage build"
   tags:
-    - kiosk-windows
+    - kiosk
+  only:
+    - main
+
 deploy:
   stage: deploy
   script:
