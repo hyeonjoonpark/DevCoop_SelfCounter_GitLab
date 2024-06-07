@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'BSM SelfCounter',
+      title: '부산소프트웨어마이스터고등학교 아리소리 셀프계산대',
       debugShowCheckedModeBanner: false,
       getPages: AppRouter,
       initialRoute: '/',
