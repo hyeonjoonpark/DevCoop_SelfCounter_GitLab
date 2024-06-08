@@ -559,6 +559,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                     addItem(eventItemList[
                                                                             index]
                                                                         .barcode);
+                                                                    navigator
+                                                                        ?.pop();
                                                                   },
                                                                   style:
                                                                       ButtonStyle(
