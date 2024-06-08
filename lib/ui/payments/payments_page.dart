@@ -31,7 +31,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   int totalPrice = 0;
   String? savedCodeNumber;
   List<ItemResponseDto> itemResponses = [];
-  List<String> eventItemList = [];
+  List<EventItemResponseDto> eventItemList = [];
   final dbSecure = DbSecure();
   String token = '';
 
@@ -68,8 +68,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
       print('Error during loading data: $e');
     }
   }
-
-  
 
 // 결제 후 남은 포인트를 팝업창에 띄우는 로직 추가
   void showPaymentsPopup(BuildContext context, String message, bool isError) {
@@ -128,8 +126,29 @@ class _PaymentsPageState extends State<PaymentsPage> {
     }
   }
 
-  void addItem() {
-    fetchItemData("", 1);
+  void addItem(String itemBarcode) {
+    /*  
+     * [
+          {
+              "barcode": "8809413882010",
+              "itemName": "라볶이스낵",
+              "itemPrice": 500,
+              "event": "ONE_PLUS_ONE",
+              "eventStartDate": null,
+              "eventEndDate": null
+          },
+          {
+              "barcode": "8802280004080",
+              "itemName": "옥수수브이콘",
+              "itemPrice": 1000,
+              "event": "ONE_PLUS_ONE",
+              "eventStartDate": null,
+              "eventEndDate": null
+          }
+      ]
+     */
+    //
+    fetchItemData(itemBarcode, 1);
   }
 
   void handleBarcodeSubmit() {
@@ -391,7 +410,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           mainTextButton(
                             text: '행사상품',
                             onTap: () async {
-                              await getEventList((List<String> newList) {
+                              await getEventList(
+                                  (List<EventItemResponseDto> newList) {
                                 setState(() {
                                   eventItemList = newList;
                                 });
@@ -494,21 +514,34 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                         Container(
                                                                       width: double
                                                                           .infinity,
+                                                                      height:
+                                                                          500,
                                                                       child:
-                                                                          Text(
-                                                                        eventItemList[
-                                                                            index],
-                                                                        style:
-                                                                            const TextStyle(
-                                                                          fontSize:
-                                                                              20,
-                                                                          fontWeight:
-                                                                              FontWeight.w900,
-                                                                          color:
-                                                                              Colors.black,
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              eventItemList[index].itemName,
+                                                                              style: const TextStyle(
+                                                                                fontSize: 20,
+                                                                                fontWeight: FontWeight.w900,
+                                                                                color: Colors.black,
+                                                                              ),
+                                                                              textAlign: TextAlign.left,
+                                                                            ),
+                                                                            Spacer(),
+                                                                            Text(
+                                                                              eventItemList[index].itemPrice.toString() + "원",
+                                                                              style: const TextStyle(
+                                                                                fontSize: 20,
+                                                                                fontWeight: FontWeight.w900,
+                                                                                color: Colors.black,
+                                                                              ),
+                                                                              textAlign: TextAlign.left,
+                                                                            ),
+                                                                          ],
                                                                         ),
-                                                                        textAlign:
-                                                                            TextAlign.left,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -523,7 +556,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                     ElevatedButton(
                                                                   onPressed:
                                                                       () async {
-                                                                    addItem();
+                                                                    addItem(eventItemList[
+                                                                            index]
+                                                                        .barcode);
                                                                   },
                                                                   style:
                                                                       ButtonStyle(
@@ -818,15 +853,17 @@ class EventItemResponseDto {
   final String barcode;
   final String itemName;
   final int itemPrice;
-  final String itemId;
-  int quantity;
+  final String event;
+  final String? eventStartDate;
+  final String? eventEndDate;
 
   EventItemResponseDto({
     required this.barcode,
     required this.itemName,
     required this.itemPrice,
-    required this.itemId,
-    required this.quantity,
+    required this.event,
+    this.eventStartDate,
+    this.eventEndDate,
   });
 
   factory EventItemResponseDto.fromJson(Map<String, dynamic> json) {
@@ -834,8 +871,9 @@ class EventItemResponseDto {
       barcode: json['barcode'],
       itemName: json['itemName'],
       itemPrice: json['itemPrice'],
-      itemId: json['itemId'],
-      quantity: json['quantity'],
+      event: json['event'],
+      eventStartDate: json['eventStartDate'],
+      eventEndDate: json['eventEndDate'],
     );
   }
 }

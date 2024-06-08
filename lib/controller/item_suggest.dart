@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:counter/secure/db.dart';
+import 'package:counter/ui/payments/payments_page.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> suggest(Function(String) onUpdate, String randomData) async {
@@ -93,7 +94,7 @@ Future<void> getTopList(Function(List<String>) onUpdate) async {
 //   }
 // }
 
-Future<void> getEventList(Function(List<String>) onUpdate) async {
+Future<void> getEventList(Function(List<EventItemResponseDto>) onUpdate) async {
   final dbSecure = DbSecure();
   try {
     final response = await http.get(
@@ -106,11 +107,11 @@ Future<void> getEventList(Function(List<String>) onUpdate) async {
     if (response.statusCode == 200) {
       final decodedBody = utf8.decode(response.bodyBytes);
       List<dynamic> jsonList = json.decode(decodedBody);
+      print("JSON List: $jsonList");
 
-      List<String> itemNameList =
-          jsonList.map((item) => item['itemName'].toString()).toList();
+      List<EventItemResponseDto> itemList = jsonList.map((item) => EventItemResponseDto.fromJson(item)).toList();
 
-      onUpdate(itemNameList);
+      onUpdate(itemList);
     } else {
       print('Server Error: ${response.statusCode}');
     }
