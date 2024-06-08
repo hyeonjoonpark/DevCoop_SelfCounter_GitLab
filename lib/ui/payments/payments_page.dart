@@ -5,10 +5,8 @@ import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/util/number_format_util.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -127,27 +125,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   void addItem(String itemBarcode) {
-    /*  
-     * [
-          {
-              "barcode": "8809413882010",
-              "itemName": "라볶이스낵",
-              "itemPrice": 500,
-              "event": "ONE_PLUS_ONE",
-              "eventStartDate": null,
-              "eventEndDate": null
-          },
-          {
-              "barcode": "8802280004080",
-              "itemName": "옥수수브이콘",
-              "itemPrice": 1000,
-              "event": "ONE_PLUS_ONE",
-              "eventStartDate": null,
-              "eventEndDate": null
-          }
-      ]
-     */
-    //
     fetchItemData(itemBarcode, 1);
   }
 
@@ -285,7 +262,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     const SizedBox(width: 30),
                     Row(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 60.0, // 원하는 높이로 조정
                           width: 300.0, // 원하는 너비로 조정
                           child: TextFormField(
@@ -373,307 +350,308 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   thickness: 4,
                   height: 4,
                 ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 40,
-                        ),
-                        child: savedPoint - totalPrice >= 0
-                            ? paymentsItem(
-                                left: '총 상품 개수 및 합계',
-                                center: itemResponses
-                                    .map<int>((item) => item.quantity)
-                                    .fold<int>(
-                                        0,
-                                        (previousValue, element) =>
-                                            previousValue + element),
-                                plus: "",
-                                minus: "",
-                                rightText:
-                                    totalPrice.toString(), // 수정: 값을 String으로 변환
-                              )
-                            : const Text(
-                                "잔액이 부족합니다",
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 40,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          mainTextButton(
-                            text: '행사상품',
-                            onTap: () async {
-                              await getEventList(
-                                  (List<EventItemResponseDto> newList) {
-                                setState(() {
-                                  eventItemList = newList;
-                                });
+                      child: savedPoint - totalPrice >= 0
+                          ? paymentsItem(
+                              left: '총 상품 개수 및 합계',
+                              center: itemResponses
+                                  .map<int>((item) => item.quantity)
+                                  .fold<int>(
+                                      0,
+                                      (previousValue, element) =>
+                                          previousValue + element),
+                              plus: "",
+                              minus: "",
+                              rightText:
+                                  totalPrice.toString(), // 수정: 값을 String으로 변환
+                            )
+                          : const Text(
+                              "잔액이 부족합니다",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        mainTextButton(
+                          text: '행사상품',
+                          onTap: () async {
+                            await getEventList(
+                                (List<EventItemResponseDto> newList) {
+                              setState(() {
+                                eventItemList = newList;
                               });
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  // Here, you define the structure of the popup.
-                                  return AlertDialog(
-                                    title: const Text(
-                                      '행사상품 (1+1)',
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black,
-                                      ),
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                // Here, you define the structure of the popup.
+                                return AlertDialog(
+                                  title: const Text(
+                                    '행사상품 (1+1)',
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black,
                                     ),
-                                    content: eventItemList.isEmpty
-                                        ? const Text(
-                                            '행사상품이 없습니다.',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black,
-                                            ),
-                                          )
-                                        : SingleChildScrollView(
-                                            child: Container(
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  left: 50, right: 50),
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerLeft,
+                                  ),
+                                  content: eventItemList.isEmpty
+                                      ? const Text(
+                                          '행사상품이 없습니다.',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      : SingleChildScrollView(
+                                          child: Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: const EdgeInsets.only(
+                                                left: 50, right: 50),
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 400, // 명확한 높이 지정
+                                                  child: Container(
                                                     width:
                                                         MediaQuery.of(context)
                                                             .size
                                                             .width,
-                                                    height: 400, // 명확한 높이 지정
-                                                    child: Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: GridView.builder(
-                                                        shrinkWrap: true,
-                                                        physics:
-                                                            const NeverScrollableScrollPhysics(),
-                                                        gridDelegate:
-                                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                                crossAxisCount:
-                                                                    5, // 열당 항목 수
-                                                                crossAxisSpacing:
-                                                                    10, // 항목 간 가로 간격
-                                                                mainAxisSpacing:
-                                                                    10, // 항목 간 세로 간격
-                                                                childAspectRatio:
-                                                                    2 // 각 항목의 종횡비
-                                                                ),
-                                                        itemCount: eventItemList
-                                                            .length, // 항목의 총 수
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          return Column(
-                                                            children: [
-                                                              Expanded(
-                                                                child:
-                                                                    Container(
-                                                                  color: index %
-                                                                              2 ==
-                                                                          0
-                                                                      ? DevCoopColors
-                                                                          .primary
-                                                                      : DevCoopColors
-                                                                          .transparent,
-                                                                  child:
-                                                                      ListTile(
-                                                                    shape: Border
-                                                                        .all(
-                                                                      color: const Color(
-                                                                          0xFFECECEC),
-                                                                      width: 2,
-                                                                    ),
-                                                                    contentPadding:
-                                                                        const EdgeInsets
-                                                                            .symmetric(
-                                                                      vertical:
-                                                                          5.0,
-                                                                      horizontal:
-                                                                          10.0,
-                                                                    ),
-                                                                    title:
-                                                                        Container(
-                                                                      width: double
-                                                                          .infinity,
-                                                                      height:
-                                                                          500,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: GridView.builder(
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      gridDelegate:
+                                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount:
+                                                                  5, // 열당 항목 수
+                                                              crossAxisSpacing:
+                                                                  10, // 항목 간 가로 간격
+                                                              mainAxisSpacing:
+                                                                  10, // 항목 간 세로 간격
+                                                              childAspectRatio:
+                                                                  2 // 각 항목의 종횡비
+                                                              ),
+                                                      itemCount: eventItemList
+                                                          .length, // 항목의 총 수
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Column(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Container(
+                                                                color: index %
+                                                                            2 ==
+                                                                        0
+                                                                    ? DevCoopColors
+                                                                        .primary
+                                                                    : DevCoopColors
+                                                                        .transparent,
+                                                                child: ListTile(
+                                                                  shape: Border
+                                                                      .all(
+                                                                    color: const Color(
+                                                                        0xFFECECEC),
+                                                                    width: 2,
+                                                                  ),
+                                                                  contentPadding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                    vertical:
+                                                                        5.0,
+                                                                    horizontal:
+                                                                        10.0,
+                                                                  ),
+                                                                  title:
+                                                                      SizedBox(
+                                                                    width: double
+                                                                        .infinity,
+                                                                    height: 500,
+                                                                    child:
+                                                                        SingleChildScrollView(
                                                                       child:
-                                                                          SingleChildScrollView(
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Text(
-                                                                              eventItemList[index].itemName,
-                                                                              style: const TextStyle(
-                                                                                fontSize: 20,
-                                                                                fontWeight: FontWeight.w900,
-                                                                                color: Colors.black,
-                                                                              ),
-                                                                              textAlign: TextAlign.left,
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Text(
+                                                                            eventItemList[index].itemName,
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 20,
+                                                                              fontWeight: FontWeight.w900,
+                                                                              color: Colors.black,
                                                                             ),
-                                                                            Spacer(),
-                                                                            Text(
-                                                                              eventItemList[index].itemPrice.toString() + "원",
-                                                                              style: const TextStyle(
-                                                                                fontSize: 20,
-                                                                                fontWeight: FontWeight.w900,
-                                                                                color: Colors.black,
-                                                                              ),
-                                                                              textAlign: TextAlign.left,
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                          ),
+                                                                          Text(
+                                                                            "${eventItemList[index].itemPrice}원",
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.w900,
+                                                                              color: Colors.black,
                                                                             ),
-                                                                          ],
-                                                                        ),
+                                                                            textAlign:
+                                                                                TextAlign.left,
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                height: 10,
-                                                              ),
-                                                              Container(
-                                                                width: 250,
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 250,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  addItem(eventItemList[
+                                                                          index]
+                                                                      .barcode);
+                                                                  navigator
+                                                                      ?.pop();
+                                                                },
+                                                                style:
+                                                                    ButtonStyle(
+                                                                  backgroundColor:
+                                                                      WidgetStateProperty
+                                                                          .all<
+                                                                              Color>(
+                                                                    Colors
+                                                                        .black38,
+                                                                  ),
+                                                                  shape: WidgetStateProperty
+                                                                      .all<
+                                                                          RoundedRectangleBorder>(
+                                                                    RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        10,
+                                                                      ),
+                                                                      side:
+                                                                          const BorderSide(
+                                                                        width:
+                                                                            1,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
                                                                 child:
-                                                                    ElevatedButton(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    addItem(eventItemList[
-                                                                            index]
-                                                                        .barcode);
-                                                                    navigator
-                                                                        ?.pop();
-                                                                  },
+                                                                    const Text(
+                                                                  "+",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
                                                                   style:
-                                                                      ButtonStyle(
-                                                                    backgroundColor:
-                                                                        MaterialStateProperty.all<
-                                                                            Color>(
-                                                                      Colors
-                                                                          .black38,
-                                                                    ),
-                                                                    shape: MaterialStateProperty
-                                                                        .all<
-                                                                            RoundedRectangleBorder>(
-                                                                      RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                          10,
-                                                                        ),
-                                                                        side:
-                                                                            const BorderSide(
-                                                                          width:
-                                                                              1,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  child:
-                                                                      const Text(
-                                                                    "+",
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: DevCoopColors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      fontSize:
-                                                                          30,
-                                                                    ),
+                                                                      TextStyle(
+                                                                    color: DevCoopColors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    fontSize:
+                                                                        30,
                                                                   ),
                                                                 ),
-                                                              )
-                                                            ],
-                                                          );
-                                                        },
-                                                      ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                    actions: <Widget>[
-                                      mainTextButton(
-                                        text: "닫기",
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          mainTextButton(
-                            text: '전체삭제',
-                            onTap: () {
-                              setState(() {
-                                itemResponses.clear();
-                                totalPrice = 0;
-                              });
-                            },
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          mainTextButton(
-                            text: '처음으로',
-                            onTap: () {
-                              removeUserData();
-                              Get.offAllNamed("/");
-                            },
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          mainTextButton(
-                            text: '계산하기',
-                            onTap: () async {
-                              print("계산하기 버튼 클릭");
-                              print("itemResponses : $itemResponses[0]");
-                              // onTap 콜백을 async로 선언하여 비동기 처리 가능
-                              if (savedPoint - totalPrice >= 0) {
-                                await payments(itemResponses);
-                              } else {
-                                showPaymentsPopup(
-                                  context,
-                                  "잔액이 부족합니다",
-                                  true,
+                                        ),
+                                  actions: <Widget>[
+                                    mainTextButton(
+                                      text: "닫기",
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
                                 );
-                              }
-                            },
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        mainTextButton(
+                          text: '전체삭제',
+                          onTap: () {
+                            setState(() {
+                              itemResponses.clear();
+                              totalPrice = 0;
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        mainTextButton(
+                          text: '처음으로',
+                          onTap: () {
+                            removeUserData();
+                            Get.offAllNamed("/");
+                          },
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        mainTextButton(
+                          text: '계산하기',
+                          onTap: () async {
+                            print("계산하기 버튼 클릭");
+                            print("itemResponses : $itemResponses[0]");
+                            // onTap 콜백을 async로 선언하여 비동기 처리 가능
+                            if (savedPoint - totalPrice >= 0) {
+                              await payments(itemResponses);
+                            } else {
+                              showPaymentsPopup(
+                                context,
+                                "잔액이 부족합니다",
+                                true,
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ],
             ),
