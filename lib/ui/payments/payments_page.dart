@@ -726,7 +726,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           color: DevCoopColors.black,
                         )),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         plus != ""
             ? Container(
                 alignment: Alignment.center,
@@ -755,7 +755,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     ),
                   ),
                   child: Text(
-                    "$plus",
+                    plus,
                     textAlign: TextAlign.center,
                     style: DevCoopTextStyle.bold_30.copyWith(
                       color: DevCoopColors.black,
@@ -813,7 +813,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     ),
                   ),
                   child: Text(
-                    "$minus",
+                    minus,
                     textAlign: TextAlign.center,
                     style: DevCoopTextStyle.bold_30.copyWith(
                       color: DevCoopColors.black,
