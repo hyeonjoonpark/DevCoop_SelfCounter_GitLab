@@ -43,7 +43,7 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/audio/
+    - assets/audios/
 
   fonts:
     - family: GmarketSansB
