@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:counter/Dto/event_item_response_dto.dart';
 import 'package:counter/secure/db.dart';
-import 'package:counter/ui/payments/payments_page.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> suggest(Function(String) onUpdate, String randomData) async {
@@ -62,38 +62,6 @@ Future<void> getTopList(Function(List<String>) onUpdate) async {
   }
 }
 
-// Future<void> getEventList(Function(List<String>) onUpdate) async {
-//   final dbSecure = DbSecure(); // DbSecure 인스턴스 생성. DB 연결 정보 보유
-//   try {
-//     // API 호출
-//     final response = await http.get(
-//       Uri.parse('http://${dbSecure.DB_HOST}/kiosk/event-item/get-item'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//     );
-
-//     if (response.statusCode == 200) {
-//       // 응답 본문을 UTF-8로 디코드하여 JSON으로 파싱
-//       final decodedBody = utf8.decode(response.bodyBytes);
-//       List<dynamic> jsonList = json.decode(decodedBody);
-
-//       // itemName만 추출하여 리스트 생성
-//       List<String> itemList =
-//           jsonList.map((item) => item['itemName'].toString()).toList();
-
-//       // 콜백을 통해 itemList 반환
-//       onUpdate(itemList);
-//     } else {
-//       // 오류 처리: 상태 코드가 200이 아닌 경우
-//       print('Server Error: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     // 예외 처리: HTTP 요청 실패
-//     print('Failed to load event list: $e');
-//   }
-// }
-
 Future<void> getEventList(Function(List<EventItemResponseDto>) onUpdate) async {
   final dbSecure = DbSecure();
   try {
@@ -109,7 +77,8 @@ Future<void> getEventList(Function(List<EventItemResponseDto>) onUpdate) async {
       List<dynamic> jsonList = json.decode(decodedBody);
       print("JSON List: $jsonList");
 
-      List<EventItemResponseDto> itemList = jsonList.map((item) => EventItemResponseDto.fromJson(item)).toList();
+      List<EventItemResponseDto> itemList =
+          jsonList.map((item) => EventItemResponseDto.fromJson(item)).toList();
 
       onUpdate(itemList);
     } else {
