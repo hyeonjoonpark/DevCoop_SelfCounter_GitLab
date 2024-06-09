@@ -95,6 +95,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
         final Map<String, dynamic> responseBody = itemJsonList.first;
         final String itemName = responseBody['name'];
         final dynamic rawItemPrice = responseBody['price'];
+        final int itemQuantity = responseBody['quantity'];
+        final String eventStatus = responseBody['eventStatus'];
         final String itemPrice = rawItemPrice?.toString() ?? '0';
 
         setState(() {
@@ -104,19 +106,23 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
           if (existingItemIndex != -1) {
             final existingItem = itemResponses[existingItemIndex];
-            existingItem.quantity += quantity;
-            totalPrice += existingItem.itemPrice * quantity;
+            existingItem.quantity += itemQuantity;
+            totalPrice += existingItem.itemPrice * itemQuantity;
             itemResponses[existingItemIndex] = existingItem;
           } else {
             final item = ItemResponseDto(
               itemName: itemName,
-              itemPrice: int.parse(itemPrice),
+              itemPrice: rawItemPrice,
               itemId: barcode,
-              quantity: quantity,
+              quantity: itemQuantity,
             );
             print('item = $item');
             itemResponses.add(item);
-            totalPrice += int.parse(itemPrice) * quantity;
+
+            eventStatus == 'NONE'
+                ? totalPrice += int.parse(itemPrice) * itemQuantity
+                : totalPrice +=
+                    (int.parse(itemPrice) * itemQuantity / 2) as int;
           }
         });
       }
