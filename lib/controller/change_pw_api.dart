@@ -42,7 +42,7 @@ Future<void> changePw(
       printLog('비밀번호 변경 성공');
       // 성공 팝업창 띄우기
       showDialog(
-        // context: context,
+        context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text(
