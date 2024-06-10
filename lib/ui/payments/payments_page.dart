@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:counter/Dto/event_item_response_dto.dart';
 import 'package:counter/controller/get_event_list.dart';
 import 'package:counter/controller/payments_api.dart';
+import 'package:counter/controller/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -56,22 +57,22 @@ class _PaymentsPageState extends State<PaymentsPage> {
       });
 
       if (savedPoint != 0 && savedStudentName.isNotEmpty) {
-        print("Getting UserInfo");
-        print('Data loaded from SharedPreferences');
+        printLog("Getting UserInfo");
+        printLog('Data loaded from SharedPreferences');
       }
 
       if (savedCodeNumber == null) {
-        print('codeNumber가 설정되지 않았습니다.');
+        printLog('codeNumber가 설정되지 않았습니다.');
       }
     } catch (e) {
-      print('Error during loading data: $e');
+      printLog('Error during loading data: $e');
     }
   }
 
 // 결제 후 남은 포인트를 팝업창에 띄우는 로직 추가
   void showPaymentsPopup(String message, bool isError) {
     showDialog(
-      context: context,
+      // context: context,
       builder: (BuildContext context) {
         return paymentsPopUp(context, message, isError);
       },
@@ -116,7 +117,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
               itemId: barcode,
               quantity: itemQuantity,
             );
-            print('item = $item');
+            printLog('item = $item');
             itemResponses.add(item);
 
             eventStatus == 'NONE'
@@ -127,7 +128,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         });
       }
     } catch (e) {
-      print('Failed to fetch item data: $e');
+      printLog('Failed to fetch item data: $e');
     }
   }
 
@@ -152,37 +153,37 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Future<void> payments(List<ItemResponseDto> items) async {
-    print('payments 함수가 호출되었습니다.');
-    print("items = ${items[0].itemName}");
+    printLog('payments 함수가 호출되었습니다.');
+    printLog("items = ${items[0].itemName}");
     try {
-      print("savedUserId : $savedCodeNumber");
+      printLog("savedUserId : $savedCodeNumber");
       if (savedCodeNumber != null) {
         String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
 
-        print(apiUrl);
-        print(
+        printLog(apiUrl);
+        printLog(
             "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
 
         // API 요청 함수 호출
         final response = await executePaymentRequest(apiUrl, token,
             savedCodeNumber!, savedStudentName, totalPrice, items);
 
-        print('token : $token');
+        printLog('token : $token');
 
         // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
         String responseBody = utf8.decode(response.bodyBytes);
-        print('Response Body Bytes: ${response.bodyBytes}');
+        printLog('Response Body Bytes: ${response.bodyBytes}');
 
         // JSON 파싱
         var decodedResponse = json.decode(responseBody);
-        print('Decoded Response: $decodedResponse');
+        printLog('Decoded Response: $decodedResponse');
 
         // 디코드된 응답을 출력합니다.
-        print("-----------------");
-        print(responseBody);
+        printLog("-----------------");
+        printLog(responseBody);
 
         if (response.statusCode == 200) {
-          print("응답상태 : ${response.statusCode}");
+          printLog("응답상태 : ${response.statusCode}");
           if (decodedResponse['status'] == 'success') {
             int remainingPoints = decodedResponse['remainingPoints'];
             String message =
@@ -192,14 +193,14 @@ class _PaymentsPageState extends State<PaymentsPage> {
               false,
             );
           } else {
-            print("Error Code: ${decodedResponse['code']}");
+            printLog("Error Code: ${decodedResponse['code']}");
             showPaymentsPopup(
               decodedResponse['message'],
               true,
             );
           }
         } else {
-          print("응답상태 : ${response.statusCode}");
+          printLog("응답상태 : ${response.statusCode}");
           showPaymentsPopup(
             '에러: ${decodedResponse['message']}',
             true,
@@ -207,7 +208,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         }
       }
     } catch (e) {
-      print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
+      printLog('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
       if (e is http.Response) {
         String responseBody = utf8.decode(e.bodyBytes);
         var decodedResponse = json.decode(responseBody);
@@ -395,7 +396,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                               });
                             });
                             showDialog(
-                              context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text(
@@ -636,8 +636,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         mainTextButton(
                           text: '계산하기',
                           onTap: () async {
-                            print("계산하기 버튼 클릭");
-                            print("itemResponses : $itemResponses[0]");
+                            printLog("계산하기 버튼 클릭");
+                            printLog("itemResponses : $itemResponses[0]");
                             // onTap 콜백을 async로 선언하여 비동기 처리 가능
                             if (savedPoint - totalPrice >= 0) {
                               await payments(itemResponses);
@@ -731,7 +731,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("plus");
+                    printLog("plus");
                     setState(() {
                       itemResponses
                           .firstWhere((element) => element.itemName == left)
@@ -770,7 +770,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("minus");
+                    printLog("minus");
                     setState(() {
                       for (int i = 0; i < itemResponses.length; i++) {
                         if (itemResponses[i].itemName == left) {

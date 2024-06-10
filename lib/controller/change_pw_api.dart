@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:counter/controller/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -24,10 +25,10 @@ Future<void> changePw(
     };
 
     String jsonData = json.encode(requestBody);
-    print(jsonData);
+    printLog(jsonData);
 
     String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/pwChange';
-    print(apiUrl);
+    printLog(apiUrl);
 
     final response = await http.put(
       Uri.parse(apiUrl),
@@ -38,10 +39,10 @@ Future<void> changePw(
     );
 
     if (response.statusCode == 200) {
-      print('비밀번호 변경 성공');
+      printLog('비밀번호 변경 성공');
       // 성공 팝업창 띄우기
       showDialog(
-        context: context,
+        // context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text(
@@ -65,6 +66,6 @@ Future<void> changePw(
       );
     }
   } catch (e) {
-    print(e);
+    printLog(e);
   }
 }

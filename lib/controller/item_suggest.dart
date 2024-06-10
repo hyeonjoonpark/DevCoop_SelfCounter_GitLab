@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:counter/controller/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,19 +14,19 @@ Future<void> suggest(Function(String) onUpdate, String randomData) async {
       },
     );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    printLog('Response status: ${response.statusCode}');
+    printLog('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       // 응답 본문을 UTF-8로 디코드
       final decodedBody = utf8.decode(response.bodyBytes);
-      print('Decoded body: $decodedBody');
+      printLog('Decoded body: $decodedBody');
       // JSON 디코드 대신 단순히 디코드된 문자열을 사용
       onUpdate(decodedBody);
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      printLog('Request failed with status: ${response.statusCode}');
     }
   } catch (e) {
-    print('Error: $e');
+    printLog('Error: $e');
   }
 }
