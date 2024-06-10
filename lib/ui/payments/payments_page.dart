@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:counter/Dto/event_item_response_dto.dart';
 import 'package:counter/controller/get_event_list.dart';
 import 'package:counter/controller/payments_api.dart';
-import 'package:counter/controller/print.dart';
+import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -72,7 +72,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
 // 결제 후 남은 포인트를 팝업창에 띄우는 로직 추가
   void showPaymentsPopup(String message, bool isError) {
     showDialog(
-      // context: context,
+      context: context,
       builder: (BuildContext context) {
         return paymentsPopUp(context, message, isError);
       },
@@ -396,6 +396,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                               });
                             });
                             showDialog(
+                              context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text(

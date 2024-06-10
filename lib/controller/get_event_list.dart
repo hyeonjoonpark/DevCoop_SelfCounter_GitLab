@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:counter/Dto/event_item_response_dto.dart';
-import 'package:counter/controller/print.dart';
+import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:http/http.dart' as http;
 

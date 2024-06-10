@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:counter/controller/print.dart';
+import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:http/http.dart' as http;
 

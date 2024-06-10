@@ -1,4 +1,4 @@
-import 'package:counter/controller/print.dart';
+import 'package:counter/ui/_constant/util/print.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveUserData(String token, String codeNumber, int studentNumber,
