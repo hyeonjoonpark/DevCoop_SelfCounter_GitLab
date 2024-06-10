@@ -6,22 +6,22 @@ import 'package:counter/ui/pin/pin_change.dart';
 import 'package:counter/ui/pin/pin_page.dart';
 import 'package:get/get.dart';
 
-List<GetPage> AppRouter = [
+List<GetPage> appRouter = [
   GetPage(
     name: '/',
     page: () => Home(),
   ),
   GetPage(
     name: "/barcode",
-    page: () => BarcodePage(),
+    page: () => const BarcodePage(),
   ),
   GetPage(
     name: "/check",
-    page: () => CheckStudent(),
+    page: () => const CheckStudent(),
   ),
   GetPage(
     name: "/payments",
-    page: () => PaymentsPage(),
+    page: () => const PaymentsPage(),
   ),
   GetPage(
     name: "/pin",
@@ -29,6 +29,6 @@ List<GetPage> AppRouter = [
   ),
   GetPage(
     name: "/pin/change",
-    page: () => PinChange(),
+    page: () => const PinChange(),
   )
 ];

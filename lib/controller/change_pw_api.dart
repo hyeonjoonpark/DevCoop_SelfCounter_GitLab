@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> changePw(
-  TextEditingController _idController,
-  TextEditingController _pinController,
-  TextEditingController _newPinController,
+  TextEditingController idController,
+  TextEditingController pinController,
+  TextEditingController newPinController,
   BuildContext context,
 ) async {
   DbSecure dbSecure = DbSecure();
@@ -18,9 +18,9 @@ Future<void> changePw(
   // 비밀번호 변경 로직 (http)
   try {
     Map<String, String> requestBody = {
-      'codeNumber': _idController.text,
-      'pin': _pinController.text,
-      'newPin': _newPinController.text,
+      'codeNumber': idController.text,
+      'pin': pinController.text,
+      'newPin': newPinController.text,
     };
 
     String jsonData = json.encode(requestBody);

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: '부산소프트웨어마이스터고등학교 아리소리 셀프계산대',
       debugShowCheckedModeBanner: false,
-      getPages: AppRouter,
+      getPages: appRouter,
       initialRoute: '/',
       home: MultiProvider(
         providers: [

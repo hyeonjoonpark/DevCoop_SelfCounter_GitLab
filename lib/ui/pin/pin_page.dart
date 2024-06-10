@@ -1,17 +1,11 @@
-// import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../controller/login.dart';
 import 'package:get/get.dart';
-
-/**
- * TODO : 숫자패드로 입력안되는 현상 수정 (진행중)
- * TODO : 자동 포커스 제대로 수정 (완료)
- */
 
 class PinPage extends StatefulWidget {
   final String codeNumber;
@@ -40,21 +34,21 @@ class _PinPageState extends State<PinPage> {
   }
 
   void onNumberButtonPressed(
-      int number, TextEditingController _activeController) {
-    String currentText = _activeController.text;
+      int number, TextEditingController activeController) {
+    String currentText = activeController.text;
 
     if (number == 10) {
-      _activeController.clear();
+      activeController.clear();
     } else if (number == 12) {
       // Del button
       if (currentText.isNotEmpty) {
         String newText = currentText.substring(0, currentText.length - 1);
-        _activeController.text = newText;
+        activeController.text = newText;
       }
     } else {
       // 숫자 버튼 (0 포함)
       String newText = currentText + (number == 11 ? '0' : number.toString());
-      _activeController.text = newText;
+      activeController.text = newText;
     }
   }
 
@@ -93,7 +87,6 @@ class _PinPageState extends State<PinPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      // TODO : 숫자패드 입력하면 텍스트필드에 입력이 안됨
                       for (int i = 0; i < 4; i++) ...[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,15 +95,15 @@ class _PinPageState extends State<PinPage> {
                               GestureDetector(
                                 onTap: () {
                                   // 숫자버튼 클릭하면 소리나도록
-                                  int _number = j + 1 + i * 3;
+                                  int number = j + 1 + i * 3;
                                   onNumberButtonPressed(
-                                    _number == 11 ? 0 : _number,
+                                    number == 11 ? 0 : number,
                                     _pinController,
                                   );
-                                  // AssetsAudioPlayer.newPlayer().open(
-                                  //   Audio('assets/audio/click.wav'),
-                                  //   showNotification: true,
-                                  // );
+                                  AssetsAudioPlayer.newPlayer().open(
+                                    Audio('assets/audio/click.wav'),
+                                    showNotification: true,
+                                  );
                                 },
                                 child: Container(
                                   width: 95,

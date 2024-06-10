@@ -43,7 +43,7 @@ AlertDialog showEventItems(List<String> eventItemList) {
                       vertical: 5.0,
                       horizontal: 10.0,
                     ),
-                    title: Container(
+                    title: SizedBox(
                       width: double.infinity,
                       child: Text(
                         eventItemList[index],

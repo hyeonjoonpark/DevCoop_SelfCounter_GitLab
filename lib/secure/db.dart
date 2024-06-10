@@ -6,5 +6,6 @@ class DbSecure {
             defaultValue: 'localhost:8080');
 
   // DB_HOST getter 추가
+  // ignore: non_constant_identifier_names
   String get DB_HOST => dbHost;
 }

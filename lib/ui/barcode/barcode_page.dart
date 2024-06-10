@@ -5,14 +5,6 @@ import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 
-// TODO : 이게 왜 안됨
-
-// 바코드 페이지 에러
-// 결제 완료 후 바코드 페이지 재접속 시 바코드 입력이 안되는 현상
-
-// 해결 방법
-// 1. 바코드 페이지에 포커스를 재지정하는 코드를 추가합니다.
-
 class BarcodePage extends StatefulWidget {
   const BarcodePage({Key? key}) : super(key: key);
 
@@ -73,10 +65,9 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WillPopScope(
-        onWillPop: () async {
+      body: PopScope(
+        onPopInvoked: (bool didPop) async {
           FocusScope.of(context).requestFocus(_barcodeFocus);
-          return true;
         },
         child: Center(
           child: Container(
@@ -120,7 +111,7 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 34, horizontal: 12),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFECECEC),
+                                  color: const Color(0xFFECECEC),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: TextFormField(

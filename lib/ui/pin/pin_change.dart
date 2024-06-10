@@ -4,7 +4,6 @@ import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PinChange extends StatefulWidget {
@@ -40,22 +39,22 @@ class _PinChangeState extends State<PinChange> {
 
   void onNumberButtonPressed(
     int number,
-    TextEditingController _activeController,
+    TextEditingController activeController,
   ) {
-    String currentText = _activeController.text;
+    String currentText = activeController.text;
 
     if (number == 10) {
-      _activeController.clear(); // Clear focus and text
+      activeController.clear(); // Clear focus and text
     } else if (number == 12) {
       // Del button
       if (currentText.isNotEmpty) {
         String newText = currentText.substring(0, currentText.length - 1);
-        _activeController.text = newText;
+        activeController.text = newText;
       }
     } else {
       // 숫자 버튼 (0 포함)
       String newText = currentText + (number == 11 ? '0' : number.toString());
-      _activeController.text = newText;
+      activeController.text = newText;
     }
   }
 
@@ -92,9 +91,9 @@ class _PinChangeState extends State<PinChange> {
                             for (int j = 0; j < 3; j++) ...[
                               GestureDetector(
                                 onTap: () {
-                                  int _number = j + 1 + i * 3;
+                                  int number = j + 1 + i * 3;
                                   onNumberButtonPressed(
-                                      _number == 11 ? 0 : _number,
+                                      number == 11 ? 0 : number,
                                       _pinController);
                                 },
                                 child: Container(
@@ -158,7 +157,7 @@ class _PinChangeState extends State<PinChange> {
                                   horizontal: 12,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFECECEC),
+                                  color: const Color(0xFFECECEC),
                                   borderRadius: BorderRadius.circular(
                                     20,
                                   ),
@@ -224,7 +223,7 @@ class _PinChangeState extends State<PinChange> {
                                   horizontal: 12,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFECECEC),
+                                  color: const Color(0xFFECECEC),
                                   borderRadius: BorderRadius.circular(
                                     20,
                                   ),
@@ -284,7 +283,7 @@ class _PinChangeState extends State<PinChange> {
                                   horizontal: 12,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFECECEC),
+                                  color: const Color(0xFFECECEC),
                                   borderRadius: BorderRadius.circular(
                                     20,
                                   ),

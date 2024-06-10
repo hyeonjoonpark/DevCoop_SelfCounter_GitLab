@@ -20,7 +20,7 @@ GestureDetector mainTextButton({
         color: DevCoopColors.primary,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
             color: DevCoopColors.black.withOpacity(
               0.25,
             ),

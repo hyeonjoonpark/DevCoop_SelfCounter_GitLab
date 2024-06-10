@@ -69,7 +69,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
 // 결제 후 남은 포인트를 팝업창에 띄우는 로직 추가
-  void showPaymentsPopup(BuildContext context, String message, bool isError) {
+  void showPaymentsPopup(String message, bool isError) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -188,14 +188,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
             String message =
                 decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
             showPaymentsPopup(
-              context,
               message,
               false,
             );
           } else {
             print("Error Code: ${decodedResponse['code']}");
             showPaymentsPopup(
-              context,
               decodedResponse['message'],
               true,
             );
@@ -203,7 +201,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
         } else {
           print("응답상태 : ${response.statusCode}");
           showPaymentsPopup(
-            context,
             '에러: ${decodedResponse['message']}',
             true,
           );
@@ -215,13 +212,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
         String responseBody = utf8.decode(e.bodyBytes);
         var decodedResponse = json.decode(responseBody);
         showPaymentsPopup(
-          context,
           '예상치 못한 에러: ${decodedResponse['message']}',
           true,
         );
       } else {
         showPaymentsPopup(
-          context,
           '예상치 못한 에러: ${e.toString()}',
           true,
         );
@@ -402,7 +397,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                // Here, you define the structure of the popup.
                                 return AlertDialog(
                                   title: const Text(
                                     '행사상품 (1+1)',
@@ -649,7 +643,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                               await payments(itemResponses);
                             } else {
                               showPaymentsPopup(
-                                context,
                                 "잔액이 부족합니다",
                                 true,
                               );
@@ -740,8 +733,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   onPressed: () {
                     print("plus");
                     setState(() {
-                      // TODO : 상품 추가 버튼 클릭 시 상품 갯수 증가
-
                       itemResponses
                           .firstWhere((element) => element.itemName == left)
                           .quantity += 1;
@@ -781,8 +772,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   onPressed: () {
                     print("minus");
                     setState(() {
-                      // TODO : 상품 삭제 버튼 클릭 시 상품 총 갯수 감소
-
                       for (int i = 0; i < itemResponses.length; i++) {
                         if (itemResponses[i].itemName == left) {
                           if (itemResponses[i].quantity > 1) {
