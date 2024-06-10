@@ -51,8 +51,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
       setState(() {
         savedPoint = prefs.getInt('point') ?? 0;
         savedStudentName = prefs.getString('studentName') ?? '';
-        savedCodeNumber = prefs.getString('codeNumber'); // 수정
-        token = prefs.getString('accessToken') ?? ''; // 수정
+        savedCodeNumber = prefs.getString('codeNumber') ?? '';
+        token = prefs.getString('accessToken') ?? '';
       });
 
       if (savedPoint != 0 && savedStudentName.isNotEmpty) {
@@ -93,10 +93,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
         final List<dynamic> itemJsonList =
             jsonDecode(utf8.decode(response.bodyBytes));
         final Map<String, dynamic> responseBody = itemJsonList.first;
-        final String itemName = responseBody['name'];
-        final dynamic rawItemPrice = responseBody['price'];
-        final int itemQuantity = responseBody['quantity'];
-        final String eventStatus = responseBody['eventStatus'];
+        final String itemName = responseBody['name'] ?? '';
+        final dynamic rawItemPrice = responseBody['price'] ?? 0;
+        final int itemQuantity = responseBody['quantity'] ?? '';
+        final String eventStatus = responseBody['eventStatus'] ?? 'NONE';
         final String itemPrice = rawItemPrice?.toString() ?? '0';
 
         setState(() {
