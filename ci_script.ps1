@@ -3,9 +3,10 @@ param (
 )
 
 # 작업 디렉토리 설정
-$workingDirectory = "C:\Users\KB\Devcoop\devcoop_self_counter_v1"
-$buildDirectory = "C:\Users\KB\Devcoop\devcoop_self_counter_v1\build"
-# 환경 변수 설정2
+$workingDirectory = "C:/Users/KB/Devcoop/devcoop_self_counter_v1"
+$buildDirectory = "C:/Users/KB/Devcoop/devcoop_self_counter_v1/build"
+
+# 환경 변수 설정
 $env:DB_HOST = $env:DB_HOST
 echo "DB_HOST: $env:DB_HOST"
 
@@ -24,8 +25,9 @@ switch ($stage) {
         # 기존 폴더 삭제
         if (Test-Path $buildDirectory) {
             echo "Removing existing directory..."
-            Remove-Item -Recurse -Force "$buildDirectory"
+            Remove-Item -Recurse -Force $buildDirectory
         }
+
         Set-Location $workingDirectory
         git pull
     }
@@ -51,7 +53,6 @@ switch ($stage) {
 
         # 배포 완료 후 메시지 출력
         echo "Flutter application deployed successfully."
-        
     }
     default {
         echo "Invalid stage specified"

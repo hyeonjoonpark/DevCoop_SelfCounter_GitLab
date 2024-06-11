@@ -2,19 +2,20 @@ stages:
   - setup
   - build
   - deploy
+
 setup:
   stage: setup
   script:
-    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage setup"
+    - powershell -File $env:CI_SCRIPTS_PATH -stage setup
   tags:
     - kiosk
   only:
     - main
-    
+
 build:
   stage: build
   script:
-    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage build"
+    - powershell -File $env:CI_SCRIPTS_PATH -stage build
   tags:
     - kiosk
   only:
@@ -23,9 +24,8 @@ build:
 deploy:
   stage: deploy
   script:
-    - powershell -Command "& $env:CI_SCRIPTS_PATH -stage deploy"
+    - powershell -File $env:CI_SCRIPTS_PATH -stage deploy
   tags:
     - kiosk
   only:
     - main
-    
