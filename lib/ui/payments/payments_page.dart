@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:counter/Dto/event_item_response_dto.dart';
+import 'package:counter/dto/event_item_response_dto.dart';
 import 'package:counter/controller/get_event_list.dart';
 import 'package:counter/controller/payments_api.dart';
 import 'package:counter/ui/_constant/util/print.dart';
@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Dto/item_response_dto.dart';
+import '../../dto/item_response_dto.dart';
 import '../_constant/component/button.dart';
 import 'widgets/payments_popup.dart';
 
