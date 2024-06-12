@@ -12,9 +12,9 @@ class CheckStudent extends StatefulWidget {
 }
 
 class _CheckStudentState extends State<CheckStudent> {
-  late String savedStudentName = '';
-  late int savedPoint = 0;
-  late String savedCodeNumber = '';
+  String savedStudentName = '';
+  int savedPoint = 0;
+  String savedCodeNumber = '';
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _CheckStudentState extends State<CheckStudent> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      final String? loadedStudentName = prefs.getString('studentName');
+      final String loadedStudentName = prefs.getString('studentName') ?? '';
       final int loadedPoint = prefs.getInt('point') ?? 0;
       final String? loadedCodeNumber = prefs.getString('codeNumber');
 
@@ -44,7 +44,7 @@ class _CheckStudentState extends State<CheckStudent> {
         print('Data loaded from SharedPreferences');
 
         setState(() {
-          savedStudentName = loadedStudentName!;
+          savedStudentName = loadedStudentName;
           savedPoint = loadedPoint;
           savedCodeNumber = loadedCodeNumber;
         });

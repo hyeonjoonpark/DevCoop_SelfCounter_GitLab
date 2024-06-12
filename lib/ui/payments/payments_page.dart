@@ -28,7 +28,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   String savedStudentName = '';
   int savedPoint = 0;
   int totalPrice = 0;
-  String? savedCodeNumber;
+  String savedCodeNumber = '';
   List<ItemResponseDto> itemResponses = [];
   List<EventItemResponseDto> eventItemList = [];
   final dbSecure = DbSecure();
@@ -58,10 +58,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
       if (savedPoint != 0 && savedStudentName.isNotEmpty) {
         print("Getting UserInfo");
         print('Data loaded from SharedPreferences');
-      }
-
-      if (savedCodeNumber == null) {
-        print('codeNumber가 설정되지 않았습니다.');
       }
     } catch (e) {
       print('Error during loading data: $e');
@@ -156,55 +152,54 @@ class _PaymentsPageState extends State<PaymentsPage> {
     print("items = ${items[0].itemName}");
     try {
       print("savedUserId : $savedCodeNumber");
-      if (savedCodeNumber != null) {
-        String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
 
-        print(apiUrl);
-        print(
-            "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
+      String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
 
-        // API 요청 함수 호출
-        final response = await executePaymentRequest(apiUrl, token,
-            savedCodeNumber!, savedStudentName, totalPrice, items);
+      print(apiUrl);
+      print(
+          "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
 
-        print('token : $token');
+      // API 요청 함수 호출
+      final response = await executePaymentRequest(
+          apiUrl, token, savedCodeNumber, savedStudentName, totalPrice, items);
 
-        // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
-        String responseBody = utf8.decode(response.bodyBytes);
-        print('Response Body Bytes: ${response.bodyBytes}');
+      print('token : $token');
 
-        // JSON 파싱
-        var decodedResponse = json.decode(responseBody);
-        print('Decoded Response: $decodedResponse');
+      // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
+      String responseBody = utf8.decode(response.bodyBytes);
+      print('Response Body Bytes: ${response.bodyBytes}');
 
-        // 디코드된 응답을 출력합니다.
-        print("-----------------");
-        print(responseBody);
+      // JSON 파싱
+      var decodedResponse = json.decode(responseBody);
+      print('Decoded Response: $decodedResponse');
 
-        if (response.statusCode == 200) {
-          print("응답상태 : ${response.statusCode}");
-          if (decodedResponse['status'] == 'success') {
-            int remainingPoints = decodedResponse['remainingPoints'];
-            String message =
-                decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
-            showPaymentsPopup(
-              message,
-              false,
-            );
-          } else {
-            print("Error Code: ${decodedResponse['code']}");
-            showPaymentsPopup(
-              decodedResponse['message'],
-              true,
-            );
-          }
-        } else {
-          print("응답상태 : ${response.statusCode}");
+      // 디코드된 응답을 출력합니다.
+      print("-----------------");
+      print(responseBody);
+
+      if (response.statusCode == 200) {
+        print("응답상태 : ${response.statusCode}");
+        if (decodedResponse['status'] == 'success') {
+          int remainingPoints = decodedResponse['remainingPoints'];
+          String message =
+              decodedResponse['message'] + "\n남은 잔액: $remainingPoints";
           showPaymentsPopup(
-            '에러: ${decodedResponse['message']}',
+            message,
+            false,
+          );
+        } else {
+          print("Error Code: ${decodedResponse['code']}");
+          showPaymentsPopup(
+            decodedResponse['message'],
             true,
           );
         }
+      } else {
+        print("응답상태 : ${response.statusCode}");
+        showPaymentsPopup(
+          '에러: ${decodedResponse['message']}',
+          true,
+        );
       }
     } catch (e) {
       print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
@@ -680,7 +675,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 ? DevCoopTextStyle.medium_30.copyWith(
                     color: DevCoopColors.black,
                   )
-                : !totalText
+                : totalText
                     ? DevCoopTextStyle.light_30.copyWith(
                         color: DevCoopColors.black,
                       )
@@ -700,7 +695,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 ? DevCoopTextStyle.medium_30.copyWith(
                     color: DevCoopColors.black,
                   )
-                : !totalText
+                : totalText
                     ? DevCoopTextStyle.light_30.copyWith(
                         color: DevCoopColors.black,
                       )
@@ -717,7 +712,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   ? DevCoopTextStyle.medium_30.copyWith(
                       color: DevCoopColors.black,
                     )
-                  : !totalText
+                  : totalText
                       ? DevCoopTextStyle.light_30.copyWith(
                           color: DevCoopColors.black,
                         )

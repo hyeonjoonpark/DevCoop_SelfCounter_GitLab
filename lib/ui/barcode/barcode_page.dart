@@ -115,14 +115,16 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: TextFormField(
-                                  onFieldSubmitted: ((value) => {
-                                        if (_formKey.currentState!.validate())
-                                          {
-                                            Get.offAllNamed("/pin",
-                                                arguments:
-                                                    _codeNumberController.text)
-                                          }
-                                      }),
+                                  onFieldSubmitted: (value) {
+                                    if (_formKey.currentState?.validate() ??
+                                        false) {
+                                      final codeNumber =
+                                          _codeNumberController.text;
+                                      Get.offAllNamed("/pin",
+                                          arguments: codeNumber);
+                                    }
+                                  },
+
                                   // TextField 대신 TextFormField을 사용합니다.
                                   controller: _codeNumberController,
                                   focusNode: _barcodeFocus,
@@ -155,10 +157,11 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                             mainTextButton(
                               text: '다음으로',
                               onTap: () {
-                                if (_formKey.currentState!.validate()) {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
                                   // Form이 유효할 경우에만 네비게이션을 실행합니다.
-                                  Get.toNamed("/pin",
-                                      arguments: _codeNumberController.text);
+                                  final codeNumber = _codeNumberController.text;
+                                  Get.toNamed("/pin", arguments: codeNumber);
                                 }
                               },
                             ),
