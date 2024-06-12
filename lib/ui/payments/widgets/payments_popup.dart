@@ -1,5 +1,4 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ Future<void> removeUserData() async {
     prefs.remove('point');
     prefs.remove('studentName');
   } catch (e) {
-    printLog(e);
+    print(e);
   }
 }
 

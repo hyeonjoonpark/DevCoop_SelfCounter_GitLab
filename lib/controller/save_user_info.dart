@@ -1,4 +1,3 @@
-import 'package:counter/ui/_constant/util/print.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveUserData(String token, String codeNumber, int studentNumber,
@@ -10,6 +9,6 @@ Future<void> saveUserData(String token, String codeNumber, int studentNumber,
     prefs.setInt('point', point);
     prefs.setString('studentName', studentName);
   } catch (e) {
-    printLog(e);
+    print(e);
   }
 }

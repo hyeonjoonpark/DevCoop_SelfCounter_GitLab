@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:counter/dto/event_item_response_dto.dart';
 import 'package:counter/controller/get_event_list.dart';
 import 'package:counter/controller/payments_api.dart';
-import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
@@ -57,15 +56,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
       });
 
       if (savedPoint != 0 && savedStudentName.isNotEmpty) {
-        printLog("Getting UserInfo");
-        printLog('Data loaded from SharedPreferences');
+        print("Getting UserInfo");
+        print('Data loaded from SharedPreferences');
       }
 
       if (savedCodeNumber == null) {
-        printLog('codeNumber가 설정되지 않았습니다.');
+        print('codeNumber가 설정되지 않았습니다.');
       }
     } catch (e) {
-      printLog('Error during loading data: $e');
+      print('Error during loading data: $e');
     }
   }
 
@@ -117,7 +116,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
               itemId: barcode,
               quantity: itemQuantity,
             );
-            printLog('item = $item');
+            print('item = $item');
             itemResponses.add(item);
 
             eventStatus == 'NONE'
@@ -128,7 +127,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         });
       }
     } catch (e) {
-      printLog('Failed to fetch item data: $e');
+      print('Failed to fetch item data: $e');
     }
   }
 
@@ -153,37 +152,37 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Future<void> payments(List<ItemResponseDto> items) async {
-    printLog('payments 함수가 호출되었습니다.');
-    printLog("items = ${items[0].itemName}");
+    print('payments 함수가 호출되었습니다.');
+    print("items = ${items[0].itemName}");
     try {
-      printLog("savedUserId : $savedCodeNumber");
+      print("savedUserId : $savedCodeNumber");
       if (savedCodeNumber != null) {
         String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
 
-        printLog(apiUrl);
-        printLog(
+        print(apiUrl);
+        print(
             "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
 
         // API 요청 함수 호출
         final response = await executePaymentRequest(apiUrl, token,
             savedCodeNumber!, savedStudentName, totalPrice, items);
 
-        printLog('token : $token');
+        print('token : $token');
 
         // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
         String responseBody = utf8.decode(response.bodyBytes);
-        printLog('Response Body Bytes: ${response.bodyBytes}');
+        print('Response Body Bytes: ${response.bodyBytes}');
 
         // JSON 파싱
         var decodedResponse = json.decode(responseBody);
-        printLog('Decoded Response: $decodedResponse');
+        print('Decoded Response: $decodedResponse');
 
         // 디코드된 응답을 출력합니다.
-        printLog("-----------------");
-        printLog(responseBody);
+        print("-----------------");
+        print(responseBody);
 
         if (response.statusCode == 200) {
-          printLog("응답상태 : ${response.statusCode}");
+          print("응답상태 : ${response.statusCode}");
           if (decodedResponse['status'] == 'success') {
             int remainingPoints = decodedResponse['remainingPoints'];
             String message =
@@ -193,14 +192,14 @@ class _PaymentsPageState extends State<PaymentsPage> {
               false,
             );
           } else {
-            printLog("Error Code: ${decodedResponse['code']}");
+            print("Error Code: ${decodedResponse['code']}");
             showPaymentsPopup(
               decodedResponse['message'],
               true,
             );
           }
         } else {
-          printLog("응답상태 : ${response.statusCode}");
+          print("응답상태 : ${response.statusCode}");
           showPaymentsPopup(
             '에러: ${decodedResponse['message']}',
             true,
@@ -208,7 +207,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         }
       }
     } catch (e) {
-      printLog('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
+      print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
       if (e is http.Response) {
         String responseBody = utf8.decode(e.bodyBytes);
         var decodedResponse = json.decode(responseBody);
@@ -637,8 +636,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         mainTextButton(
                           text: '계산하기',
                           onTap: () async {
-                            printLog("계산하기 버튼 클릭");
-                            printLog("itemResponses : $itemResponses[0]");
+                            print("계산하기 버튼 클릭");
+                            print("itemResponses : $itemResponses[0]");
                             // onTap 콜백을 async로 선언하여 비동기 처리 가능
                             if (savedPoint - totalPrice >= 0) {
                               await payments(itemResponses);
@@ -732,7 +731,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    printLog("plus");
+                    print("plus");
                     setState(() {
                       itemResponses
                           .firstWhere((element) => element.itemName == left)
@@ -771,7 +770,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    printLog("minus");
+                    print("minus");
                     setState(() {
                       for (int i = 0; i < itemResponses.length; i++) {
                         if (itemResponses[i].itemName == left) {

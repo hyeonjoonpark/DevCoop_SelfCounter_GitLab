@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:counter/dto/event_item_response_dto.dart';
-import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/secure/db.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,16 +17,16 @@ Future<void> getEventList(Function(List<EventItemResponseDto>) onUpdate) async {
     if (response.statusCode == 200) {
       final decodedBody = utf8.decode(response.bodyBytes);
       List<dynamic> jsonList = json.decode(decodedBody);
-      printLog("JSON List: $jsonList");
+      print("JSON List: $jsonList");
 
       List<EventItemResponseDto> itemList =
           jsonList.map((item) => EventItemResponseDto.fromJson(item)).toList();
 
       onUpdate(itemList);
     } else {
-      printLog('Server Error: ${response.statusCode}');
+      print('Server Error: ${response.statusCode}');
     }
   } catch (e) {
-    printLog('Failed to load event list: $e');
+    print('Failed to load event list: $e');
   }
 }

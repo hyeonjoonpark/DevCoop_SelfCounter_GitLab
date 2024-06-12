@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:counter/ui/_constant/util/print.dart';
 import 'package:counter/controller/save_user_info.dart';
 import 'package:counter/secure/db.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +9,15 @@ class LoginController {
   final dbSecure = DbSecure();
   Future<void> login(
       BuildContext context, String codeNumber, String pin) async {
-    printLog(codeNumber);
-    printLog(pin);
+    print(codeNumber);
+    print(pin);
     Map<String, String> requestBody = {'codeNumber': codeNumber, 'pin': pin};
 
     String jsonData = json.encode(requestBody);
-    printLog(jsonData);
+    print(jsonData);
 
     String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/signIn';
-    printLog(apiUrl);
+    print(apiUrl);
 
     try {
       final response = await http.post(
@@ -29,8 +28,8 @@ class LoginController {
         body: jsonData,
       );
 
-      printLog("Response status: ${response.statusCode}");
-      printLog("Response body: ${response.body}");
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
 
       if (response.statusCode != 200) {
         Get.snackbar("Error", "학생증 번호 또는 핀 번호가 잘못되었습니다",
@@ -41,13 +40,13 @@ class LoginController {
       }
 
       if (response.statusCode == 200) {
-        printLog("로그인 성공");
+        print("로그인 성공");
 
         // 응답 본문을 UTF-8로 디코딩
         Map<String, dynamic> responseBody = json
             .decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
 
-        printLog("responseBody = $responseBody");
+        print("responseBody = $responseBody");
 
         String token = responseBody['token'] ?? '';
         String studentName = responseBody['studentName'] ?? '';
@@ -57,13 +56,13 @@ class LoginController {
         Object result =
             saveUserData(token, codeNumber, studentNumber, point, studentName);
 
-        printLog(result);
-        printLog("저장성공");
+        print(result);
+        print("저장성공");
 
         Get.offAllNamed('/check');
       }
     } catch (e) {
-      printLog("Exception caught: $e");
+      print("Exception caught: $e");
     }
   }
 }

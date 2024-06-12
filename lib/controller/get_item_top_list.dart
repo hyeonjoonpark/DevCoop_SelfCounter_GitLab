@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:counter/ui/_constant/util/print.dart';
 import 'package:http/http.dart' as http;
 import 'package:counter/secure/db.dart';
 
@@ -14,23 +13,23 @@ Future<void> getTopList(Function(List<String>) onUpdate) async {
       },
     );
 
-    printLog('Response status: ${response.statusCode}');
-    printLog('Response body: ${response.body}');
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       // 응답 본문을 UTF-8로 디코드
       final decodedBody = utf8.decode(response.bodyBytes);
-      printLog('Decoded body: $decodedBody');
+      print('Decoded body: $decodedBody');
       try {
         List<String> topList = List<String>.from(json.decode(decodedBody));
         onUpdate(topList);
       } catch (e) {
-        printLog('JSON decode error: $e');
+        print('JSON decode error: $e');
       }
     } else {
-      printLog('Request failed with status: ${response.statusCode}');
+      print('Request failed with status: ${response.statusCode}');
     }
   } catch (e) {
-    printLog('Error: $e');
+    print('Error: $e');
   }
 }
