@@ -24,10 +24,8 @@ Future<void> changePw(
     };
 
     String jsonData = json.encode(requestBody);
-    print(jsonData);
 
     String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/pwChange';
-    print(apiUrl);
 
     final response = await http.put(
       Uri.parse(apiUrl),
@@ -38,7 +36,6 @@ Future<void> changePw(
     );
 
     if (response.statusCode == 200) {
-      print('비밀번호 변경 성공');
       // 성공 팝업창 띄우기
       showDialog(
         context: context,
@@ -65,6 +62,6 @@ Future<void> changePw(
       );
     }
   } catch (e) {
-    print(e);
+    rethrow;
   }
 }

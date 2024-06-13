@@ -9,6 +9,6 @@ Future<void> saveUserData(String token, String codeNumber, int studentNumber,
     prefs.setInt('point', point);
     prefs.setString('studentName', studentName);
   } catch (e) {
-    print(e);
+    rethrow;
   }
 }

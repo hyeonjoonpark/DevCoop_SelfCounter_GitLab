@@ -13,23 +13,19 @@ Future<void> getTopList(Function(List<String>) onUpdate) async {
       },
     );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     if (response.statusCode == 200) {
       // 응답 본문을 UTF-8로 디코드
       final decodedBody = utf8.decode(response.bodyBytes);
-      print('Decoded body: $decodedBody');
       try {
         List<String> topList = List<String>.from(json.decode(decodedBody));
         onUpdate(topList);
       } catch (e) {
-        print('JSON decode error: $e');
+        rethrow;
       }
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      throw Exception(response.statusCode);
     }
   } catch (e) {
-    print('Error: $e');
+    rethrow;
   }
 }

@@ -13,7 +13,7 @@ Future<void> removeUserData() async {
     prefs.remove('point');
     prefs.remove('studentName');
   } catch (e) {
-    print(e);
+    rethrow;
   }
 }
 

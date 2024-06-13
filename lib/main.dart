@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:counter/provider/bottom_navigation_provider.dart';
 import 'package:counter/provider/count_provider.dart';
 import 'package:counter/ui/_constant/util/app_router.dart';
@@ -8,7 +10,6 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 

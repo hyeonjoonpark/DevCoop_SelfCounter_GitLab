@@ -48,19 +48,16 @@ class _PaymentsPageState extends State<PaymentsPage> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      setState(() {
-        savedPoint = prefs.getInt('point') ?? 0;
-        savedStudentName = prefs.getString('studentName') ?? '';
-        savedCodeNumber = prefs.getString('codeNumber') ?? '';
-        token = prefs.getString('accessToken') ?? '';
-      });
-
       if (savedPoint != 0 && savedStudentName.isNotEmpty) {
-        print("Getting UserInfo");
-        print('Data loaded from SharedPreferences');
+        setState(() {
+          savedPoint = prefs.getInt('point') ?? 0;
+          savedStudentName = prefs.getString('studentName') ?? '';
+          savedCodeNumber = prefs.getString('codeNumber') ?? '';
+          token = prefs.getString('accessToken') ?? '';
+        });
       }
     } catch (e) {
-      print('Error during loading data: $e');
+      rethrow;
     }
   }
 
@@ -112,7 +109,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
               itemId: barcode,
               quantity: itemQuantity,
             );
-            print('item = $item');
             itemResponses.add(item);
 
             eventStatus == 'NONE'
@@ -123,7 +119,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         });
       }
     } catch (e) {
-      print('Failed to fetch item data: $e');
+      rethrow;
     }
   }
 
@@ -148,37 +144,22 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Future<void> payments(List<ItemResponseDto> items) async {
-    print('payments 함수가 호출되었습니다.');
-    print("items = ${items[0].itemName}");
     try {
-      print("savedUserId : $savedCodeNumber");
-
       String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
-
-      print(apiUrl);
-      print(
-          "request user : $savedCodeNumber - $savedStudentName - $totalPrice");
 
       // API 요청 함수 호출
       final response = await executePaymentRequest(
           apiUrl, token, savedCodeNumber, savedStudentName, totalPrice, items);
 
-      print('token : $token');
-
       // 응답을 UTF-8로 디코딩하여 변수에 저장합니다.
       String responseBody = utf8.decode(response.bodyBytes);
-      print('Response Body Bytes: ${response.bodyBytes}');
 
       // JSON 파싱
       var decodedResponse = json.decode(responseBody);
-      print('Decoded Response: $decodedResponse');
 
       // 디코드된 응답을 출력합니다.
-      print("-----------------");
-      print(responseBody);
 
       if (response.statusCode == 200) {
-        print("응답상태 : ${response.statusCode}");
         if (decodedResponse['status'] == 'success') {
           int remainingPoints = decodedResponse['remainingPoints'];
           String message =
@@ -188,21 +169,18 @@ class _PaymentsPageState extends State<PaymentsPage> {
             false,
           );
         } else {
-          print("Error Code: ${decodedResponse['code']}");
           showPaymentsPopup(
             decodedResponse['message'],
             true,
           );
         }
       } else {
-        print("응답상태 : ${response.statusCode}");
         showPaymentsPopup(
           '에러: ${decodedResponse['message']}',
           true,
         );
       }
     } catch (e) {
-      print('결제 처리 중 오류가 발생했습니다: ${e.toString()}');
       if (e is http.Response) {
         String responseBody = utf8.decode(e.bodyBytes);
         var decodedResponse = json.decode(responseBody);
@@ -389,6 +367,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                 eventItemList = newList;
                               });
                             });
+
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -532,8 +511,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                   addItem(eventItemList[
                                                                           index]
                                                                       .barcode);
-                                                                  navigator
-                                                                      ?.pop();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
                                                                 },
                                                                 style:
                                                                     ButtonStyle(
@@ -631,8 +611,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         mainTextButton(
                           text: '계산하기',
                           onTap: () async {
-                            print("계산하기 버튼 클릭");
-                            print("itemResponses : $itemResponses[0]");
                             // onTap 콜백을 async로 선언하여 비동기 처리 가능
                             if (savedPoint - totalPrice >= 0) {
                               await payments(itemResponses);
@@ -707,26 +685,26 @@ class _PaymentsPageState extends State<PaymentsPage> {
         Container(
           width: 155,
           alignment: Alignment.centerRight,
-          child: Text(rightText ?? NumberFormatUtil.convert1000Number(right!),
-              style: contentsTitle
-                  ? DevCoopTextStyle.medium_30.copyWith(
-                      color: DevCoopColors.black,
-                    )
-                  : totalText
-                      ? DevCoopTextStyle.light_30.copyWith(
+          child:
+              Text(rightText ?? NumberFormatUtil.convert1000Number(right ?? 0),
+                  style: contentsTitle
+                      ? DevCoopTextStyle.medium_30.copyWith(
                           color: DevCoopColors.black,
                         )
-                      : DevCoopTextStyle.bold_30.copyWith(
-                          color: DevCoopColors.black,
-                        )),
+                      : totalText
+                          ? DevCoopTextStyle.light_30.copyWith(
+                              color: DevCoopColors.black,
+                            )
+                          : DevCoopTextStyle.bold_30.copyWith(
+                              color: DevCoopColors.black,
+                            )),
         ),
         const SizedBox(width: 10),
-        plus != ""
+        plus.isNotEmpty
             ? Container(
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("plus");
                     setState(() {
                       itemResponses
                           .firstWhere((element) => element.itemName == left)
@@ -760,12 +738,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 width: 54,
               ),
         const SizedBox(width: 10),
-        plus != ""
+        plus.isNotEmpty
             ? Container(
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("minus");
                     setState(() {
                       for (int i = 0; i < itemResponses.length; i++) {
                         if (itemResponses[i].itemName == left) {

@@ -37,20 +37,18 @@ class _CheckStudentState extends State<CheckStudent> {
 
       final String loadedStudentName = prefs.getString('studentName') ?? '';
       final int loadedPoint = prefs.getInt('point') ?? 0;
-      final String? loadedCodeNumber = prefs.getString('codeNumber');
+      final String loadedCodeNumber = prefs.getString('codeNumber') ?? '';
 
-      if (loadedCodeNumber != null && loadedCodeNumber.isNotEmpty) {
-        print("Getting UserInfo");
-        print('Data loaded from SharedPreferences');
+      // if (loadedCodeNumber != null && loadedCodeNumber.isNotEmpty) {
 
-        setState(() {
-          savedStudentName = loadedStudentName;
-          savedPoint = loadedPoint;
-          savedCodeNumber = loadedCodeNumber;
-        });
-      }
+      setState(() {
+        savedStudentName = loadedStudentName;
+        savedPoint = loadedPoint;
+        savedCodeNumber = loadedCodeNumber;
+      });
+      // }
     } catch (e) {
-      print('에러발생: $e');
+      rethrow;
     }
   }
 

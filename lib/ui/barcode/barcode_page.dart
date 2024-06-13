@@ -13,9 +13,9 @@ class BarcodePage extends StatefulWidget {
 }
 
 class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
-  late TextEditingController _codeNumberController;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _codeNumberController = TextEditingController();
   final FocusNode _barcodeFocus = FocusNode();
-  final _formKey = GlobalKey<FormState>();
 
   // 바코드페이지에 접속할 때마다 포커스를 재지정합니다.
   @override
@@ -157,8 +157,9 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
                             mainTextButton(
                               text: '다음으로',
                               onTap: () {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
+                                // _formKey와 currentState의 null 여부를 확인합니다.
+                                if (_formKey.currentState != null &&
+                                    _formKey.currentState!.validate()) {
                                   // Form이 유효할 경우에만 네비게이션을 실행합니다.
                                   final codeNumber = _codeNumberController.text;
                                   Get.toNamed("/pin", arguments: codeNumber);

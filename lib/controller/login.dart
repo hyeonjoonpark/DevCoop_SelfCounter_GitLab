@@ -9,15 +9,11 @@ class LoginController {
   final dbSecure = DbSecure();
   Future<void> login(
       BuildContext context, String codeNumber, String pin) async {
-    print(codeNumber);
-    print(pin);
     Map<String, String> requestBody = {'codeNumber': codeNumber, 'pin': pin};
 
     String jsonData = json.encode(requestBody);
-    print(jsonData);
 
     String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/signIn';
-    print(apiUrl);
 
     try {
       final response = await http.post(
@@ -28,9 +24,6 @@ class LoginController {
         body: jsonData,
       );
 
-      print("Response status: ${response.statusCode}");
-      print("Response body: ${response.body}");
-
       if (response.statusCode != 200) {
         Get.snackbar("Error", "학생증 번호 또는 핀 번호가 잘못되었습니다",
             colorText: Colors.white,
@@ -40,29 +33,21 @@ class LoginController {
       }
 
       if (response.statusCode == 200) {
-        print("로그인 성공");
-
         // 응답 본문을 UTF-8로 디코딩
         Map<String, dynamic> responseBody = json
             .decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-
-        print("responseBody = $responseBody");
 
         String token = responseBody['token'] ?? '';
         String studentName = responseBody['studentName'] ?? '';
         int studentNumber = responseBody['studentNumber'] ?? 0;
         int point = responseBody['point'] ?? 0;
 
-        Object result =
-            saveUserData(token, codeNumber, studentNumber, point, studentName);
-
-        print(result);
-        print("저장성공");
+        saveUserData(token, codeNumber, studentNumber, point, studentName);
 
         Get.offAllNamed('/check');
       }
     } catch (e) {
-      print("Exception caught: $e");
+      rethrow;
     }
   }
 }

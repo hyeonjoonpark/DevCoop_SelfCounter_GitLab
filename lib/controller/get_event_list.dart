@@ -17,16 +17,15 @@ Future<void> getEventList(Function(List<EventItemResponseDto>) onUpdate) async {
     if (response.statusCode == 200) {
       final decodedBody = utf8.decode(response.bodyBytes);
       List<dynamic> jsonList = json.decode(decodedBody);
-      print("JSON List: $jsonList");
 
       List<EventItemResponseDto> itemList =
           jsonList.map((item) => EventItemResponseDto.fromJson(item)).toList();
 
       onUpdate(itemList);
     } else {
-      print('Server Error: ${response.statusCode}');
+      throw Exception(response.statusCode);
     }
   } catch (e) {
-    print('Failed to load event list: $e');
+    rethrow;
   }
 }

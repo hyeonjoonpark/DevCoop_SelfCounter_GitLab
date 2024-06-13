@@ -10,9 +10,6 @@
             "name": "Flutter 시작 Chrome",
             "url": "http://localhost:8080",
             "webRoot": "${workspaceFolder}",
-            "args": [
-                "--no-sound-null-safety"
-            ]
         },
     ]
 }
