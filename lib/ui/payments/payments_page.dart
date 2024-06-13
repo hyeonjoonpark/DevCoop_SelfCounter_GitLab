@@ -89,11 +89,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
         final List<dynamic> itemJsonList =
             jsonDecode(utf8.decode(response.bodyBytes));
         final Map<String, dynamic> responseBody = itemJsonList.first;
-        final String itemName = responseBody['name'] ?? '';
-        final dynamic rawItemPrice = responseBody['price'] ?? 0;
-        final int itemQuantity = responseBody['quantity'] ?? '';
+        final String itemName = responseBody['name'];
+        final dynamic rawItemPrice = responseBody['price'];
+        final int itemQuantity = responseBody['quantity'];
         final String eventStatus = responseBody['eventStatus'] ?? 'NONE';
-        final String itemPrice = rawItemPrice?.toString() ?? '0';
+        final String itemPrice = rawItemPrice.toString();
 
         setState(() {
           final existingItemIndex = itemResponses.indexWhere(
