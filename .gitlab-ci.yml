@@ -1,0 +1,31 @@
+stages:
+  - setup
+  - build
+  - deploy
+
+setup:
+  stage: setup
+  script:
+    - powershell -File $env:CI_SCRIPTS_PATH -stage setup
+  tags:
+    - kiosk
+  only:
+    - main
+
+build:
+  stage: build
+  script:
+    - powershell -File $env:CI_SCRIPTS_PATH -stage build
+  tags:
+    - kiosk
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  script:
+    - powershell -File $env:CI_SCRIPTS_PATH -stage deploy
+  tags:
+    - kiosk
+  only:
+    - main
