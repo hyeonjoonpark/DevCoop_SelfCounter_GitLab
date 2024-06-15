@@ -1,13 +1,16 @@
-# counter
+# devcoop_self_counter_v1
 
-BSM SelfCounter Flutter Project
-
+A new Flutter project.
 
 ## Getting Started
-부산소프트웨어마이스터고등학교 매점 아리페이 사용을 위한 키오스크
 
+This project is a starting point for a Flutter application.
 
-### PATCH
-1. 개발 및 배포 시 db경로 환경변수화 완료 (DB_HOST)
-2. 백엔드 에러내용 플러터에 렌더링
-m
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

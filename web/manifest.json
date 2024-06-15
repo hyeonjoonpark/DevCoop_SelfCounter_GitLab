@@ -1,6 +1,6 @@
 {
-    "name": "counter",
-    "short_name": "counter",
+    "name": "devcoop_self_counter_v1",
+    "short_name": "devcoop_self_counter_v1",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
