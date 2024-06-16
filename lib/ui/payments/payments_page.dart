@@ -47,15 +47,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
   Future<void> loadUserData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      if (savedPoint != 0 && savedStudentName.isNotEmpty) {
-        setState(() {
-          savedPoint = prefs.getInt('point') ?? 0;
-          savedStudentName = prefs.getString('studentName') ?? '';
-          savedCodeNumber = prefs.getString('codeNumber') ?? '';
-          token = prefs.getString('accessToken') ?? '';
-        });
-      }
+      setState(() {
+        savedPoint = prefs.getInt('point') ?? 0;
+        savedStudentName = prefs.getString('studentName') ?? '';
+        savedCodeNumber = prefs.getString('codeNumber') ?? '';
+        token = prefs.getString('accessToken') ?? '';
+      });
     } catch (e) {
       rethrow;
     }
@@ -72,13 +69,14 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Future<void> fetchItemData(String barcode, int quantity) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
       final response = await http.get(
         Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${prefs.getString("accessToken")}',
         },
       );
 
