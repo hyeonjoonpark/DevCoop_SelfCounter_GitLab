@@ -29,6 +29,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   int savedPoint = 0;
   int totalPrice = 0;
   String savedCodeNumber = '';
+  String? eventStatus = '';
   List<ItemResponseDto> itemResponses = [];
   List<EventItemResponseDto> eventItemList = [];
   final dbSecure = DbSecure();
@@ -69,14 +70,13 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Future<void> fetchItemData(String barcode, int quantity) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
       final response = await http.get(
         Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${prefs.getString("accessToken")}',
+          'Authorization': 'Bearer $token',
         },
       );
 
@@ -87,7 +87,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         final String itemName = responseBody['name'];
         final dynamic rawItemPrice = responseBody['price'];
         final int itemQuantity = responseBody['quantity'];
-        final String eventStatus = responseBody['eventStatus'] ?? 'NONE';
+        final String eventStatus = responseBody['event'] ?? 'NONE';
         final String itemPrice = rawItemPrice.toString();
 
         setState(() {
@@ -106,7 +106,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
               itemPrice: rawItemPrice,
               itemId: barcode,
               quantity: itemQuantity,
+              type: eventStatus,
             );
+
+            print("eventStatus = $eventStatus");
             itemResponses.add(item);
 
             eventStatus == 'NONE'
@@ -279,6 +282,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       children: [
                         paymentsItem(
                           left: '상품 이름',
+                          // ItemResponseDto의 Getter 사용
+                          type: "이벤트",
                           center: '수량',
                           plus: "",
                           minus: "-",
@@ -297,6 +302,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                     i++) ...[
                                   paymentsItem(
                                     left: itemResponses[i].itemName,
+                                    type: eventStatus == "NONE" ? "일반" : "1+1",
                                     center: itemResponses[i].quantity,
                                     plus: "+",
                                     minus: "-",
@@ -333,6 +339,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       child: savedPoint - totalPrice >= 0
                           ? paymentsItem(
                               left: '총 상품 개수 및 합계',
+                              // ItemResponseDto의 Getter 사용
+                              type: "",
                               center: itemResponses
                                   .map<int>((item) => item.quantity)
                                   .fold<int>(
@@ -634,6 +642,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   Row paymentsItem({
     required String left,
+    required String type,
     required dynamic center,
     required String plus,
     required String minus,
@@ -660,6 +669,25 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 20),
+          alignment: Alignment.centerRight,
+          width: 155,
+          child: Text(
+            type,
+            style: contentsTitle
+                ? DevCoopTextStyle.medium_30.copyWith(
+                    color: DevCoopColors.black,
+                  )
+                : totalText
+                    ? DevCoopTextStyle.medium_30.copyWith(
+                        color: DevCoopColors.black,
+                      )
+                    : DevCoopTextStyle.medium_30.copyWith(
+                        color: DevCoopColors.error,
+                      ),
           ),
         ),
         Container(
