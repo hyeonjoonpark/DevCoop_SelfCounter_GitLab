@@ -29,7 +29,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   int savedPoint = 0;
   int totalPrice = 0;
   String savedCodeNumber = '';
-  String? eventStatus = '';
+  String eventStatus = '';
   List<ItemResponseDto> itemResponses = [];
   List<EventItemResponseDto> eventItemList = [];
   final dbSecure = DbSecure();
@@ -81,16 +81,17 @@ class _PaymentsPageState extends State<PaymentsPage> {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> itemJsonList =
-            jsonDecode(utf8.decode(response.bodyBytes));
-        final Map<String, dynamic> responseBody = itemJsonList.first;
-        final String itemName = responseBody['name'];
-        final dynamic rawItemPrice = responseBody['price'];
-        final int itemQuantity = responseBody['quantity'];
-        final String eventStatus = responseBody['event'] ?? 'NONE';
-        final String itemPrice = rawItemPrice.toString();
-
         setState(() {
+          final List<dynamic> itemJsonList =
+              jsonDecode(utf8.decode(response.bodyBytes));
+          final Map<String, dynamic> responseBody = itemJsonList.first;
+          final String itemName = responseBody['name'];
+          final dynamic rawItemPrice = responseBody['price'];
+          final int itemQuantity = responseBody['quantity'];
+          // Response Body에서 eventStatus를 가져옵니다.
+          final String eventStatus = responseBody['eventStatus'];
+          final String itemPrice = rawItemPrice.toString();
+
           final existingItemIndex = itemResponses.indexWhere(
             (existingItem) => existingItem.itemId == barcode,
           );
@@ -302,7 +303,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                     i++) ...[
                                   paymentsItem(
                                     left: itemResponses[i].itemName,
-                                    type: eventStatus == "NONE" ? "일반" : "1+1",
+                                    // eventStatus가 'NONE'일 경우 'NONE'을 출력
+                                    // eventStatus가 '1+1'일 경우 '1+1'을 출력
+                                    type: itemResponses[i].type == 'NONE'
+                                        ? '일 반'
+                                        : '1 + 1',
                                     center: itemResponses[i].quantity,
                                     plus: "+",
                                     minus: "-",
@@ -661,7 +666,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     color: DevCoopColors.black,
                   )
                 : totalText
-                    ? DevCoopTextStyle.light_30.copyWith(
+                    ? DevCoopTextStyle.bold_30.copyWith(
                         color: DevCoopColors.black,
                       )
                     : DevCoopTextStyle.bold_30.copyWith(
@@ -672,9 +677,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 20),
+          // margin: const EdgeInsets.only(left: 40),
           alignment: Alignment.centerRight,
-          width: 155,
+          width: 100,
           child: Text(
             type,
             style: contentsTitle
@@ -700,7 +705,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     color: DevCoopColors.black,
                   )
                 : totalText
-                    ? DevCoopTextStyle.light_30.copyWith(
+                    ? DevCoopTextStyle.bold_30.copyWith(
                         color: DevCoopColors.black,
                       )
                     : DevCoopTextStyle.bold_30.copyWith(
@@ -718,7 +723,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           color: DevCoopColors.black,
                         )
                       : totalText
-                          ? DevCoopTextStyle.light_30.copyWith(
+                          ? DevCoopTextStyle.bold_30.copyWith(
                               color: DevCoopColors.black,
                             )
                           : DevCoopTextStyle.bold_30.copyWith(
