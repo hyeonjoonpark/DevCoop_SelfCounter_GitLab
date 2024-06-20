@@ -33,7 +33,8 @@ switch ($stage) {
     }
     "build" {
         Set-Location $workingDirectory
-
+        echo "Flutter clean"
+        flutter clean
         echo "Running pub get..."
         flutter pub get
         echo "Building the Flutter application..."
