@@ -8,21 +8,21 @@ Widget bottomNavigationBarWidget(BottomNavigationProvider provider) {
       BottomNavigationBarItem(
         icon: Icon(
           Icons.qr_code,
-          size: 100,
+          size: 70,
         ),
         label: '결제하기',
       ),
       BottomNavigationBarItem(
         icon: Icon(
           Icons.password,
-          size: 100,
+          size: 70,
         ),
         label: '핀 변경',
       ),
       BottomNavigationBarItem(
         icon: Icon(
           Icons.restaurant_menu,
-          size: 100,
+          size: 70,
         ),
         label: '인기상품',
       ),

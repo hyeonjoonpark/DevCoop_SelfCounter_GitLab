@@ -70,163 +70,165 @@ class _PinPageState extends State<PinPage> {
           horizontal: 90,
         ),
         alignment: Alignment.center,
-        child: Column(
-          children: [
-            Text(
-              "핀 번호를 입력해주세요",
-              style: DevCoopTextStyle.bold_40.copyWith(
-                color: DevCoopColors.black,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                "핀 번호를 입력해주세요",
+                style: DevCoopTextStyle.bold_40.copyWith(
+                  color: DevCoopColors.black,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 90,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (int i = 0; i < 4; i++) ...[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            for (int j = 0; j < 3; j++) ...[
-                              GestureDetector(
-                                onTap: () {
-                                  // 숫자버튼 클릭하면 소리나도록
-                                  int number = j + 1 + i * 3;
-                                  onNumberButtonPressed(
-                                    number == 11 ? 0 : number,
-                                    _pinController,
-                                  );
-                                  AssetsAudioPlayer.newPlayer().open(
-                                    Audio('assets/audio/click.wav'),
-                                    showNotification: true,
-                                  );
-                                },
-                                child: Container(
-                                  width: 95,
-                                  height: 95,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: (j + 1 + i * 3 == 10 ||
-                                            j + 1 + i * 3 == 12)
-                                        ? DevCoopColors.primary
-                                        : const Color(0xFFD9D9D9),
-                                  ),
-                                  child: Text(
-                                    '${j + 1 + i * 3 == 10 ? 'Clear' : (j + 1 + i * 3 == 11 ? '0' : (j + 1 + i * 3 == 12 ? 'Del' : j + 1 + i * 3))}',
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      color: DevCoopColors.black,
+              const SizedBox(
+                height: 90,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < 4; i++) ...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              for (int j = 0; j < 3; j++) ...[
+                                GestureDetector(
+                                  onTap: () {
+                                    // 숫자버튼 클릭하면 소리나도록
+                                    int number = j + 1 + i * 3;
+                                    onNumberButtonPressed(
+                                      number == 11 ? 0 : number,
+                                      _pinController,
+                                    );
+                                    AssetsAudioPlayer.newPlayer().open(
+                                      Audio('assets/audio/click.wav'),
+                                      showNotification: true,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 95,
+                                    height: 95,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: (j + 1 + i * 3 == 10 ||
+                                              j + 1 + i * 3 == 12)
+                                          ? DevCoopColors.primary
+                                          : const Color(0xFFD9D9D9),
+                                    ),
+                                    child: Text(
+                                      '${j + 1 + i * 3 == 10 ? 'Clear' : (j + 1 + i * 3 == 11 ? '0' : (j + 1 + i * 3 == 12 ? 'Del' : j + 1 + i * 3))}',
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        color: DevCoopColors.black,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ],
-                          ],
-                        ),
-                        if (i < 3) ...[
-                          const SizedBox(
-                            height: 10,
                           ),
+                          if (i < 3) ...[
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
                         ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 160,
-                            child: Text(
-                              '핀 번호',
-                              style: DevCoopTextStyle.medium_30.copyWith(
-                                color: DevCoopColors.black,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              child: Text(
+                                '핀 번호',
+                                style: DevCoopTextStyle.medium_30.copyWith(
+                                  color: DevCoopColors.black,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  _setActiveController(_pinController);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 34,
+                                    horizontal: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFECECEC),
+                                    borderRadius: BorderRadius.circular(
+                                      20,
+                                    ),
+                                  ),
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    // TextField 대신 TextFormField을 사용합니다.
+                                    controller: _pinController,
+                                    focusNode: _pinFocus,
+                                    validator: (value) {
+                                      // 여기에 validator 추가
+                                      if (value == null || value.isEmpty) {
+                                        return '핀 번호를 입력해주세요';
+                                      }
+                                      return null;
+                                    },
+                                    onFieldSubmitted: (value) {
+                                      _handleSubmit(); // 엔터를 눌렀을 때 호출되는 함수
+                                    },
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.zero,
+                                      isDense: true,
+                                      hintText: '자신의 핀번호를 입력해주세요',
+                                      hintStyle: DevCoopTextStyle.medium_30
+                                          .copyWith(fontSize: 15),
+                                      border: InputBorder.none,
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            mainTextButton(
+                              text: '처음으로',
                               onTap: () {
-                                _setActiveController(_pinController);
+                                Get.offAllNamed('/');
                               },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 34,
-                                  horizontal: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFECECEC),
-                                  borderRadius: BorderRadius.circular(
-                                    20,
-                                  ),
-                                ),
-                                child: TextFormField(
-                                  obscureText: true,
-                                  // TextField 대신 TextFormField을 사용합니다.
-                                  controller: _pinController,
-                                  focusNode: _pinFocus,
-                                  validator: (value) {
-                                    // 여기에 validator 추가
-                                    if (value == null || value.isEmpty) {
-                                      return '핀 번호를 입력해주세요';
-                                    }
-                                    return null;
-                                  },
-                                  onFieldSubmitted: (value) {
-                                    _handleSubmit(); // 엔터를 눌렀을 때 호출되는 함수
-                                  },
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.zero,
-                                    isDense: true,
-                                    hintText: '자신의 핀번호를 입력해주세요',
-                                    hintStyle: DevCoopTextStyle.medium_30
-                                        .copyWith(fontSize: 15),
-                                    border: InputBorder.none,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          mainTextButton(
-                            text: '처음으로',
-                            onTap: () {
-                              Get.offAllNamed('/');
-                            },
-                          ),
-                          mainTextButton(
-                            text: '확인',
-                            onTap: () {
-                              _handleSubmit(); // 확인 버튼 클릭 시 호출되는 함수
-                            },
-                          ),
-                        ],
-                      )
-                    ],
+                            mainTextButton(
+                              text: '확인',
+                              onTap: () {
+                                _handleSubmit(); // 확인 버튼 클릭 시 호출되는 함수
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
