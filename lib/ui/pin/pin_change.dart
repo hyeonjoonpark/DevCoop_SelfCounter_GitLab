@@ -37,18 +37,6 @@ class _PinChangeState extends State<PinChange> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_idFocus);
     });
-
-    _idFocus.addListener(() {
-      if (_idFocus.hasFocus) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      }
-    });
-
-    _pinFocus.addListener(() {
-      if (_pinFocus.hasFocus) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      }
-    });
   }
 
   void onNumberButtonPressed(

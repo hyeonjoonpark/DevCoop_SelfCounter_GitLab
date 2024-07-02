@@ -44,12 +44,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
   void initState() {
     super.initState();
 
-    barcodeFocusNode.addListener(() {
-      if (barcodeFocusNode.hasFocus) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      }
-    });
-
     loadUserData();
   }
 

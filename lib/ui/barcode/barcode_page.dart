@@ -30,12 +30,6 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshContent();
     });
-
-    _barcodeFocus.addListener(() {
-      if (_barcodeFocus.hasFocus) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      }
-    });
   }
 
   @override
