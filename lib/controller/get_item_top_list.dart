@@ -7,7 +7,7 @@ Future<void> getTopList(Function(List<String>) onUpdate) async {
   final dbSecure = DbSecure();
   try {
     final response = await http.get(
-      Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/top/list'),
+      Uri.parse('${dbSecure.DB_HOST}/kiosk/item/top/list'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

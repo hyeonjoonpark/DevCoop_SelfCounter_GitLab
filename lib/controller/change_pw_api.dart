@@ -25,7 +25,7 @@ Future<void> changePw(
 
     String jsonData = json.encode(requestBody);
 
-    String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/pwChange';
+    String apiUrl = '${dbSecure.DB_HOST}/kiosk/auth/pwChange';
 
     final response = await http.put(
       Uri.parse(apiUrl),

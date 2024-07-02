@@ -7,7 +7,7 @@ Future<void> suggest(Function(String) onUpdate, String randomData) async {
   final dbSecure = DbSecure();
   try {
     final response = await http.get(
-      Uri.parse('http://${dbSecure.DB_HOST}/kiosk/item/ai/suggest'),
+      Uri.parse('${dbSecure.DB_HOST}/kiosk/item/ai/suggest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -13,7 +13,7 @@ class LoginController {
 
     String jsonData = json.encode(requestBody);
 
-    String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/auth/signIn';
+    String apiUrl = '${dbSecure.DB_HOST}/kiosk/auth/signIn';
 
     try {
       final response = await http.post(

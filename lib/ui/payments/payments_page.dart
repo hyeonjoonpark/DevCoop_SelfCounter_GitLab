@@ -72,7 +72,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   Future<void> fetchItemData(String barcode, int quantity) async {
     try {
-      String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk';
+      String apiUrl = '${dbSecure.DB_HOST}/kiosk';
       final response = await http.get(
         Uri.parse('$apiUrl/itemSelect?barcodes=$barcode'),
         headers: <String, String>{
@@ -174,7 +174,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   Future<void> payments(List<ItemResponseDto> items) async {
     try {
-      String apiUrl = 'http://${dbSecure.DB_HOST}/kiosk/executePayments';
+      String apiUrl = '${dbSecure.DB_HOST}/kiosk/executePayments';
 
       // API 요청 함수 호출
       final response = await executePaymentRequest(

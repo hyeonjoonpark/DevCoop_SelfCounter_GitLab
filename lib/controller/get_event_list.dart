@@ -8,7 +8,7 @@ Future<void> getEventList(Function(List<EventItemResponseDto>) onUpdate) async {
   final dbSecure = DbSecure();
   try {
     final response = await http.get(
-      Uri.parse('http://${dbSecure.DB_HOST}/kiosk/event-item/get-item'),
+      Uri.parse('${dbSecure.DB_HOST}/kiosk/event-item/get-item'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
