@@ -32,12 +32,6 @@ class _PinPageState extends State<PinPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_pinFocus);
     });
-
-    _pinController.addListener(() {
-      if (_pinFocus.hasFocus) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      }
-    });
   }
 
   void onNumberButtonPressed(
