@@ -4,6 +4,7 @@ import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../controller/login.dart';
 import 'package:get/get.dart';
 
@@ -30,6 +31,12 @@ class _PinPageState extends State<PinPage> {
     // 화면이 나타난 후에 포커스를 지정
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_pinFocus);
+    });
+
+    _pinController.addListener(() {
+      if (_pinFocus.hasFocus) {
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+      }
     });
   }
 

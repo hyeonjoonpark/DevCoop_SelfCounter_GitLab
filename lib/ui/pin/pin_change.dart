@@ -4,6 +4,7 @@ import 'package:counter/ui/_constant/component/button.dart';
 import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -35,6 +36,18 @@ class _PinChangeState extends State<PinChange> {
     // 화면이 나타난 후에 포커스를 지정
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_idFocus);
+    });
+
+    _idFocus.addListener(() {
+      if (_idFocus.hasFocus) {
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+      }
+    });
+
+    _pinFocus.addListener(() {
+      if (_pinFocus.hasFocus) {
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+      }
     });
   }
 

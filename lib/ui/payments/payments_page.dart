@@ -8,6 +8,7 @@ import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/util/number_format_util.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -42,6 +43,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
   @override
   void initState() {
     super.initState();
+
+    barcodeFocusNode.addListener(() {
+      if (barcodeFocusNode.hasFocus) {
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+      }
+    });
 
     loadUserData();
   }
