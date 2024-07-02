@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 
 GestureDetector mainTextButton({
   required String text,
-  required Function() onTap,
+  bool isButtonDisabled = false, // 기본값 설정
+  required Function()? onTap,
 }) {
   return GestureDetector(
-    onTap: onTap,
+    onTap: isButtonDisabled ? null : onTap,
     child: Container(
       padding: const EdgeInsets.symmetric(
         vertical: 8,
@@ -17,7 +18,9 @@ GestureDetector mainTextButton({
         borderRadius: BorderRadius.circular(
           30,
         ),
-        color: DevCoopColors.primary,
+        color: isButtonDisabled
+            ? Colors.grey
+            : DevCoopColors.primary, // 비활성화 상태일 때 색상 변경
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 4),

@@ -34,6 +34,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   List<EventItemResponseDto> eventItemList = [];
   final dbSecure = DbSecure();
   String token = '';
+  bool isButtonDisabled = false;
 
   TextEditingController barcodeController = TextEditingController();
   FocusNode barcodeFocusNode = FocusNode();
@@ -127,6 +128,32 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   void addItem(String itemBarcode) {
     fetchItemData(itemBarcode, 1);
+  }
+
+  Future<void> _handlePayment() async {
+    // onTap 콜백을 async로 선언하여 비동기 처리 가능
+    if (savedPoint - totalPrice >= 0) {
+      await payments(itemResponses);
+    } else {
+      showPaymentsPopup(
+        "잔액이 부족합니다",
+        true,
+      );
+    }
+  }
+
+  Function()? _debounce(Function()? func, int milliseconds) {
+    bool isButtonPressed = false;
+
+    return () {
+      if (!isButtonPressed) {
+        isButtonPressed = true;
+        func?.call();
+        Future.delayed(Duration(milliseconds: milliseconds), () {
+          isButtonPressed = false;
+        });
+      }
+    };
   }
 
   void handleBarcodeSubmit() {
@@ -621,17 +648,18 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         ),
                         mainTextButton(
                           text: '계산하기',
-                          onTap: () async {
-                            // onTap 콜백을 async로 선언하여 비동기 처리 가능
-                            if (savedPoint - totalPrice >= 0) {
-                              await payments(itemResponses);
-                            } else {
-                              showPaymentsPopup(
-                                "잔액이 부족합니다",
-                                true,
-                              );
-                            }
-                          },
+                          isButtonDisabled: isButtonDisabled,
+                          onTap: _debounce(() async {
+                            setState(() {
+                              isButtonDisabled = true;
+                            });
+
+                            await _handlePayment();
+
+                            setState(() {
+                              isButtonDisabled = true;
+                            });
+                          }, 5000), // 5초 동안 버튼 비활성화
                         ),
                       ],
                     )
