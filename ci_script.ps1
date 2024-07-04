@@ -6,6 +6,7 @@ param (
 $workingDirectory = "C:/Users/KB/Devcoop/devcoop_self_counter_v1"
 $buildDirectory = "C:/Users/KB/Devcoop/devcoop_self_counter_v1/build"
 
+
 # 환경 변수 설정
 $env:DB_HOST = $env:DB_HOST
 echo "DB_HOST: $env:DB_HOST"
