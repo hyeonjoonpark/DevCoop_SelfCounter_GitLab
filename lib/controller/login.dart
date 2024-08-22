@@ -8,8 +8,11 @@ import 'package:http/http.dart' as http;
 class LoginController {
   final dbSecure = DbSecure();
   Future<void> login(
-      BuildContext context, String codeNumber, String pin) async {
-    Map<String, String> requestBody = {'codeNumber': codeNumber, 'pin': pin};
+      BuildContext context, String userCode, String userPin) async {
+    Map<String, String> requestBody = {
+      'userCode': userCode,
+      'userPin': userPin
+    };
 
     String jsonData = json.encode(requestBody);
 
@@ -38,11 +41,11 @@ class LoginController {
             .decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
 
         String token = responseBody['token'] ?? '';
-        String studentName = responseBody['studentName'] ?? '';
-        int studentNumber = responseBody['studentNumber'] ?? 0;
-        int point = responseBody['point'] ?? 0;
+        String userName = responseBody['userName'] ?? '';
 
-        saveUserData(token, codeNumber, studentNumber, point, studentName);
+        int userPoint = responseBody['userPoint'] ?? 0;
+
+        saveUserData(token, userCode, userPoint, userName);
 
         Get.offAllNamed('/check');
       }

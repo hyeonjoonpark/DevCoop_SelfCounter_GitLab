@@ -35,9 +35,9 @@ class _CheckStudentState extends State<CheckStudent> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      final String loadedStudentName = prefs.getString('studentName') ?? '';
-      final int loadedPoint = prefs.getInt('point') ?? 0;
-      final String loadedCodeNumber = prefs.getString('codeNumber') ?? '';
+      final String loadedStudentName = prefs.getString('userName') ?? '';
+      final int loadedPoint = prefs.getInt('userPoint') ?? 0;
+      final String loadedCodeNumber = prefs.getString('userCode') ?? '';
 
       // if (loadedCodeNumber != null && loadedCodeNumber.isNotEmpty) {
 

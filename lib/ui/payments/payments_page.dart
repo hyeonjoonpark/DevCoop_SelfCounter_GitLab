@@ -51,9 +51,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
-        savedPoint = prefs.getInt('point') ?? 0;
-        savedStudentName = prefs.getString('studentName') ?? '';
-        savedCodeNumber = prefs.getString('codeNumber') ?? '';
+        savedPoint = prefs.getInt('userPoint') ?? 0;
+        savedStudentName = prefs.getString('userName') ?? '';
+        savedCodeNumber = prefs.getString('userCode') ?? '';
         token = prefs.getString('accessToken') ?? '';
       });
     } catch (e) {
@@ -86,41 +86,46 @@ class _PaymentsPageState extends State<PaymentsPage> {
         setState(() {
           final List<dynamic> itemJsonList =
               jsonDecode(utf8.decode(response.bodyBytes));
-          final Map<String, dynamic> responseBody = itemJsonList.first;
-          final String itemName = responseBody['name'];
-          final dynamic rawItemPrice = responseBody['price'];
-          final int itemQuantity = responseBody['quantity'];
-          // Response Body에서 eventStatus를 가져옵니다.
-          final String eventStatus = responseBody['eventStatus'];
-          final String itemPrice = rawItemPrice.toString();
+          print(itemJsonList);
 
-          final existingItemIndex = itemResponses.indexWhere(
-            (existingItem) => existingItem.itemId == barcode,
-          );
+          for (var itemJson in itemJsonList) {
+            final String itemName = itemJson['itemName'];
+            final int itemPrice = itemJson['itemPrice']; // itemPrice is now int
+            final int itemQuantity = itemJson['quantity'];
+            final String eventStatus = itemJson['eventStatus'];
 
-          if (existingItemIndex != -1) {
-            final existingItem = itemResponses[existingItemIndex];
-            existingItem.quantity += itemQuantity;
-            totalPrice += existingItem.itemPrice * itemQuantity;
-            itemResponses[existingItemIndex] = existingItem;
-          } else {
-            final item = ItemResponseDto(
-              itemName: itemName,
-              itemPrice: rawItemPrice,
-              itemId: barcode,
-              quantity: itemQuantity,
-              type: eventStatus,
+            final existingItemIndex = itemResponses.indexWhere(
+              (existingItem) => existingItem.itemId == barcode,
             );
 
-            print("eventStatus = $eventStatus");
-            itemResponses.add(item);
+            if (existingItemIndex != -1) {
+              final existingItem = itemResponses[existingItemIndex];
+              existingItem.quantity += itemQuantity;
+              totalPrice += existingItem.itemPrice * itemQuantity;
+              itemResponses[existingItemIndex] = existingItem;
+            } else {
+              final item = ItemResponseDto(
+                itemName: itemName,
+                itemPrice: itemPrice,
+                itemId: barcode,
+                quantity: itemQuantity,
+                type: eventStatus,
+              );
 
-            eventStatus == 'NONE'
-                ? totalPrice += int.parse(itemPrice) * itemQuantity
-                : totalPrice +=
-                    (int.parse(itemPrice) * itemQuantity / 2) as int;
+              print("eventStatus = $eventStatus");
+              itemResponses.add(item);
+
+              if (eventStatus == 'NONE') {
+                totalPrice += itemPrice * itemQuantity;
+              } else if (eventStatus == 'ONE_PLUS_ONE') {
+                // Assuming ONE_PLUS_ONE means a discount, handle accordingly
+                totalPrice += (itemPrice * itemQuantity / 2).toInt();
+              }
+            }
           }
         });
+      } else {
+        print("Failed to load item data: ${response.statusCode}");
       }
     } catch (e) {
       rethrow;

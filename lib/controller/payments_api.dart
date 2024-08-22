@@ -18,20 +18,20 @@ Future<http.Response> executePaymentRequest(
     },
     body: jsonEncode(<String, dynamic>{
       "userPointRequest": {
-        "codeNumber": savedCodeNumber,
+        "userCode": savedCodeNumber,
         "totalPrice": totalPrice,
       },
       "payLogRequest": {
-        "codeNumber": savedCodeNumber,
-        "innerPoint": totalPrice,
-        "studentName": savedStudentName,
+        "userCode": savedCodeNumber,
+        "payedPoint": totalPrice,
+        "userName": savedStudentName,
       },
       "kioskRequest": {
         "items": [
           for (var item in items)
             {
               "itemName": item.itemName,
-              "dcmSaleAmt": item.itemPrice,
+              "itemPrice": item.itemPrice,
               "saleQty": item.quantity,
             }
         ],
