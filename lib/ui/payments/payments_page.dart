@@ -403,7 +403,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         mainTextButton(
-                          text: '행사상품',
+                          text: '기타상품',
                           onTap: () async {
                             await getEventList(
                                 (List<EventItemResponseDto> newList) {

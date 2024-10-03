@@ -6,6 +6,7 @@ GestureDetector mainTextButton({
   required String text,
   bool isButtonDisabled = false, // 기본값 설정
   required Function()? onTap,
+  Color? color,
 }) {
   return GestureDetector(
     onTap: isButtonDisabled ? null : onTap,
@@ -16,7 +17,7 @@ GestureDetector mainTextButton({
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-          30,
+          10,
         ),
         color: isButtonDisabled
             ? Colors.grey
@@ -35,6 +36,7 @@ GestureDetector mainTextButton({
         text,
         style: DevCoopTextStyle.bold_30.copyWith(
           color: DevCoopColors.black,
+          fontSize: 24,
         ),
       ),
     ),

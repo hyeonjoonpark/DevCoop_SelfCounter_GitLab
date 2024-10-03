@@ -1,11 +1,11 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:counter/secure/db.dart';
+import 'package:counter/controller/login.dart';
 import 'package:counter/ui/_constant/component/button.dart';
-import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
 import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
+import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
+import 'package:counter/ui/payments/payments_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../../controller/login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class PinPage extends StatefulWidget {
@@ -19,42 +19,39 @@ class PinPage extends StatefulWidget {
 class _PinPageState extends State<PinPage> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _pinFocus = FocusNode();
-  final dbSecure = DbSecure();
-
-  void _setActiveController(TextEditingController controller) {
-    setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
-    // 화면이 나타난 후에 포커스를 지정
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_pinFocus);
     });
   }
 
-  void onNumberButtonPressed(
-      int number, TextEditingController activeController) {
-    String currentText = activeController.text;
+  void onNumberButtonPressed(int number) {
+    String currentText = _pinController.text;
 
     if (number == 10) {
-      activeController.clear();
+      _pinController.clear(); // C 버튼: 클리어
     } else if (number == 12) {
-      // Del button
       if (currentText.isNotEmpty) {
-        String newText = currentText.substring(0, currentText.length - 1);
-        activeController.text = newText;
+        _pinController.text =
+            currentText.substring(0, currentText.length - 1); // D 버튼: 삭제
       }
     } else {
-      // 숫자 버튼 (0 포함)
-      String newText = currentText + (number == 11 ? '0' : number.toString());
-      activeController.text = newText;
+      String newText =
+          currentText + (number == 11 ? '0' : number.toString()); // 0 버튼
+      _pinController.text = newText;
     }
+
+    AssetsAudioPlayer.newPlayer().open(
+      Audio('assets/audio/click.wav'),
+      showNotification: true,
+    );
   }
 
   void _handleSubmit() {
-    LoginController loginController = LoginController();
+    final loginController = LoginController();
     loginController.login(
       context,
       widget.codeNumber,
@@ -64,171 +61,167 @@ class _PinPageState extends State<PinPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 30,
-          horizontal: 90,
-        ),
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                "핀 번호를 입력해주세요",
-                style: DevCoopTextStyle.bold_40.copyWith(
-                  color: DevCoopColors.black,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 90,
-              ),
-              Row(
+    return ScreenUtilInit(
+      builder: (context, child) => Scaffold(
+        backgroundColor: const Color(0xFFF0F4F8), // 배경색
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
+                  // 아이콘 사용
+                  Container(
+                    decoration: BoxDecoration(
+                      color: DevCoopColors.primary.withOpacity(0.1), // 연한 배경
+                      shape: BoxShape.circle,
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: const Icon(
+                      Icons.pin, // 바코드 스캐너 아이콘
+                      size: 60,
+                      color: DevCoopColors.primary, // 아이콘 색상
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // PIN 입력 필드
+                  // PIN 입력 필드
+                  Container(
+                    width: 0.5.sw, // 가로 길이 조정
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEFEFEF),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      obscureText: true,
+                      controller: _pinController,
+                      focusNode: _pinFocus,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '핀 번호를 입력해주세요';
+                        }
+                        return null;
+                      },
+                      onFieldSubmitted: (value) {
+                        _handleSubmit();
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        isDense: true,
+                        hintText: '핀 번호',
+                        hintStyle: DevCoopTextStyle.medium_30
+                            .copyWith(fontSize: 14, color: Colors.grey[600]),
+                        border: InputBorder.none,
+                      ),
+                      maxLines: 1,
+                      style: const TextStyle(fontSize: 16), // 텍스트 크기 줄임
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  SizedBox(
+                    width: 0.6.sw,
                     child: Column(
                       children: [
-                        for (int i = 0; i < 4; i++) ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int j = 0; j < 3; j++) ...[
-                                GestureDetector(
-                                  onTap: () {
-                                    // 숫자버튼 클릭하면 소리나도록
-                                    int number = j + 1 + i * 3;
-                                    onNumberButtonPressed(
-                                      number == 11 ? 0 : number,
-                                      _pinController,
-                                    );
-                                    AssetsAudioPlayer.newPlayer().open(
-                                      Audio('assets/audio/click.wav'),
-                                      showNotification: true,
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 95,
-                                    height: 95,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: (j + 1 + i * 3 == 10 ||
-                                              j + 1 + i * 3 == 12)
-                                          ? DevCoopColors.primary
-                                          : const Color(0xFFD9D9D9),
-                                    ),
-                                    child: Text(
-                                      '${j + 1 + i * 3 == 10 ? 'Clear' : (j + 1 + i * 3 == 11 ? '0' : (j + 1 + i * 3 == 12 ? 'Del' : j + 1 + i * 3))}',
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        color: DevCoopColors.black,
+                        for (int i = 0; i < 4; i++) // 4행
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20,
+                            ), // 세로 간격 늘리기
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceAround, // 중앙 정렬
+                              children: [
+                                for (int j = 0; j < 3; j++) // 3열
+                                  GestureDetector(
+                                    onTap: () {
+                                      int number = j + 1 + i * 3;
+                                      onNumberButtonPressed(
+                                          number == 11 ? 0 : number);
+                                    },
+                                    child: Container(
+                                      width: 100, // 버튼 너비 조정
+                                      height: 50, // 버튼 높이 조정
+                                      decoration: BoxDecoration(
+                                        color: (j + 1 + i * 3 == 10 ||
+                                                j + 1 + i * 3 == 12)
+                                            ? DevCoopColors.primary
+                                            : const Color(0xFFD9D9D9),
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.1),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        j + 1 + i * 3 == 10
+                                            ? 'C'
+                                            : (j + 1 + i * 3 == 11
+                                                ? '0'
+                                                : (j + 1 + i * 3 == 12
+                                                    ? 'D'
+                                                    : '${j + 1 + i * 3}')),
+                                        style: const TextStyle(
+                                          fontSize: 18, // 글자 크기 조정
+                                          fontWeight: FontWeight.bold,
+                                          color: DevCoopColors.black,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
                               ],
-                            ],
-                          ),
-                          if (i < 3) ...[
-                            const SizedBox(
-                              height: 10,
                             ),
-                          ],
-                        ],
+                          ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 160,
-                              child: Text(
-                                '핀 번호',
-                                style: DevCoopTextStyle.medium_30.copyWith(
-                                  color: DevCoopColors.black,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _setActiveController(_pinController);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 34,
-                                    horizontal: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFECECEC),
-                                    borderRadius: BorderRadius.circular(
-                                      20,
-                                    ),
-                                  ),
-                                  child: TextFormField(
-                                    obscureText: true,
-                                    // TextField 대신 TextFormField을 사용합니다.
-                                    controller: _pinController,
-                                    focusNode: _pinFocus,
-                                    validator: (value) {
-                                      // 여기에 validator 추가
-                                      if (value == null || value.isEmpty) {
-                                        return '핀 번호를 입력해주세요';
-                                      }
-                                      return null;
-                                    },
-                                    onFieldSubmitted: (value) {
-                                      _handleSubmit(); // 엔터를 눌렀을 때 호출되는 함수
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      isDense: true,
-                                      hintText: '자신의 핀번호를 입력해주세요',
-                                      hintStyle: DevCoopTextStyle.medium_30
-                                          .copyWith(fontSize: 15),
-                                      border: InputBorder.none,
-                                    ),
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 60,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            mainTextButton(
-                              text: '처음으로',
-                              onTap: () {
-                                Get.offAllNamed('/');
-                              },
-                            ),
-                            mainTextButton(
-                              text: '확인',
-                              onTap: () {
-                                _handleSubmit(); // 확인 버튼 클릭 시 호출되는 함수
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+
+                  const SizedBox(height: 30),
+
+                  // 버튼을 수평으로 배치
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      mainTextButton(
+                        text: '처음으로',
+                        onTap: () {
+                          Get.offAllNamed('/');
+                        },
+                        color: Colors.grey[300],
+                        // width 매개변수를 제거하여 텍스트 길이에 따라 자동 조정
+                      ),
+                      const SizedBox(
+                        width: 48,
+                      ),
+                      mainTextButton(
+                        text: '확인',
+                        onTap: () {
+                          _handleSubmit();
+                        },
+                        // width 매개변수를 제거하여 텍스트 길이에 따라 자동 조정
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:counter/provider/bottom_navigation_provider.dart';
 import 'package:counter/provider/count_provider.dart';
 import 'package:counter/ui/_constant/util/app_router.dart';
+import 'package:counter/ui/barcode/barcode_page.dart';
 import 'package:counter/ui/home/home.dart';
+// import 'package:counter/ui/onboarding/onboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -23,17 +25,20 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: appRouter,
       initialRoute: '/',
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (BuildContext context) => CountProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (BuildContext context) => BottomNavigationProvider(),
-          ),
-        ],
-        child: Home(),
-      ),
+      home: const BarcodePage(),
+      // home: MultiProvider(
+      //   providers: [
+      //     ChangeNotifierProvider(
+      //       create: (BuildContext context) => CountProvider(),
+      //     ),
+      //     ChangeNotifierProvider(
+      //       create: (BuildContext context) => BottomNavigationProvider(),
+      //     ),
+      //   ],
+      //   // child: const OnboardPage(),
+      //   // child: Home(),
+      //   child: const BarcodePage(),
+      // ),
     );
   }
 }

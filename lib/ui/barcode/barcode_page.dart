@@ -1,11 +1,7 @@
-import 'dart:async';
+import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:counter/ui/_constant/component/button.dart';
-import 'package:counter/ui/_constant/theme/devcoop_text_style.dart';
-import 'package:counter/ui/_constant/theme/devcoop_colors.dart';
 
 class BarcodePage extends StatefulWidget {
   const BarcodePage({Key? key}) : super(key: key);
@@ -19,7 +15,6 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
   TextEditingController _codeNumberController = TextEditingController();
   final FocusNode _barcodeFocus = FocusNode();
 
-  // 바코드페이지에 접속할 때마다 포커스를 재지정합니다.
   @override
   void initState() {
     super.initState();
@@ -32,29 +27,6 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
     });
   }
 
-  @override
-  void dispose() {
-    _codeNumberController.dispose(); // 컨트롤러 인스턴스 해제
-    _barcodeFocus.dispose();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  void _setActiveController() {
-    setState(() {
-      _codeNumberController.text = ''; // TextEditingController의 텍스트를 초기화합니다.
-      FocusScope.of(context).requestFocus(_barcodeFocus); // 포커스를 재지정
-    });
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      // 앱이 다시 활성화될 때 콘텐츠를 새로고침합니다.
-      _refreshContent();
-    }
-  }
-
   void _refreshContent() {
     Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
@@ -65,117 +37,189 @@ class _BarcodePageState extends State<BarcodePage> with WidgetsBindingObserver {
   }
 
   @override
+  void dispose() {
+    _codeNumberController.dispose();
+    _barcodeFocus.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, child) => Scaffold(
-        body: PopScope(
-          onPopInvoked: (bool didPop) async {
-            FocusScope.of(context).requestFocus(_barcodeFocus);
-          },
-          child: SingleChildScrollView(
-            child: Center(
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 90),
-                child: Form(
-                  // Form 위젯을 추가합니다.
-                  key: _formKey, // GlobalKey<FormState>를 할당합니다.
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "학생증의 바코드를\n리더기로 스캔해주세요.",
-                        style: DevCoopTextStyle.bold_40.copyWith(
-                          color: DevCoopColors.black,
-                        ),
-                        textAlign: TextAlign.center,
+        backgroundColor: DevCoopColors.primaryLight, // 부드러운 회색 배경
+        body: Center(
+          child: Container(
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Container(
+              width: 0.4.sw,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // 아이콘 사용
+                    Container(
+                      decoration: BoxDecoration(
+                        color: DevCoopColors.primary.withOpacity(0.1), // 연한 배경
+                        shape: BoxShape.circle,
                       ),
-                      SizedBox(height: 0.2.sh),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '학생증 번호',
-                                style: DevCoopTextStyle.medium_30.copyWith(
-                                  color: DevCoopColors.black,
-                                ),
-                              ),
-                              const SizedBox(width: 40),
-                              GestureDetector(
-                                onTap: () {
-                                  _setActiveController();
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 500,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 34, horizontal: 12),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFECECEC),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: TextFormField(
-                                    onFieldSubmitted: (value) {
-                                      if (_formKey.currentState?.validate() ??
-                                          false) {
-                                        final codeNumber =
-                                            _codeNumberController.text;
-                                        Get.offAllNamed("/pin",
-                                            arguments: codeNumber);
-                                      }
-                                    },
+                      padding: const EdgeInsets.all(20),
+                      child: const Icon(
+                        Icons.qr_code_scanner, // 바코드 스캐너 아이콘
+                        size: 60,
+                        color: DevCoopColors.primary, // 아이콘 색상
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    // const Text(
+                    //   '학생증 스캔',
+                    //   style: TextStyle(
+                    //     fontSize: 20,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Color(0xFF333333), // 어두운 텍스트
+                    //   ),
+                    //   textAlign: TextAlign.center,
+                    // ),
+                    // const SizedBox(height: 20),
 
-                                    // TextField 대신 TextFormField을 사용합니다.
-                                    controller: _codeNumberController,
-                                    focusNode: _barcodeFocus,
-                                    validator: (value) {
-                                      // 여기에 validator 추가
-                                      if (value == null || value.isEmpty) {
-                                        return '학생증 번호를 입력해주세요.';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      isDense: true,
-                                      hintText: '학생증을 리더기에 스캔해주세요',
-                                      hintStyle: DevCoopTextStyle.medium_30
-                                          .copyWith(fontSize: 15),
-                                      border: InputBorder.none,
-                                    ),
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ),
-                            ],
+                    Container(
+                      width: 300,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white, // 텍스트 필드 배경을 흰색으로
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: DevCoopColors.primary,
+                            width: 1), // 메인 색상으로 테두리
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
                           ),
-                          const SizedBox(height: 60),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(width: 40),
-                              mainTextButton(
-                                text: '다음으로',
-                                onTap: () {
-                                  // _formKey와 currentState의 null 여부를 확인합니다.
-                                  if (_formKey.currentState != null &&
-                                      _formKey.currentState!.validate()) {
-                                    // Form이 유효할 경우에만 네비게이션을 실행합니다.
-                                    final codeNumber =
-                                        _codeNumberController.text;
-                                    Get.toNamed("/pin", arguments: codeNumber);
-                                  }
-                                },
-                              ),
-                            ],
-                          )
                         ],
                       ),
-                    ],
-                  ),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _codeNumberController,
+                        focusNode: _barcodeFocus,
+                        decoration: const InputDecoration(
+                          hintText: '학생증 번호 입력',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: InputBorder.none,
+                        ),
+                        onFieldSubmitted: (value) {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            final codeNumber = _codeNumberController.text;
+                            Get.offAllNamed("/pin", arguments: codeNumber);
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: DevCoopColors.primary, // 버튼 색상
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          Get.offAllNamed("/pin/change");
+                        },
+                        child: const Text(
+                          '비밀번호 변경',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: DevCoopColors.white, // 버튼 텍스트 색상
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // 지문 인식 버튼 추가
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: DevCoopColors.white, // 버튼 색상
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 50,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          // 지문 인식 로직 추가 필요
+                          // 실제 지문 인식 코드를 여기에 구현
+                          // 예시: Get.offAllNamed("/pin", arguments: codeNumber);
+                        },
+                        child: const Text(
+                          '지문 인식',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: DevCoopColors.primary, // 버튼 텍스트 색상
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Container(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: DevCoopColors.primary, // 버튼 색상
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.validate()) {
+                            final codeNumber = _codeNumberController.text;
+                            Get.toNamed("/pin", arguments: codeNumber);
+                          }
+                        },
+                        child: const Text(
+                          '다음',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white, // 버튼 텍스트 색상
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
